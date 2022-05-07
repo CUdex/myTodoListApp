@@ -1,8 +1,8 @@
 # myTodoListApp
 create my todolist app by swift
 
-1. using \n
--swfit
+1. using
+ 1)swfit
 -xcode
 -coredata
 
