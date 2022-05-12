@@ -9,9 +9,16 @@ import UIKit
 
 class ToDoMainViewController: UIViewController {
 
+    @IBOutlet weak var toDoListTable: UITableView!
+    
+    var testDate: ToDoCellData?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        self.navigationItem.title = "To Do List"
     }
 
 
