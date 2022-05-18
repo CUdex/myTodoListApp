@@ -55,7 +55,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </switch>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="zO3-hh-LVa"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="zO3-hh-LVa">
+                            <connections>
+                                <action selector="reload:" destination="RcU-hh-wEP" id="iNV-AN-Fkv"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="toDoListTable" destination="mF8-IQ-HQk" id="0G7-E5-3S4"/>

@@ -17,6 +17,7 @@
 		FD6423C7282C9D5700789836 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6423C5282C9D5700789836 /* MainTableViewCell.swift */; };
 		FD6423C8282C9D5700789836 /* MainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD6423C6282C9D5700789836 /* MainTableViewCell.xib */; };
 		FD6423CA282C9D9600789836 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6423C9282C9D9600789836 /* DataModel.swift */; };
+		FD6B6E8E28353A3F00DD7081 /* MyCustomCircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B6E8D28353A3F00DD7081 /* MyCustomCircleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		FD6423C5282C9D5700789836 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		FD6423C6282C9D5700789836 /* MainTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTableViewCell.xib; sourceTree = "<group>"; };
 		FD6423C9282C9D9600789836 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		FD6B6E8D28353A3F00DD7081 /* MyCustomCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomCircleButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 		FD6423AB2826595300789836 /* My_TodoListApp */ = {
 			isa = PBXGroup;
 			children = (
+				FD6B6E8C283539C100DD7081 /* CustomButtons */,
 				FD6423C4282C9A4300789836 /* ViewControllers */,
 				FD6423C3282659C500789836 /* model */,
 				FD6423AC2826595300789836 /* AppDelegate.swift */,
@@ -93,6 +96,14 @@
 				FD6423B02826595300789836 /* ToDoMainViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		FD6B6E8C283539C100DD7081 /* CustomButtons */ = {
+			isa = PBXGroup;
+			children = (
+				FD6B6E8D28353A3F00DD7081 /* MyCustomCircleButton.swift */,
+			);
+			path = CustomButtons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,6 +181,7 @@
 				FD6423B12826595300789836 /* ToDoMainViewController.swift in Sources */,
 				FD6423AD2826595300789836 /* AppDelegate.swift in Sources */,
 				FD6423AF2826595300789836 /* SceneDelegate.swift in Sources */,
+				FD6B6E8E28353A3F00DD7081 /* MyCustomCircleButton.swift in Sources */,
 				FD6423B72826595300789836 /* My_TodoListApp.xcdatamodeld in Sources */,
 				FD6423C7282C9D5700789836 /* MainTableViewCell.swift in Sources */,
 				FD6423CA282C9D9600789836 /* DataModel.swift in Sources */,

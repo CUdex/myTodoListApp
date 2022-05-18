@@ -4,42 +4,53 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MainTableViewCell" rowHeight="123" id="KGk-i7-Jjw" customClass="MainTableViewCell" customModule="My_TodoListApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MainTableViewCell" rowHeight="150" id="KGk-i7-Jjw" customClass="MainTableViewCell" customModule="My_TodoListApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="123"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
+                <rect key="frame" x="0.0" y="0.0" width="280" height="123"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXm-1Y-h5F">
-                        <rect key="frame" x="103" y="25" width="173" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXm-1Y-h5F">
+                        <rect key="frame" x="90" y="10" width="165" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jYr-YY-Sda">
-                        <rect key="frame" x="4" y="18" width="80" height="86"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jYr-YY-Sda">
+                        <rect key="frame" x="25" y="30" width="40" height="63"/>
                         <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="MNU-vi-YP0"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWE-hR-elW">
-                        <rect key="frame" x="103" y="65" width="161" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWE-hR-elW">
+                        <rect key="frame" x="90" y="41" width="149" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="jYr-YY-Sda" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="6Ra-DI-qN4"/>
+                    <constraint firstAttribute="trailing" secondItem="wXm-1Y-h5F" secondAttribute="trailing" constant="25" id="GGv-xC-qtd"/>
+                    <constraint firstItem="wXm-1Y-h5F" firstAttribute="leading" secondItem="jYr-YY-Sda" secondAttribute="trailing" constant="25" id="ITV-cr-qOj"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="IWE-hR-elW" secondAttribute="trailing" constant="25" id="MSz-go-OtY"/>
+                    <constraint firstItem="jYr-YY-Sda" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="POU-YP-wtg"/>
+                    <constraint firstAttribute="bottom" secondItem="jYr-YY-Sda" secondAttribute="bottom" constant="30" id="drI-E7-bEA"/>
+                    <constraint firstItem="wXm-1Y-h5F" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="eO8-tT-m5f"/>
+                    <constraint firstItem="jYr-YY-Sda" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="laW-RU-EYq"/>
+                    <constraint firstItem="IWE-hR-elW" firstAttribute="top" secondItem="wXm-1Y-h5F" secondAttribute="bottom" constant="10" id="w0f-vJ-3IX"/>
+                    <constraint firstItem="IWE-hR-elW" firstAttribute="leading" secondItem="jYr-YY-Sda" secondAttribute="trailing" constant="25" id="yHB-0G-dkK"/>
+                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" systemColor="systemYellowColor"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="listCellDate" destination="IWE-hR-elW" id="Sf7-Cy-h3w"/>
                 <outlet property="listCellImageView" destination="jYr-YY-Sda" id="e7T-2f-eRT"/>
@@ -48,9 +59,4 @@
             <point key="canvasLocation" x="130.76923076923077" y="112.67772511848341"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-    </resources>
 </document>
