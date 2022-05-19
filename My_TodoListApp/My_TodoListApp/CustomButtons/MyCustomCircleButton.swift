@@ -12,6 +12,7 @@ class MyCustomCircleButton: UIButton {
     //위치 이니셜라이즈
     override init(frame: CGRect) {
         super.init(frame: frame)
+        print("MyCustomCircleButton - init")
         
         self.backgroundColor = .blue
         self.layer.borderWidth = 1
