@@ -12,8 +12,14 @@ class ToDoMainViewController: UIViewController {
     @IBOutlet weak var toDoListTable: UITableView!
     
     var testDate: [ToDoCellData] = [ToDoCellData(priority: 1, title: "test", date: Date(), description: nil, custom: nil, index: nil)]
-    
+
+    fileprivate let buttonWidth: CGFloat = 80
+    fileprivate let buttonHeight: CGFloat = 80
+    var addListButton: MyCustomCircleButton = MyCustomCircleButton()
     let spacingSection = 10.0
+    
+    //storyboard 연결
+    let addDataStoryboard = UIStoryboard(name: "Main", bundle: nil)
     
     
     override func viewDidLoad() {
@@ -28,6 +34,13 @@ class ToDoMainViewController: UIViewController {
         toDoListTable.register(UINib(nibName: "MainTableViewCell", bundle: nil), forCellReuseIdentifier: "MainTableViewCell")
         toDoListTable.sectionHeaderTopPadding = 0
         toDoListTable.cellLayoutMarginsFollowReadableWidth = false
+        
+        //create button
+        createButton()
+
+        
+
+        
     }
     
     
@@ -80,12 +93,6 @@ extension ToDoMainViewController: UITableViewDataSource, UITableViewDelegate {
         
         let doData = testDate[0]
         
-        //cell.layer.masksToBounds = true
-        //cell.layer.backgroundColor = CGColor.init(red: 0, green: 0, blue: 255, alpha: 0.7)
-        //외곽선
-        //cell.layer.borderWidth = 1
-        //cell.layer.cornerRadius = 35
-        //cell.contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 10, bottom: 50, right: 10))
         cell.contentView.backgroundColor = .gray
         cell.selectionStyle = .none
         cell.listCellTitleLable.text = doData.title
@@ -114,3 +121,32 @@ extension ToDoMainViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+
+// MARK: - add data button function
+extension ToDoMainViewController {
+    func createButton() -> Void {
+        
+        // MARK: - create add data buttion
+        self.view.addSubview(addListButton)
+        
+        //constaraint를 수정할 수 있도록 false 설정
+        addListButton.translatesAutoresizingMaskIntoConstraints = false
+        //button size
+        addListButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        addListButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
+        //button location
+        addListButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        addListButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80).isActive = true
+        addListButton.layer.cornerRadius = buttonHeight / 2
+        addListButton.addTarget(self, action: #selector(presentAddToDoListView), for: .touchUpInside)
+    }
+    
+    @objc func presentAddToDoListView() -> Void {
+        
+        //view 이동을 위한 ID로 view 확인
+        guard let addDataView = storyboard?.instantiateViewController(withIdentifier: "AddToDoListViewController") else {
+            return
+        }
+        present(addDataView, animated: true, completion: nil)
+    }
+}

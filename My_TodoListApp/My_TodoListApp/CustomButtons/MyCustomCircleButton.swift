@@ -17,8 +17,9 @@ class MyCustomCircleButton: UIButton {
         self.backgroundColor = .blue
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.black.cgColor
-        self.layer.cornerRadius = self.frame.size.width / 2
-        self.clipsToBounds = true
+        self.setImage(UIImage(systemName: "plus.circle"), for: .normal)
+        self.setPreferredSymbolConfiguration(.init(pointSize: 40, weight: .regular, scale: .default), forImageIn: .normal)
+        self.tintColor = .white
     }
     
     required init?(coder: NSCoder) {

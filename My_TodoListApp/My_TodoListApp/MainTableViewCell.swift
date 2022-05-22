@@ -17,8 +17,6 @@ class MainTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        //self.contentView.frame.size.width = 50
-        //contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
         print("MainTableViewCell - awakeFromNib")
     }
 
@@ -26,7 +24,6 @@ class MainTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         print("MainTableViewCell - setSelected")
-        print(self.frame.size.width)
 
         if selected {
 //            UIView.animate(withDuration: 0.7, delay: 0.1, animations: {
