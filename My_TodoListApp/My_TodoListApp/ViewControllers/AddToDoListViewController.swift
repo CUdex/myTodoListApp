@@ -15,8 +15,22 @@ class AddToDoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AddToDoListViewController - viewDidLoad")
+        self.downKeyboardWhenTappedBackground()
+        
         taskLable.delegate = self
+        discriptionText.delegate = self
+        
+        //키보드에 따라 view를 올리는 기능 구현
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //self.addKeyboardNotifications()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        //self.removeKeyboardNotifications()
+    }
+
+    
 }
 
 
@@ -42,14 +56,26 @@ extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         print("AddToDoListViewController - textView")
 
-        let maxLenth = 200
-        
-        guard let text = textView.text else { return false }
-        
-        if text.count >= maxLenth && range.length == 0 {
+        //done 누르면 키보드 내려감
+        if(text == "\n") {
+            textView.resignFirstResponder()
             return false
         }
         
+        let maxLenth = 100
+        
+        guard let str = textView.text else { return false }
+        
+        if str.count >= maxLenth && range.length == 0 {
+            return false
+        }
+        
+        return true
+    }
+    
+    //MARK: - done 버튼을 누르면 키보드 내려감
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 

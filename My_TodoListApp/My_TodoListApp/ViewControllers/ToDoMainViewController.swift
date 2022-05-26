@@ -28,6 +28,8 @@ class ToDoMainViewController: UIViewController {
         
         print("ToDoMainViewController - viewDidLoad")
         
+        self.downKeyboardWhenTappedBackground()
+        
         self.navigationItem.title = "To Do List"
         toDoListTable.dataSource = self
         toDoListTable.delegate = self
