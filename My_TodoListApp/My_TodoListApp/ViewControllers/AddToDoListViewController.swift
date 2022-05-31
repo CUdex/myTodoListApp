@@ -9,32 +9,62 @@ import UIKit
 
 class AddToDoListViewController: UIViewController {
     
-    @IBOutlet weak var taskLable: UITextField!
+    @IBOutlet weak var taskText: UITextField!
     @IBOutlet weak var discriptionText: UITextView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AddToDoListViewController - viewDidLoad")
         self.downKeyboardWhenTappedBackground()
-        
-        taskLable.delegate = self
+        taskText.delegate = self
         discriptionText.delegate = self
+        //scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 400)
         
-        //키보드에 따라 view를 올리는 기능 구현
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //self.addKeyboardNotifications()
+        self.addKeyboardNotifications()
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        //self.removeKeyboardNotifications()
-    }
-
     
+    //MARK: - 키보드 만큼 스크롤 조절
+    override func keyboardWillShow(_ noti: NSNotification) {
+        guard let userInfo = noti.userInfo else {
+            return
+        }
+        let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardFrame, to: view.window)
+        
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height, right: 0)
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+        
+    }
+    // 복구
+    override func keyboardWillHide(_ noti: NSNotification) {
+        
+        //스크롤 뷰 최상단 이동
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        
+        
+        
+//        let contextInset = UIEdgeInsets.zero
+//        scrollView.contentInset = contextInset
+//        scrollView.scrollIndicatorInsets = contextInset
+//
+//        guard let userInfo = noti.userInfo else {
+//            return
+//        }
+//
+//        let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+//        let keyboardViewEndFrame = view.convert(keyboardFrame, to: view.window)
+//
+//        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -(keyboardViewEndFrame.height + 100), right: 0)
+//        scrollView.scrollIndicatorInsets = scrollView.contentInset
+    }
 }
 
 
-// MARK: - 글자 수 제한
+//MARK: - 글자 수 제한
 extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
     
     //task
