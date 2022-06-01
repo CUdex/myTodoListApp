@@ -11,7 +11,7 @@ class ToDoMainViewController: UIViewController {
 
     @IBOutlet weak var toDoListTable: UITableView!
     
-    var testDate: [ToDoCellData] = [ToDoCellData(priority: 1, title: "test", date: Date(), description: nil, custom: nil, index: nil)]
+    var testDate: [ToDoCellData] = [ToDoCellData(priority: 1, title: "test", startDate: Date(), endDate: Date(), description: nil, custom: nil, index: nil)]
 
     fileprivate let buttonWidth: CGFloat = 80
     fileprivate let buttonHeight: CGFloat = 80
@@ -98,7 +98,7 @@ extension ToDoMainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.contentView.backgroundColor = .gray
         cell.selectionStyle = .none
         cell.listCellTitleLable.text = doData.title
-        cell.listCellDate.text = doData.date.description
+        cell.listCellDate.text = doData.startDate.description
         
         return cell
     }

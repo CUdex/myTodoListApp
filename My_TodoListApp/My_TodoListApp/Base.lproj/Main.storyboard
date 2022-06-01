@@ -150,11 +150,11 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="description" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fCm-QJ-5oB">
-                                                <rect key="frame" x="20" y="435.66666666666669" width="350" height="58"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="description" translatesAutoresizingMaskIntoConstraints="NO" id="fCm-QJ-5oB">
+                                                <rect key="frame" x="20" y="435.66666666666669" width="350" height="46"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <color key="textColor" systemColor="labelColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="25"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                             </textView>
                                         </subviews>
@@ -212,7 +212,9 @@
                     </view>
                     <connections>
                         <outlet property="discriptionText" destination="fCm-QJ-5oB" id="E8T-bv-Vrl"/>
+                        <outlet property="endDateText" destination="RIq-U5-0mZ" id="TZD-Da-Iok"/>
                         <outlet property="scrollView" destination="jYf-JI-NJf" id="27f-t5-9Xq"/>
+                        <outlet property="startDateText" destination="PVb-x1-NB9" id="FKY-Ku-4NJ"/>
                         <outlet property="taskText" destination="rtE-ya-crU" id="0iW-px-cRg"/>
                     </connections>
                 </viewController>

@@ -12,7 +12,8 @@ import Foundation
 struct ToDoCellData {
     var priority: Int
     var title: String
-    var date: Date
+    var startDate: Date
+    var endDate: Date
     var description: String?
     var custom: String?
     var index: Int?
