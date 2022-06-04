@@ -39,10 +39,6 @@ class ToDoMainViewController: UIViewController {
         
         //create button
         createButton()
-
-        
-
-        
     }
     
     
@@ -138,7 +134,7 @@ extension ToDoMainViewController {
         addListButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         //button location
         addListButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        addListButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80).isActive = true
+        addListButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
         addListButton.layer.cornerRadius = buttonHeight / 2
         addListButton.addTarget(self, action: #selector(presentAddToDoListView), for: .touchUpInside)
     }

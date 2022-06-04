@@ -14,9 +14,20 @@ class AddToDoListViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var startDateText: UITextField!
     @IBOutlet weak var endDateText: UITextField!
+    @IBOutlet weak var allDayBtn: UIButton! {
+        didSet {
+            guard let text = self.allDayBtn.titleLabel!.text else { return }
+            let attributeString = NSMutableAttributedString(string: text)
+            
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.white, range: (text as NSString).range(of: text))
+            attributeString.addAttribute(.strikethroughStyle, value: 1, range: (text as NSString).range(of: text))
+            allDayBtn.setAttributedTitle(attributeString, for: .normal)
+        }
+    }
     let datePicker = UIDatePicker()
     var startDate = Date()
     var endDate = Date()
+    var isAllDay = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +39,7 @@ class AddToDoListViewController: UIViewController {
         datePicker.datePickerMode = .dateAndTime // datepicker 설정
         datePicker.preferredDatePickerStyle = .wheels // wheel 설정
         datePicker.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 200) //datepicker 위치 설정
+        datePicker.setValue(UIColor.clear, forKey: "backgroundColor")
         //datePicker.addTarget(self, action: #selector(changeDateInPicker(_:)), for: .valueChanged) // 날짜 선택 시 해당 날짜를 저장하는 함수 사용
         
         //pickerview 툴바 추가
@@ -77,30 +89,51 @@ class AddToDoListViewController: UIViewController {
     private func changeDateToString(_ dateDate: Date) -> String {
         print("AddToDoListViewController - changeDateToString")
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy. MM. dd HH시 mm분(E)"
         
+        if isAllDay {
+            dateFormatter.dateFormat = "yyyy. MM. dd(E)"
+        } else {
+            dateFormatter.dateFormat = "yyyy. MM. dd HH시 mm분(E)"
+        }
         return dateFormatter.string(from: dateDate)
     }
     
+    //MARK: - all day 설정에 따른 버튼 변화
+    @IBAction func changeSettingAllDay(_ sender: Any) {
+        print("AddToDoListViewController - changeSettingAllDay")
+        
+        isAllDay = isAllDay ? false : true
+        
+        if isAllDay {
+            datePicker.datePickerMode = .date
+            allDayBtn.tintColor = .systemBlue
+            changeButtonFont()
+            startDateText.text = ""
+            endDateText.text = ""
+        } else {
+            datePicker.datePickerMode = .dateAndTime
+            allDayBtn.tintColor = .black
+            changeButtonFont()
+            startDateText.text = ""
+            endDateText.text = ""
+        }
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    func changeButtonFont() {
+        
+        guard let text = self.allDayBtn.titleLabel!.text else { return }
+        let attributeString = NSMutableAttributedString(string: text)
+        
+        if isAllDay {
+            attributeString.removeAttribute(.strikethroughColor, range: (text as NSString).range(of: text))
+            attributeString.removeAttribute(.strikethroughStyle, range: (text as NSString).range(of: text))
+            allDayBtn.setAttributedTitle(attributeString, for: .normal)
+        } else {
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.white, range: (text as NSString).range(of: text))
+            attributeString.addAttribute(.strikethroughStyle, value: 1, range: (text as NSString).range(of: text))
+            allDayBtn.setAttributedTitle(attributeString, for: .normal)
+        }
+    }
     
     //MARK: - 키보드 만큼 스크롤 조절
     override func keyboardWillShow(_ noti: NSNotification) {
