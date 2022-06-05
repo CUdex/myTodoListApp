@@ -73,6 +73,7 @@ class AddToDoListViewController: UIViewController {
         
         if startDateText.resignFirstResponder() {
             startDate = datePicker.date
+            print(startDate.timeIntervalSince1970)
             startDateText.text = changeDateToString(startDate)
         } else {
             endDate = datePicker.date

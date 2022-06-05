@@ -18,3 +18,8 @@ struct ToDoCellData {
     var custom: String?
     var index: Int?
 }
+
+struct UserData {
+    var userEmail: String
+    var password: String
+}

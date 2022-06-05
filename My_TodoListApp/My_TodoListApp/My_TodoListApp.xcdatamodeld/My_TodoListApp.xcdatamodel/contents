@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AppSetting" representedClassName="AppSetting" syncable="YES" codeGenerationType="class"/>
-    <entity name="TaskList" representedClassName="TaskList" syncable="YES" codeGenerationType="class"/>
+    <entity name="Lang_EN" representedClassName="Lang_EN" syncable="YES" codeGenerationType="class"/>
+    <entity name="Lang_KR" representedClassName="Lang_KR" syncable="YES" codeGenerationType="class"/>
     <elements>
-        <element name="TaskList" positionX="-63" positionY="-18" width="128" height="29"/>
         <element name="AppSetting" positionX="-54" positionY="-9" width="128" height="29"/>
+        <element name="Lang_KR" positionX="-63" positionY="-18" width="128" height="29"/>
+        <element name="Lang_EN" positionX="-27" positionY="18" width="128" height="29"/>
     </elements>
 </model>
