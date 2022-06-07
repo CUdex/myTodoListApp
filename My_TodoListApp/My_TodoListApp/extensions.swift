@@ -61,3 +61,26 @@ extension UIViewController {
         }
     }
 }
+
+
+extension UITextFieldDelegate {
+    
+    // 아이디 형식 검사
+    func isValidEmail(_ userEmail: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: userEmail)
+    }
+        
+    // 비밀번호 형식 검사
+    func isValidPassword(_ userPassowrd: String) -> Bool {
+        let passwordRegEx = "^[a-zA-Z0-9]{8,}$"
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
+        return passwordTest.evaluate(with: userPassowrd)
+    }
+    
+    // 비밀번호 일치 검사
+    func isSamePasswod(_ userPass: String, _ repeatPass: String) -> Bool {
+        return userPass == repeatPass ? true : false
+    }
+}

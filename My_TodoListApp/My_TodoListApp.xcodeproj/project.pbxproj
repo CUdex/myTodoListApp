@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD47F4C9284DB0D6002B1AAE /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47F4C8284DB0D6002B1AAE /* SignUpViewController.swift */; };
+		FD61377E284E2F91000B7AD7 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = FD61377D284E2F91000B7AD7 /* Toast */; };
 		FD6423AD2826595300789836 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6423AC2826595300789836 /* AppDelegate.swift */; };
 		FD6423AF2826595300789836 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6423AE2826595300789836 /* SceneDelegate.swift */; };
 		FD6423B12826595300789836 /* ToDoMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6423B02826595300789836 /* ToDoMainViewController.swift */; };
@@ -36,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FD47F4C8284DB0D6002B1AAE /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		FD6423A92826595300789836 /* My_TodoListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_TodoListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD6423AC2826595300789836 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD6423AE2826595300789836 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD61377E284E2F91000B7AD7 /* Toast in Frameworks */,
 				FD6B6ED3284CF1F700DD7081 /* FirebaseDatabaseSwift in Frameworks */,
 				FD6B6ED1284CF1F700DD7081 /* FirebaseDatabase in Frameworks */,
 				FD6B6EC9284CF1F600DD7081 /* FirebaseAppCheck in Frameworks */,
@@ -129,6 +133,7 @@
 				FD6B6E8F283A77DB00DD7081 /* AddToDoListViewController.swift */,
 				FD6B6EB2284B8D9100DD7081 /* AppSettingViewController.swift */,
 				FD6B6EDC284CFE5C00DD7081 /* SignInViewController.swift */,
+				FD47F4C8284DB0D6002B1AAE /* SignUpViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 				FD6B6ED4284CF1F700DD7081 /* FirebaseFirestore */,
 				FD6B6ED6284CF1F700DD7081 /* FirebaseFirestoreCombine-Community */,
 				FD6B6ED8284CF1F700DD7081 /* FirebaseFirestoreSwift */,
+				FD61377D284E2F91000B7AD7 /* Toast */,
 			);
 			productName = My_TodoListApp;
 			productReference = FD6423A92826595300789836 /* My_TodoListApp.app */;
@@ -199,6 +205,7 @@
 			mainGroup = FD6423A02826595300789836;
 			packageReferences = (
 				FD6B6EC5284CF1F600DD7081 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				FD61377C284E2F91000B7AD7 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = FD6423AA2826595300789836 /* Products */;
 			projectDirPath = "";
@@ -235,6 +242,7 @@
 				FD6423AF2826595300789836 /* SceneDelegate.swift in Sources */,
 				FD6B6E8E28353A3F00DD7081 /* MyCustomCircleButton.swift in Sources */,
 				FD6B6E90283A77DB00DD7081 /* AddToDoListViewController.swift in Sources */,
+				FD47F4C9284DB0D6002B1AAE /* SignUpViewController.swift in Sources */,
 				FD6B6EB3284B8D9100DD7081 /* AppSettingViewController.swift in Sources */,
 				FD6B6E92283FB55600DD7081 /* extensions.swift in Sources */,
 				FD6423B72826595300789836 /* My_TodoListApp.xcdatamodeld in Sources */,
@@ -459,6 +467,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FD61377C284E2F91000B7AD7 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		FD6B6EC5284CF1F600DD7081 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -470,6 +486,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FD61377D284E2F91000B7AD7 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD61377C284E2F91000B7AD7 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
 		FD6B6EC6284CF1F600DD7081 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FD6B6EC5284CF1F600DD7081 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

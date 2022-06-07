@@ -11,7 +11,7 @@ class ToDoMainViewController: UIViewController {
 
     @IBOutlet weak var toDoListTable: UITableView!
     
-    var testDate: [ToDoCellData] = [ToDoCellData(priority: 1, title: "test", startDate: Date(), endDate: Date(), description: nil, custom: nil, index: nil)]
+    var testDate: [ToDoCellDataModel] = [ToDoCellDataModel(priority: 1, title: "test", startDate: Date(), endDate: Date(), description: nil, UUID: "asd")]
 
     fileprivate let buttonWidth: CGFloat = 80
     fileprivate let buttonHeight: CGFloat = 80
@@ -30,7 +30,6 @@ class ToDoMainViewController: UIViewController {
         
         self.downKeyboardWhenTappedBackground()
         
-        self.navigationItem.title = "To Do List"
         toDoListTable.dataSource = self
         toDoListTable.delegate = self
         toDoListTable.register(UINib(nibName: "MainTableViewCell", bundle: nil), forCellReuseIdentifier: "MainTableViewCell")
@@ -39,12 +38,24 @@ class ToDoMainViewController: UIViewController {
         
         //create button
         createButton()
+        
+        addSignInSuccessNotifications() //로그인 성공 시 데이터 리로드
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     
-    @IBAction func reload(_ sender: Any) {
-        print("ToDoMainViewController - reload")
-        toDoListTable.reloadData()
+    @IBAction func scopeButtonAction(_ sender: Any) {
+        
+        guard let signInView = storyboard?.instantiateViewController(withIdentifier: "SignInViewController") else {
+            return
+        }
+        
+        signInView.modalPresentationStyle = .fullScreen
+        present(signInView, animated: true, completion: nil)
+        
     }
     
 }
@@ -83,7 +94,7 @@ extension ToDoMainViewController: UITableViewDataSource, UITableViewDelegate {
         print("ToDoMainViewController - tableview(heightForFooterInSection)")
         return CGFloat(spacingSection / 2)
     }
-    /////////////
+    
     //cell data
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("ToDoMainViewController - tableview(cellForRowAt)")
@@ -91,7 +102,7 @@ extension ToDoMainViewController: UITableViewDataSource, UITableViewDelegate {
         
         let doData = testDate[0]
         
-        cell.contentView.backgroundColor = .gray
+        cell.contentView.backgroundColor = .systemBrown
         cell.selectionStyle = .none
         cell.listCellTitleLable.text = doData.title
         cell.listCellDate.text = doData.startDate.description
@@ -146,5 +157,16 @@ extension ToDoMainViewController {
             return
         }
         present(addDataView, animated: true, completion: nil)
+    }
+    
+    
+    //MARK: - 로그인 성공 시 데이터 리로드
+    func addSignInSuccessNotifications(){
+        // 로그인 성공 시 설정 화면의 멘트 수정을 위한 노티 추가
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload(_:)), name: Notification.Name("SuccessSignIn") , object: nil)
+    }
+    
+    @objc func notiReload(_ noti: NSNotification) {
+        self.toDoListTable.reloadData()
     }
 }

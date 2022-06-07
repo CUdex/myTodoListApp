@@ -9,17 +9,18 @@ import Foundation
 
 
 
-struct ToDoCellData {
-    var priority: Int
-    var title: String
-    var startDate: Date
-    var endDate: Date
-    var description: String?
-    var custom: String?
-    var index: Int?
+struct ToDoCellDataModel{
+    let priority: Int
+    let title: String
+    let startDate: Date
+    let endDate: Date
+    let description: String?
+    let UUID: String
 }
 
-struct UserData {
+struct UserDataModel {
     var userEmail: String
     var password: String
+    var userName: String?
+    var userPhoneNumber: String?
 }

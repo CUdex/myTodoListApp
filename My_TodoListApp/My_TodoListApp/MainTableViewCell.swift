@@ -57,7 +57,7 @@ class MainTableViewCell: UITableViewCell {
         super.layoutSubviews()
         print("MainTableViewCell - layoutSubviews")
         
-        contentView.layer.cornerRadius = 35
+        contentView.layer.cornerRadius = 25
         //contentView.backgroundColor = .blue
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
         
