@@ -7,7 +7,8 @@
 
 import UIKit
 import FirebaseFirestore
-import SwiftUI
+import FirebaseAuth
+import FirebaseDatabase
 
 class SignUpViewController: UIViewController {
     
@@ -54,7 +55,36 @@ class SignUpViewController: UIViewController {
         
         let signUpUser = UserDataModel(userEmail: email, password: password, userName: name, userPhoneNumber: phoneNumber)
         
+        var attriString = NSAttributedString(string: "")
+        let alert = UIAlertController(title: "check your email", message: "check your email", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(alertAction)
         
+        if !isValidEmail(signUpUser.userEmail) {
+            self.present(alert, animated: true, completion: nil)
+        } else if !isValidPassword(signUpUser.password) {
+            attriString = NSAttributedString(string: "check your password")
+            alert.setValue(attriString, forKey: "attributedTitle")
+            self.present(alert, animated: true, completion: nil)
+        } else if !isSamePasswod(password, repeatPassword) {
+            attriString = NSAttributedString(string: "not same password")
+            alert.setValue(attriString, forKey: "attributedTitle")
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            // 모든 조건을 만족하면 회원가입 시작
+            Auth.auth().createUser(withEmail: signUpUser.userEmail, password: signUpUser.password) { (result : AuthDataResult?, error : Error?) in
+                
+                if let user = result?.user {
+                    self.view.makeToast("\(user) sign up!")
+                    self.dismiss(animated: true)
+                } else {
+                    print(error?.localizedDescription)
+                    attriString = NSAttributedString(string: "failed sign up")
+                    alert.setValue(attriString, forKey: "attributedTitle")
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
         
         
         
@@ -71,7 +101,7 @@ class SignUpViewController: UIViewController {
 extension SignUpViewController: UITextFieldDelegate {
     
     
-    // 회원가입 시에 필요한 조건 검사
+    // 회원가입 시에 필요한 조건 lable로 표시
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         guard let email = userEmail.text else { return }
