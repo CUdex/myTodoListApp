@@ -71,14 +71,24 @@ class SignUpViewController: UIViewController {
             alert.setValue(attriString, forKey: "attributedTitle")
             self.present(alert, animated: true, completion: nil)
         } else {
+            
             // 모든 조건을 만족하면 회원가입 시작
             Auth.auth().createUser(withEmail: signUpUser.userEmail, password: signUpUser.password) { (result : AuthDataResult?, error : Error?) in
                 
                 if let user = result?.user {
-                    self.view.makeToast("\(user) sign up!")
-                    self.dismiss(animated: true)
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name("SuccessSignIn"), object: user.email!)
+                    guard let pvc = self.presentingViewController else { return }
+                    guard let mainVC = pvc.presentingViewController else { return }
+                    
+                    self.dismiss(animated: true) {
+                        pvc.dismiss(animated: true) {
+                            mainVC.view.makeToast("\(user.email ?? "test" ) sign Up!!!")
+                        }
+                    }
+                    
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription ?? "nil message")
                     attriString = NSAttributedString(string: "failed sign up")
                     alert.setValue(attriString, forKey: "attributedTitle")
                     self.present(alert, animated: true, completion: nil)
