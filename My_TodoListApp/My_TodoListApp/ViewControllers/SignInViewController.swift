@@ -31,15 +31,15 @@ class SignInViewController: UIViewController {
         checkPasswordFormLable.text = "please check your password"
         checkEmailFormLable.textColor = .clear
         checkPasswordFormLable.textColor = .clear
-        
-        //addSignUpSuccessNotifications()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         print("SignInViewController - viewDidAppear")
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        print("SignInViewController - viewWillAppear")
+        
+        // 만약 로그인이 된 상태에서 sign in view가 표시되면 dismiss
+        if Auth.auth().currentUser != nil {
+            self.dismiss(animated: true)
+        }
     }
     
     //MARK: - 로그인 버튼 기능 구현
@@ -124,17 +124,4 @@ extension SignInViewController: UITextFieldDelegate {
         self.checkEmailFormLable.textColor = .clear
         
     }
-    
-    //MARK: - 로그인 성공 시 데이터 리로드
-    func addSignUpSuccessNotifications(){
-        // 로그인 성공 시 설정 화면의 멘트 수정을 위한 노티 추가
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notiToast(_:)), name: Notification.Name("SuccessSignIn") , object: nil)
-    }
-    
-    @objc func notiToast(_ noti: NSNotification) {
-        let userName = noti.object as? String ?? "test"
-        self.view.makeToast("\(userName) sign Up!!!")
-    }
-    
-    
 }

@@ -67,6 +67,11 @@ class AddToDoListViewController: UIViewController {
         self.addKeyboardNotifications()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        print("AddToDoListViewController - viewWillDisappear")
+        self.removeKeyboardNotifications()
+    }
+    
     //MARK: - 텍스트 필드 클릭 시 datepicker 출력 및 텍스트 필드에 세팅
     @objc private func onClickDone() {
         print("AddToDoListViewController - onClickDone")

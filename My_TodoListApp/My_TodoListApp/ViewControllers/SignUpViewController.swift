@@ -34,15 +34,51 @@ class SignUpViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    let db = Firestore.firestore()
+    
+    
+    //MARK: - DidLoad start
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.downKeyboardWhenTappedBackground()
         self.view.backgroundColor = .clear
+        self.userName.delegate = self
         self.userEmail.delegate = self
+        self.userPhoneNumber.delegate = self
         self.repeatPassword.delegate = self
         self.userPassword.delegate = self
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("SignUpViewController - viewWillAppear")
+        self.addKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("SignUpViewController - viewWillDisappear")
+        self.removeKeyboardNotifications()
+    }
+    
+    //MARK: - 키보드 만큼 스크롤 조절
+    override func keyboardWillShow(_ noti: NSNotification) {
+        guard let userInfo = noti.userInfo else {
+            return
+        }
+        let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardFrame, to: view.window)
+        
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - 100, right: 0)
+        //scrollView.scrollIndicatorInsets = scrollView.contentInset
+    }
+    
+    // 복구
+    override func keyboardWillHide(_ noti: NSNotification) {
+        //스크롤 뷰 최상단 이동
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     //MARK: - 회원가입
@@ -77,16 +113,33 @@ class SignUpViewController: UIViewController {
                 
                 if let user = result?.user {
                     
-                    NotificationCenter.default.post(name: NSNotification.Name("SuccessSignIn"), object: user.email!)
-                    guard let pvc = self.presentingViewController else { return }
-                    guard let mainVC = pvc.presentingViewController else { return }
+//                    guard let pvc = self.presentingViewController else { return }
+//                    guard let mainVC = pvc.presentingViewController else { return }
+//
+//                    self.dismiss(animated: true) {
+//                        pvc.dismiss(animated: true) {
+//                            mainVC.view.makeToast("\(user.email ?? "test" ) sign Up!!!")
+//                        }
+//                    }
                     
-                    self.dismiss(animated: true) {
-                        pvc.dismiss(animated: true) {
-                            mainVC.view.makeToast("\(user.email ?? "test" ) sign Up!!!")
+                    //firestore user collection에 유저 데이터도 함께 저장
+                    self.db.collection("User").document(signUpUser.userEmail).setData([
+                        "email" : signUpUser.userEmail,
+                        "name" : signUpUser.userName ?? "nil name",
+                        "phoneNumber" : signUpUser.userPhoneNumber ?? "nil phone"
+                    ]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                        } else {
+                            print("Document successfully written!")
                         }
                     }
                     
+                    // root VC인 mainTableview까지 dismiss 후 토스트로 로그인 성공 메시지 출력
+                    guard let rootVC = self.view.window?.rootViewController else { return }
+                    rootVC.dismiss(animated: true) {
+                        rootVC.view.makeToast("welcome \(user.email ?? "goodman" )")
+                    }
                 } else {
                     print(error?.localizedDescription ?? "nil message")
                     attriString = NSAttributedString(string: "failed sign up")
@@ -95,12 +148,7 @@ class SignUpViewController: UIViewController {
                 }
             }
         }
-        
-        
-        
     }
-    
-    
     
     @IBAction func cancelButton(_ sender: Any) {
         self.dismiss(animated: true)
@@ -138,6 +186,12 @@ extension SignUpViewController: UITextFieldDelegate {
             }
         }
         
+    }
+    
+    //MARK: - done 버튼을 누르면 키보드 내려감
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     
