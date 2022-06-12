@@ -71,7 +71,7 @@ class SignInViewController: UIViewController {
                     NotificationCenter.default.post(name: NSNotification.Name("SuccessSignIn"), object: nil)
                     self.dismiss(animated: true)
                 } else {
-                    print(error!)
+                    print(error!.localizedDescription)
                     self.view.makeToast("Sign In Failed")
                 }
             }

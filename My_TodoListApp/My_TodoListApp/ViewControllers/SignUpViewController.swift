@@ -71,7 +71,7 @@ class SignUpViewController: UIViewController {
         let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardFrame, to: view.window)
         
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - 100, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - 150, right: 0)
         //scrollView.scrollIndicatorInsets = scrollView.contentInset
     }
     

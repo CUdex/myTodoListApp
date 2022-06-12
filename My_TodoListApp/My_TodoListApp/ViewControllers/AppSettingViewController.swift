@@ -60,6 +60,7 @@ extension AppSettingViewController {
     func reloadLableAndButtonTitle() {
         
         if let user = Auth.auth().currentUser {
+            print("UID ! : \(user.uid)")
             let name = user.email!
             helloUserLable.text = "Hello \n\(name)"
             signOutButton.setTitle("Sign Out", for: .normal)
