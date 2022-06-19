@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Toast
 
 class ToDoMainViewController: UIViewController {
 
     @IBOutlet weak var toDoListTable: UITableView!
     
-    var testDate: [ToDoCellDataModel] = [ToDoCellDataModel(priority: 1, title: "test", startDate: Date(), endDate: Date(), description: nil, UUID: "asd")]
+    var testDate: [ToDoCellDataModel] = [ToDoCellDataModel(priority: 1, title: "test", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970, description: "", uid: "asd",isAllDay: true)]
 
     fileprivate let buttonWidth: CGFloat = 80
     fileprivate let buttonHeight: CGFloat = 80
@@ -152,11 +154,16 @@ extension ToDoMainViewController {
     
     @objc func presentAddToDoListView() -> Void {
         
-        //view 이동을 위한 ID로 view 확인
-        guard let addDataView = storyboard?.instantiateViewController(withIdentifier: "AddToDoListViewController") else {
-            return
+        if Auth.auth().currentUser == nil {
+            self.view.makeToast("please sign in")
+        } else {
+            
+            //view 이동을 위한 ID로 view 확인
+            guard let addDataView = storyboard?.instantiateViewController(withIdentifier: "AddToDoListViewController") else {
+                return
+            }
+            present(addDataView, animated: true, completion: nil)
         }
-        present(addDataView, animated: true, completion: nil)
     }
     
     

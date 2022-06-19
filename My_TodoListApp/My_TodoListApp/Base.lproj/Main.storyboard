@@ -526,6 +526,9 @@
                                                 <buttonConfiguration key="configuration" style="plain" title="save">
                                                     <fontDescription key="titleFontDescription" type="system" pointSize="22"/>
                                                 </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="addTask:" destination="j9D-WJ-hxD" eventType="touchUpInside" id="UX4-mP-yDV"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date &amp; Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F8K-Pr-36W">
                                                 <rect key="frame" x="20.000000000000014" y="157.66666666666666" width="235.33333333333337" height="54"/>
@@ -620,6 +623,9 @@
                                                     <segment title="Middle"/>
                                                     <segment title="High"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="changeSegmentColor:" destination="j9D-WJ-hxD" eventType="valueChanged" id="Pfd-Na-HCv"/>
+                                                </connections>
                                             </segmentedControl>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -683,6 +689,7 @@
                         <outlet property="allDayBtn" destination="rRx-2W-MMj" id="D7K-lP-SKN"/>
                         <outlet property="discriptionText" destination="fCm-QJ-5oB" id="E8T-bv-Vrl"/>
                         <outlet property="endDateText" destination="RIq-U5-0mZ" id="TZD-Da-Iok"/>
+                        <outlet property="priority" destination="UJC-xe-6N1" id="Ypu-eB-khg"/>
                         <outlet property="scrollView" destination="jYf-JI-NJf" id="27f-t5-9Xq"/>
                         <outlet property="startDateText" destination="PVb-x1-NB9" id="FKY-Ku-4NJ"/>
                         <outlet property="taskText" destination="rtE-ya-crU" id="0iW-px-cRg"/>

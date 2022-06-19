@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class AddToDoListViewController: UIViewController {
     
@@ -14,6 +16,7 @@ class AddToDoListViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var startDateText: UITextField!
     @IBOutlet weak var endDateText: UITextField!
+    @IBOutlet weak var priority: UISegmentedControl! 
     @IBOutlet weak var allDayBtn: UIButton! {
         didSet {
             guard let text = self.allDayBtn.titleLabel!.text else { return }
@@ -25,8 +28,8 @@ class AddToDoListViewController: UIViewController {
         }
     }
     let datePicker = UIDatePicker()
-    var startDate = Date()
-    var endDate = Date()
+    var startDate = Date().timeIntervalSince1970
+    var endDate = Date().timeIntervalSince1970
     var isAllDay = false
     
     override func viewDidLoad() {
@@ -38,7 +41,7 @@ class AddToDoListViewController: UIViewController {
         self.placeholderSetting() // textview placeholder 설정을 위한 함수 구현
         datePicker.datePickerMode = .dateAndTime // datepicker 설정
         datePicker.preferredDatePickerStyle = .wheels // wheel 설정
-        datePicker.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 200) //datepicker 위치 설정
+        datePicker.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 150) //datepicker 위치 설정
         datePicker.setValue(UIColor.clear, forKey: "backgroundColor")
         //datePicker.addTarget(self, action: #selector(changeDateInPicker(_:)), for: .valueChanged) // 날짜 선택 시 해당 날짜를 저장하는 함수 사용
         
@@ -60,6 +63,7 @@ class AddToDoListViewController: UIViewController {
         startDateText.inputAccessoryView = pickerTool // toolbar 추가
         endDateText.inputView = datePicker
         endDateText.inputAccessoryView = pickerTool
+        priority.selectedSegmentTintColor = .green
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,12 +81,20 @@ class AddToDoListViewController: UIViewController {
         print("AddToDoListViewController - onClickDone")
         
         if startDateText.resignFirstResponder() {
-            startDate = datePicker.date
-            print(startDate.timeIntervalSince1970)
-            startDateText.text = changeDateToString(startDate)
+            if isAllDay {
+                startDate = datePicker.date.zeroOfDay.timeIntervalSince1970
+            } else {
+                startDate = datePicker.date.timeIntervalSince1970
+            }
+
+            startDateText.text = changeDateToString(datePicker.date)
         } else {
-            endDate = datePicker.date
-            endDateText.text = changeDateToString(endDate)
+            if isAllDay {
+                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970
+            } else {
+                endDate = datePicker.date.timeIntervalSince1970
+            }
+            endDateText.text = changeDateToString(datePicker.date)
         }
         self.view.endEditing(true)
     }
@@ -125,6 +137,18 @@ class AddToDoListViewController: UIViewController {
         }
     }
     
+    @IBAction func changeSegmentColor(_ sender: UISegmentedControl) {
+        
+        if sender.selectedSegmentIndex == 0 {
+            sender.selectedSegmentTintColor = .green
+        } else if sender.selectedSegmentIndex == 1 {
+            sender.selectedSegmentTintColor = .yellow
+        } else {
+            sender.selectedSegmentTintColor = .red
+        }
+    }
+    
+    
     func changeButtonFont() {
         
         guard let text = self.allDayBtn.titleLabel!.text else { return }
@@ -157,6 +181,20 @@ class AddToDoListViewController: UIViewController {
     override func keyboardWillHide(_ noti: NSNotification) {
         //스크롤 뷰 최상단 이동
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+    
+    //MARK: - Task 추가
+    @IBAction func addTask(_ sender: Any) {
+        
+        guard let userUid = Auth.auth().currentUser?.uid else { return }
+        
+        
+        if taskText.text == "" || endDateText.text == "" || startDateText.text == "" {
+            self.view.makeToast("please write title or date")
+        } else {
+            let addTaskData = ToDoCellDataModel(priority: priority.selectedSegmentIndex, title: taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text, uid: userUid, isAllDay: isAllDay)
+        }
+        
     }
 }
 

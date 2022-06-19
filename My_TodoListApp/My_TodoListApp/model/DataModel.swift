@@ -12,10 +12,22 @@ import Foundation
 struct ToDoCellDataModel{
     let priority: Int
     let title: String
-    let startDate: Date
-    let endDate: Date
-    let description: String?
-    let UUID: String
+    let startDate: TimeInterval
+    let endDate: TimeInterval
+    let description: String
+    let uid: String
+    let isAllDay: Bool
+    
+    var sendDate: [String: Any] {
+        return [
+            "priority": priority,
+            "taskTitle": title,
+            "startDate": startDate,
+            "endDate": endDate,
+            "description": description,
+            "isAllDay": isAllDay
+        ]
+    }
 }
 
 struct UserDataModel {

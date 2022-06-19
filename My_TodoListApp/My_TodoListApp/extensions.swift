@@ -84,3 +84,11 @@ extension UITextFieldDelegate {
         return userPass == repeatPass ? true : false
     }
 }
+
+extension Date {
+    
+    // 선택된 날짜의 00시 00분 00초 값
+    var zeroOfDay: Date {
+        return Calendar.current.startOfDay(for: self)
+    }
+}
