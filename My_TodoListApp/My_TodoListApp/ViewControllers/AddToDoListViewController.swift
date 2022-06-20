@@ -192,7 +192,22 @@ class AddToDoListViewController: UIViewController {
         if taskText.text == "" || endDateText.text == "" || startDateText.text == "" {
             self.view.makeToast("please write title or date")
         } else {
-            let addTaskData = ToDoCellDataModel(priority: priority.selectedSegmentIndex, title: taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text, uid: userUid, isAllDay: isAllDay)
+            
+            let db = Firestore.firestore()
+            
+            let addTaskData = ToDoCellDataModel(priority: priority.selectedSegmentIndex, title: taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text, isAllDay: isAllDay, isFinish: false)
+            
+            // data 추가
+            db.collection("ToDoList").document(userUid).collection("Task").addDocument(data: addTaskData.taskData) { err in
+                if let err = err {
+                    print("Error adding document \(err)")
+                    self.view.makeToast("error")
+                } else {
+                    print("add document -- who \(userUid)")
+                    self.dismiss(animated: true)
+                }
+                
+            }
         }
         
     }

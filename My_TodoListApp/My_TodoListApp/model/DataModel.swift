@@ -9,28 +9,30 @@ import Foundation
 
 
 
-struct ToDoCellDataModel{
+public struct ToDoCellDataModel {
+    
     let priority: Int
     let title: String
     let startDate: TimeInterval
     let endDate: TimeInterval
     let description: String
-    let uid: String
     let isAllDay: Bool
+    let isFinish: Bool
     
-    var sendDate: [String: Any] {
+    var taskData: [String: Any] {
         return [
             "priority": priority,
-            "taskTitle": title,
+            "title": title,
             "startDate": startDate,
             "endDate": endDate,
             "description": description,
-            "isAllDay": isAllDay
+            "isAllDay": isAllDay,
+            "isFinish": isFinish
         ]
     }
 }
 
-struct UserDataModel {
+public struct UserDataModel {
     var userEmail: String
     var password: String
     var userName: String?

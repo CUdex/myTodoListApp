@@ -13,7 +13,7 @@ class ToDoMainViewController: UIViewController {
 
     @IBOutlet weak var toDoListTable: UITableView!
     
-    var testDate: [ToDoCellDataModel] = [ToDoCellDataModel(priority: 1, title: "test", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970, description: "", uid: "asd",isAllDay: true)]
+    var testDate: [ToDoCellDataModel] = [ToDoCellDataModel(priority: 1, title: "test", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970, description: "",isAllDay: true,isFinish: true)]
 
     fileprivate let buttonWidth: CGFloat = 80
     fileprivate let buttonHeight: CGFloat = 80
