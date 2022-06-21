@@ -9,7 +9,7 @@ import Foundation
 
 
 
-public struct ToDoCellDataModel {
+public struct ToDoCellDataModel: Codable {
     
     let priority: Int
     let title: String
@@ -19,17 +19,29 @@ public struct ToDoCellDataModel {
     let isAllDay: Bool
     let isFinish: Bool
     
-    var taskData: [String: Any] {
-        return [
-            "priority": priority,
-            "title": title,
-            "startDate": startDate,
-            "endDate": endDate,
-            "description": description,
-            "isAllDay": isAllDay,
-            "isFinish": isFinish
-        ]
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case priority
+        case title
+        case startDate
+        case endDate
+        case description
+        case isAllDay
+        case isFinish
+        
     }
+//    var taskData: [String: Any] {
+//        return [
+//            "priority": priority,
+//            "title": title,
+//            "startDate": startDate,
+//            "endDate": endDate,
+//            "description": description,
+//            "isAllDay": isAllDay,
+//            "isFinish": isFinish
+//        ]
+//    }
 }
 
 public struct UserDataModel {

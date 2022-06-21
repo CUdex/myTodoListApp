@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseFirestoreSwift
+import FirebaseSharedSwift
 
 class AddToDoListViewController: UIViewController {
     
@@ -197,16 +199,17 @@ class AddToDoListViewController: UIViewController {
             
             let addTaskData = ToDoCellDataModel(priority: priority.selectedSegmentIndex, title: taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text, isAllDay: isAllDay, isFinish: false)
             
-            // data 추가
-            db.collection("ToDoList").document(userUid).collection("Task").addDocument(data: addTaskData.taskData) { err in
-                if let err = err {
-                    print("Error adding document \(err)")
-                    self.view.makeToast("error")
-                } else {
-                    print("add document -- who \(userUid)")
-                    self.dismiss(animated: true)
+            //MARK: - 데이터 추가
+            do {
+                try _ = db.collection("ToDoList").document(userUid).collection("Task").addDocument(from: addTaskData) { err in
+                    if err == nil {
+                        print("add document -- who \(userUid)")
+                        self.dismiss(animated: true)
+                    }
                 }
-                
+            } catch let error {
+                self.view.makeToast("error")
+                print("Error writing city to Firestore: \(error)")
             }
         }
         

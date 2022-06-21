@@ -22,6 +22,7 @@ class ToDoMainViewController: UIViewController {
     
     //storyboard 연결
     let addDataStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    let refresh = UIRefreshControl()
     
     
     override func viewDidLoad() {
@@ -42,6 +43,9 @@ class ToDoMainViewController: UIViewController {
         createButton()
         
         addSignInSuccessNotifications() //로그인 성공 시 데이터 리로드
+        //refresh 기능 추가
+        toDoListTable.refreshControl = refresh
+        toDoListTable.refreshControl?.addTarget(self, action: #selector(reFreshAction), for: .valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +63,15 @@ class ToDoMainViewController: UIViewController {
         present(signInView, animated: true, completion: nil)
         
     }
+    //MARK: - refresh 시 사용되는 액션
+    @objc func reFreshAction() {
+        testDate.append(ToDoCellDataModel(priority: 1, title: "test", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970, description: "",isAllDay: true,isFinish: true))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.toDoListTable.reloadData()
+            self.refresh.endRefreshing()
+        }
+    }
     
 }
 
@@ -74,7 +87,7 @@ extension ToDoMainViewController: UITableViewDataSource, UITableViewDelegate {
     //각 cell 간격을 위한 section number 설정
     func numberOfSections(in tableView: UITableView) -> Int {
         print("ToDoMainViewController - numberOfSections")
-        return 5
+        return testDate.count
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
