@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import FirebaseSharedSwift
+import Combine
 
 class AddToDoListViewController: UIViewController {
     
@@ -197,7 +197,8 @@ class AddToDoListViewController: UIViewController {
             
             let db = Firestore.firestore()
             
-            let addTaskData = ToDoCellDataModel(priority: priority.selectedSegmentIndex, title: taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text, isAllDay: isAllDay, isFinish: false)
+            let addTaskData = ToDoCellDataModel(priority: self.priority.selectedSegmentIndex, title: self.taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text!, isAllDay: isAllDay, isFinish: false)
+            
             
             //MARK: - 데이터 추가
             do {

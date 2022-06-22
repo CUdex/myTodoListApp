@@ -49,9 +49,12 @@ class ToDoMainViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        print("ToDoMain - willappear")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        print("ToDoMain - willdisappear")
+    }
     
     @IBAction func scopeButtonAction(_ sender: Any) {
         
