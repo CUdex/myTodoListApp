@@ -9,7 +9,7 @@ import Foundation
 
 
 
-public class ToDoCellDataModel: Codable {
+public struct ToDoCellDataModel: Codable, Hashable {
     
     let priority: Int
     let title: String
@@ -18,16 +18,6 @@ public class ToDoCellDataModel: Codable {
     let description: String
     let isAllDay: Bool
     let isFinish: Bool
-    
-    init(priority: Int, title: String, startDate: TimeInterval, endDate: TimeInterval, description: String, isAllDay: Bool, isFinish: Bool) {
-        self.priority = priority
-        self.title = title
-        self.startDate = startDate
-        self.endDate = endDate
-        self.description = description
-        self.isAllDay = isAllDay
-        self.isFinish = isFinish
-    }
     
     enum CodingKeys: String, CodingKey {
         

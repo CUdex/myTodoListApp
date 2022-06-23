@@ -59,7 +59,7 @@ class MainTableViewCell: UITableViewCell {
         
         contentView.layer.cornerRadius = 25
         //contentView.backgroundColor = .blue
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 20))
         
 
     }
