@@ -45,26 +45,23 @@ class AddToDoListViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .wheels // wheel 설정
         datePicker.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 150) //datepicker 위치 설정
         datePicker.setValue(UIColor.clear, forKey: "backgroundColor")
-        //datePicker.addTarget(self, action: #selector(changeDateInPicker(_:)), for: .valueChanged) // 날짜 선택 시 해당 날짜를 저장하는 함수 사용
         
         //pickerview 툴바 추가
         let pickerTool = UIToolbar()
         pickerTool.barStyle = .default
-        pickerTool.isTranslucent = true // 툴바 반투명 여부
-        pickerTool.sizeToFit() // 서브뷰만큼 툴바 크기를 맞춤
-        pickerTool.barTintColor = .gray
+        pickerTool.sizeToFit() //서브뷰만큼 툴바 크기를 맞춤
         //pickerview 툴바에 버튼 추가
         let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDone))
         let spaceInBar = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         let cancelBtn = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(onClickCancel))
         pickerTool.setItems([cancelBtn, spaceInBar, doneBtn], animated: true)
         pickerTool.isUserInteractionEnabled = true
-        
         //툴바 추가
         startDateText.inputView = datePicker // pickerview 추가
         startDateText.inputAccessoryView = pickerTool // toolbar 추가
         endDateText.inputView = datePicker
         endDateText.inputAccessoryView = pickerTool
+        
         priority.selectedSegmentTintColor = .green
     }
     
@@ -89,33 +86,20 @@ class AddToDoListViewController: UIViewController {
                 startDate = datePicker.date.timeIntervalSince1970
             }
 
-            startDateText.text = changeDateToString(datePicker.date)
+            startDateText.text = self.changeDateToString(datePicker.date, isAllDay)
         } else {
             if isAllDay {
                 endDate = datePicker.date.zeroOfDay.timeIntervalSince1970
             } else {
                 endDate = datePicker.date.timeIntervalSince1970
             }
-            endDateText.text = changeDateToString(datePicker.date)
+            endDateText.text = self.changeDateToString(datePicker.date, isAllDay)
         }
         self.view.endEditing(true)
     }
     @objc private func onClickCancel() {
         print("AddToDoListViewController - onClickCancel")
         self.view.endEditing(true)
-    }
-    
-    //MARK: - 날짜 선택 시 변수에 날짜 저장하도록 구현
-    private func changeDateToString(_ dateDate: Date) -> String {
-        print("AddToDoListViewController - changeDateToString")
-        let dateFormatter = DateFormatter()
-        
-        if isAllDay {
-            dateFormatter.dateFormat = "yyyy. MM. dd(E)"
-        } else {
-            dateFormatter.dateFormat = "yyyy. MM. dd HH시 mm분(E)"
-        }
-        return dateFormatter.string(from: dateDate)
     }
     
     //MARK: - all day 설정에 따른 버튼 변화
@@ -205,6 +189,8 @@ class AddToDoListViewController: UIViewController {
                 try _ = db.collection("ToDoList").document(userUid).collection("Task").addDocument(from: addTaskData) { err in
                     if err == nil {
                         print("add document -- who \(userUid)")
+                        
+                        NotificationCenter.default.post(name: NSNotification.Name("reloadTask") , object: nil)
                         self.dismiss(animated: true)
                     }
                 }

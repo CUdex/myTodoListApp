@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ToDoCellDataModel: Codable, Hashable {
     
     let priority: Int
@@ -30,6 +28,26 @@ public struct ToDoCellDataModel: Codable, Hashable {
         case isFinish
         
     }
+    
+//    init(priority: Int, title: String, startDate: TimeInterval, endDate: TimeInterval, description: String, isAllDay: Bool, isFinish: Bool) {
+//
+//        self.priority = priority
+//        self.title = title
+//        self.startDate = startDate
+//        self.endDate = endDate
+//        self.description = description
+//        self.isAllDay = isAllDay
+//        self.isFinish = isFinish
+//    }
+//
+//    public static func ==(lhs: ToDoCellDataModel, rhs: ToDoCellDataModel) -> Bool {
+//      return lhs.priority == rhs.priority
+//    }
+//
+//    public func hash(into hasher: inout Hasher) {
+//      hasher.combine(priority)
+//    }
+    
 //    var taskData: [String: Any] {
 //        return [
 //            "priority": priority,

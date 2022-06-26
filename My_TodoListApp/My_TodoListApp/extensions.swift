@@ -11,6 +11,21 @@ import UIKit
 
 extension UIViewController {
     
+    //MARK: - 날짜 선택 시 변수에 날짜 저장하도록 구현
+    //date -> formatter
+    func changeDateToString(_ dateDate: Date, _ isAllDay: Bool) -> String {
+        print("AddToDoListViewController - changeDateToString")
+        let dateFormatter = DateFormatter()
+        
+        if isAllDay {
+            dateFormatter.dateFormat = "yyyy. MM. dd(E)"
+        } else {
+            dateFormatter.dateFormat = "yyyy. MM. dd HH시 mm분(E)"
+        }
+        return dateFormatter.string(from: dateDate)
+    }
+    
+    
     //MARK: - 배경 터치 시 키보드 다운
     func downKeyboardWhenTappedBackground() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(downKeyboard))
@@ -91,4 +106,9 @@ extension Date {
     var zeroOfDay: Date {
         return Calendar.current.startOfDay(for: self)
     }
+}
+
+
+protocol sendTaskDataProtocol {
+    func sendTaskData(data: [ToDoCellDataModel])
 }

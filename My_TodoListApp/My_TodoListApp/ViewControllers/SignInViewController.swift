@@ -68,7 +68,7 @@ class SignInViewController: UIViewController {
                 
                 if user != nil {
                     print("login success")
-                    NotificationCenter.default.post(name: NSNotification.Name("SuccessSignIn"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadTask"), object: nil)
                     self.dismiss(animated: true)
                 } else {
                     print(error!.localizedDescription)

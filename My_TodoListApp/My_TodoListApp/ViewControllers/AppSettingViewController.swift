@@ -32,6 +32,7 @@ class AppSettingViewController: UIViewController {
                 try Auth.auth().signOut()
                 self.view.makeToast("Sign Out")
                 reloadLableAndButtonTitle()
+                NotificationCenter.default.post(name: Notification.Name("logoutTask"), object: nil)
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
