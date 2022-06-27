@@ -101,7 +101,6 @@ extension UITextFieldDelegate {
 }
 
 extension Date {
-    
     // 선택된 날짜의 00시 00분 00초 값
     var zeroOfDay: Date {
         return Calendar.current.startOfDay(for: self)
@@ -109,6 +108,7 @@ extension Date {
 }
 
 
-protocol sendTaskDataProtocol {
-    func sendTaskData(data: [ToDoCellDataModel])
+protocol ReviseTaskDataProtocol {
+    func deleteTaskData(data: ToDoCellDataModel)
+    func modifyTaskData(data: ToDoCellDataModel)
 }

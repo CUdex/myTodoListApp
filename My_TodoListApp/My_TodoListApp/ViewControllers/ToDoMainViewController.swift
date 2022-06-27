@@ -60,6 +60,12 @@ class ToDoMainViewController: UIViewController {
         print("ToDoMain - willappear")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if Auth.auth().currentUser == nil {
+            self.view.makeToast("please Sign In!!")
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         print("ToDoMain - willdisappear")
     }
