@@ -37,30 +37,23 @@ class CalendarViewController: UIViewController {
     }
     
     //MARK: - calendar setting
-    func settingCalendar() {
+    func settingCalendar()  {
         calnedarView.dataSource = self
         calnedarView.delegate = self
         self.calnedarView.appearance.headerMinimumDissolvedAlpha = 0 // 양옆 년월 삭제
         self.calnedarView.appearance.headerDateFormat = "YYYY년 MM월"
-        calnedarView.reloadData()
     }
     
     func settingCollectionView() {
         collectionVIew.delegate = self
         collectionVIew.dataSource = dayTaskData
     }
-    
-    @IBAction func testButton(_ sender: Any) {
-        
-        calendarDateData = changeTimeToDate()
-        calnedarView.reloadData()
-    }
 }
 
 extension CalendarViewController {
     
     //MARK: - get data
-    func getTaskData() {
+    func getTaskData()  {
         print("ToDoMain - getTaskData")
         guard let user = Auth.auth().currentUser else { return }
         
@@ -82,6 +75,8 @@ extension CalendarViewController {
                                              isAllDay: dicData["isAllDay"] as! Bool,
                                              isFinish: dicData["isFinish"] as! Bool)
                 }
+                self.calendarDateData = self.changeTimeToDate()
+                self.calnedarView.reloadData()
             }
         }
     }
@@ -94,6 +89,8 @@ extension CalendarViewController: FSCalendarDataSource {
     
     func changeTimeToDate() -> [Date] {
         
+        print("changeTimeToDate")
+        print(calendarDateData)
         var originDateData = [Date]()
         
         for slicingData in taskData {
@@ -121,7 +118,6 @@ extension CalendarViewController: FSCalendarDataSource {
         print(date)
         
         if calendarDateData.contains(date) {
-            print("comeondot")
             return 1
         }
         return 0
