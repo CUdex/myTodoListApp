@@ -47,8 +47,13 @@ class CalendarViewController: UIViewController {
     }
     
     func settingCollectionView() {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 390, height: 80)
+        collectionVIew.collectionViewLayout = layout
         collectionVIew.delegate = self
         collectionVIew.dataSource = dayTaskData
+        setCell()
     }
 }
 
@@ -83,8 +88,66 @@ extension CalendarViewController {
         }
     }
     
+    //MARK: - set datasource sell
+    func setCell() {
+        
+        dayTaskData = UICollectionViewDiffableDataSource<Int, ToDoCellDataModel>(collectionView: collectionVIew, cellProvider: { collectionView, indexPath, itemIdentifier in
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCollectionViewCell", for: indexPath) as! CalendarCollectionViewCell
+            
+            //priority에 따른 cell color 변경
+            switch itemIdentifier.priority {
+            case 0:
+                cell.imgView.tintColor = .green
+            case 1:
+                cell.imgView.tintColor = .yellow
+            default:
+                cell.imgView.tintColor = .red
+            }
+            
+            cell.titleLable.text = itemIdentifier.title
+            let startDate = Date(timeIntervalSince1970: itemIdentifier.startDate)
+            cell.dateLable.text = self.changeDateToString(startDate, itemIdentifier.isAllDay)
+            
+            // 완료 여부에 따른 image 및 attribute 변경
+            if itemIdentifier.isFinish {
+                cell.imgView.image = UIImage(systemName: "circlebadge.fill")
+                cell.titleLable.attributedText = self.changeStrikeFont(text: cell.titleLable.text!, isFinish: itemIdentifier.isFinish)
+                cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish)
+            } else {
+                cell.imgView.image = UIImage(systemName: "circlebadge")
+                cell.titleLable.attributedText = self.changeStrikeFont(text: cell.titleLable.text!, isFinish: itemIdentifier.isFinish)
+                cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish)
+            }
+            
+            return cell
+        })
+    }
     
+    func applyData(_ getDayTaskData: [ToDoCellDataModel]) {
+        
+        snapshot = NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>()
+        //섹션 추가
+        snapshot.appendSections([0])
+        // 아이템 추가
+        snapshot.appendItems(getDayTaskData, toSection: 0)
+        // 현재 스냅샷 구현
+        dayTaskData.apply(snapshot, animatingDifferences: true, completion: nil)
+    }
     
+    //해당 계정이 가지고 있는 전체 데이터에서 선택된 날짜에 포함된 데이터 객체 filter
+    func setDateData(date dateData: Date) {
+        
+        let start = dateData.timeIntervalSince1970
+        let end = start + oneDay
+        let getDayTaskData = taskData.filter { $0.startDate >= start && $0.endDate < end }
+        
+        
+        print(getDayTaskData)
+        
+        applyData(getDayTaskData)
+        
+    }
 }
 
 extension CalendarViewController: FSCalendarDataSource {
@@ -137,6 +200,8 @@ extension CalendarViewController: FSCalendarDataSource {
             }
         }
 
+        print("sadasdasdasdasdasddsdsadsasdas")
+        print(setPriority)
         countPriority = Set(setPriority)
         return countPriority.count
     }
@@ -180,6 +245,7 @@ extension CalendarViewController: FSCalendarDelegate {
     //해당 날짜 클릭 시 date정보 가져오기
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         print("\(date)")
+        setDateData(date: date)
     }
 }
 

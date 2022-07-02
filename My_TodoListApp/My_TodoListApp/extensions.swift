@@ -75,6 +75,22 @@ extension UIViewController {
             self.view.frame.origin.y += keyboardHeight
         }
     }
+    
+    //MARK: - 완료에 따른 텍스트 변화
+    func changeStrikeFont(text: String, isFinish: Bool) -> NSMutableAttributedString {
+        
+        let attributeString = NSMutableAttributedString(string: text)
+        
+        if isFinish {
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.black, range: (text as NSString).range(of: text))
+            attributeString.addAttribute(.strikethroughStyle, value: 1, range: (text as NSString).range(of: text))
+        } else {
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.black, range: (text as NSString).range(of: text))
+            attributeString.addAttribute(.strikethroughStyle, value: 0, range: (text as NSString).range(of: text))
+        }
+        
+        return attributeString
+    }
 }
 
 

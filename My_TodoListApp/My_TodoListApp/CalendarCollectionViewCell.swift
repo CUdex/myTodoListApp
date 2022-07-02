@@ -12,16 +12,11 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var titleLable: UILabel!
     @IBOutlet weak var dateLable: UILabel!
-    @IBOutlet weak var allDayLable: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         print("CalendarCollectionViewCell - awakeFromNib")
     }
-    
-    
-    
-    
     
 }

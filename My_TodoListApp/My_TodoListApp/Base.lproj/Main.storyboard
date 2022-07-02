@@ -34,43 +34,47 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="94A-NV-BWg" customClass="CalendarCollectionViewCell" customModule="My_TodoListApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="390" height="128"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarCollectionViewCell" id="94A-NV-BWg" customClass="CalendarCollectionViewCell" customModule="My_TodoListApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dNB-Bs-UPo">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x24-aR-vjv">
-                                                    <rect key="frame" x="20" y="39" width="50" height="50"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circlebadge" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="x24-aR-vjv">
+                                                    <rect key="frame" x="20" y="22.666666666666668" width="50" height="44.666666666666657"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="BGn-rG-waF"/>
                                                         <constraint firstAttribute="width" constant="50" id="rGn-s9-fXj"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-fI-Q58">
-                                                    <rect key="frame" x="100" y="25" width="41.333333333333343" height="20.333333333333329"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GdW-Mx-6QC">
-                                                    <rect key="frame" x="100" y="70.333333333333329" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Rv7-mO-fO0">
+                                                    <rect key="frame" x="100" y="0.0" width="41.333333333333343" height="90"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-fI-Q58">
+                                                            <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="45"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GdW-Mx-6QC">
+                                                            <rect key="frame" x="0.0" y="45" width="41.333333333333336" height="45"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="7rD-fI-Q58" firstAttribute="top" secondItem="dNB-Bs-UPo" secondAttribute="top" constant="25" id="1oL-3Z-0ha"/>
-                                                <constraint firstItem="7rD-fI-Q58" firstAttribute="leading" secondItem="x24-aR-vjv" secondAttribute="trailing" constant="30" id="LD9-FW-1VV"/>
+                                                <constraint firstItem="Rv7-mO-fO0" firstAttribute="leading" secondItem="x24-aR-vjv" secondAttribute="trailing" constant="30" id="7ub-XT-ldW"/>
                                                 <constraint firstItem="x24-aR-vjv" firstAttribute="leading" secondItem="dNB-Bs-UPo" secondAttribute="leading" constant="20" id="LTM-ed-Oh5"/>
+                                                <constraint firstAttribute="bottom" secondItem="Rv7-mO-fO0" secondAttribute="bottom" id="fMQ-xn-gsd"/>
                                                 <constraint firstItem="x24-aR-vjv" firstAttribute="centerY" secondItem="dNB-Bs-UPo" secondAttribute="centerY" id="hfb-pi-OZ2"/>
-                                                <constraint firstItem="GdW-Mx-6QC" firstAttribute="top" secondItem="7rD-fI-Q58" secondAttribute="bottom" constant="25" id="ihR-pS-osS"/>
-                                                <constraint firstItem="GdW-Mx-6QC" firstAttribute="leading" secondItem="x24-aR-vjv" secondAttribute="trailing" constant="30" id="xMp-pO-2O8"/>
+                                                <constraint firstItem="Rv7-mO-fO0" firstAttribute="top" secondItem="dNB-Bs-UPo" secondAttribute="top" id="sRP-Zy-KNr"/>
                                             </constraints>
                                         </collectionViewCellContentView>
-                                        <size key="customSize" width="390" height="128"/>
+                                        <size key="customSize" width="390" height="90"/>
                                         <connections>
                                             <outlet property="dateLable" destination="GdW-Mx-6QC" id="E6c-iD-K7p"/>
                                             <outlet property="imgView" destination="x24-aR-vjv" id="HgG-3Q-bMs"/>
@@ -89,7 +93,7 @@
                             <constraint firstItem="gj3-zl-eeq" firstAttribute="leading" secondItem="stt-xe-m7y" secondAttribute="leading" id="dVb-2p-xe0"/>
                             <constraint firstItem="WI7-z6-eKh" firstAttribute="bottom" secondItem="stt-xe-m7y" secondAttribute="bottom" constant="10" id="gmp-yn-BBe"/>
                             <constraint firstItem="stt-xe-m7y" firstAttribute="trailing" secondItem="WI7-z6-eKh" secondAttribute="trailing" id="k04-XO-WNE"/>
-                            <constraint firstItem="WI7-z6-eKh" firstAttribute="top" secondItem="gj3-zl-eeq" secondAttribute="bottom" constant="50" id="veQ-kg-dQ2"/>
+                            <constraint firstItem="WI7-z6-eKh" firstAttribute="top" secondItem="gj3-zl-eeq" secondAttribute="bottom" id="veQ-kg-dQ2"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="calendar" catalog="system" id="9l1-Zt-czL"/>
@@ -780,6 +784,7 @@
     </scenes>
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
+        <image name="circlebadge" catalog="system" width="128" height="120"/>
         <image name="hourglass.end" catalog="system" width="102" height="128"/>
         <image name="hourglass.start" catalog="system" width="102" height="128"/>
         <image name="list.triangle" catalog="system" width="128" height="91"/>
