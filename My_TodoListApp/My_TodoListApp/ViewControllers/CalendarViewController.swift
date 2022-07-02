@@ -18,13 +18,15 @@ class CalendarViewController: UIViewController {
     @IBOutlet weak var collectionVIew: UICollectionView!
     
     var taskData = [ToDoCellDataModel]()
-    var calendarDateData = [Date]()
+    var calendarData = [[String:Any]]()
     
     //diffable을 위한 설정
     var dayTaskData: UICollectionViewDiffableDataSource<Int, ToDoCellDataModel>!
     var snapshot: NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>!
     
     let oneDay: Double = 86400
+    
+    var countPriority = Set<Int>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +77,7 @@ extension CalendarViewController {
                                              isAllDay: dicData["isAllDay"] as! Bool,
                                              isFinish: dicData["isFinish"] as! Bool)
                 }
-                self.calendarDateData = self.changeTimeToDate()
+                self.calendarData = self.changeTimeAndPriorityToCalendarData()
                 self.calnedarView.reloadData()
             }
         }
@@ -87,43 +89,92 @@ extension CalendarViewController {
 
 extension CalendarViewController: FSCalendarDataSource {
     
-    func changeTimeToDate() -> [Date] {
+    func changeTimeAndPriorityToCalendarData() -> [[String:Any]] {
         
         print("changeTimeToDate")
-        print(calendarDateData)
-        var originDateData = [Date]()
+        var originDateData = [[String:Any]]()
         
         for slicingData in taskData {
-            originDateData.append(contentsOf: getArrayDate(startDate: slicingData.startDate, endDate: slicingData.endDate))
+            originDateData.append(contentsOf: getArrayDateAndPriority(startDate: slicingData.startDate, endDate: slicingData.endDate, priority: slicingData.priority))
         }
         
         return originDateData
     }
     
-    func getArrayDate(startDate: TimeInterval, endDate: TimeInterval) -> [Date] {
+    func getArrayDateAndPriority(startDate: TimeInterval, endDate: TimeInterval, priority: Int) -> [[String:Any]] {
         
-        var resultDate = [Date]()
+        var resultDate = [[String:Any]]()
         var time: TimeInterval = startDate + oneDay
+        var currentDate = Date(timeIntervalSince1970: startDate).zeroOfDay
         
-        resultDate.append(Date(timeIntervalSince1970: startDate).zeroOfDay)
+        resultDate.append(["Date": currentDate, "priority": priority])
         
         while time <= endDate {
-            resultDate.append(Date(timeIntervalSince1970: time).zeroOfDay)
+            currentDate = Date(timeIntervalSince1970: time).zeroOfDay
+            resultDate.append(["Date": currentDate, "priority": priority])
             time += oneDay
         }
         return resultDate
     }
     
+    //이벤트 중요도에 따른 dot 갯수 설정
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        print(date)
         
-        if calendarDateData.contains(date) {
-            return 1
+        var setPriority = [Int]()
+
+        for data in calendarData {
+
+            guard let dateData = data["Date"] as? Date else {
+                print("fail to convert data[] to Date")
+                return 0
+            }
+            guard let priorityData = data["priority"] as? Int else {
+                print("fail to convert data[] to Int")
+                return 0
+            }
+            if dateData == date {
+                setPriority.append(priorityData)
+            }
         }
-        return 0
+
+        countPriority = Set(setPriority)
+        return countPriority.count
     }
+    
 }
 
+extension CalendarViewController:FSCalendarDelegateAppearance {
+    
+    //달력에 표시될 dot 색깔 설정
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
+        
+        if countPriority.count ==  1 {
+            
+            switch countPriority {
+            case [0]:
+                return [UIColor.green]
+            case [1]:
+                return [UIColor.black]
+            default:
+                return [UIColor.red]
+            }
+            
+        } else if countPriority.count == 2 {
+            
+            switch countPriority {
+            case [0,1]:
+                return [UIColor.green, UIColor.black]
+            case [1,2]:
+                return [UIColor.black, UIColor.red]
+            default:
+                return [UIColor.green, UIColor.red]
+            }
+            
+        }
+        
+        return [UIColor.green, UIColor.black, UIColor.red]
+    }
+}
 extension CalendarViewController: FSCalendarDelegate {
     
     //해당 날짜 클릭 시 date정보 가져오기

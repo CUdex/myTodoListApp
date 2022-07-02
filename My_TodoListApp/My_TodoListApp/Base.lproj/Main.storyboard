@@ -48,36 +48,30 @@
                                                         <constraint firstAttribute="width" constant="50" id="rGn-s9-fXj"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-fI-Q58">
-                                                    <rect key="frame" x="99" y="28" width="66" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-fI-Q58">
+                                                    <rect key="frame" x="100" y="25" width="41.333333333333343" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GdW-Mx-6QC">
-                                                    <rect key="frame" x="99" y="68" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9w-jw-UK4">
-                                                    <rect key="frame" x="323" y="54" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GdW-Mx-6QC">
+                                                    <rect key="frame" x="100" y="70.333333333333329" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="7rD-fI-Q58" firstAttribute="top" secondItem="dNB-Bs-UPo" secondAttribute="top" constant="25" id="1oL-3Z-0ha"/>
+                                                <constraint firstItem="7rD-fI-Q58" firstAttribute="leading" secondItem="x24-aR-vjv" secondAttribute="trailing" constant="30" id="LD9-FW-1VV"/>
                                                 <constraint firstItem="x24-aR-vjv" firstAttribute="leading" secondItem="dNB-Bs-UPo" secondAttribute="leading" constant="20" id="LTM-ed-Oh5"/>
                                                 <constraint firstItem="x24-aR-vjv" firstAttribute="centerY" secondItem="dNB-Bs-UPo" secondAttribute="centerY" id="hfb-pi-OZ2"/>
+                                                <constraint firstItem="GdW-Mx-6QC" firstAttribute="top" secondItem="7rD-fI-Q58" secondAttribute="bottom" constant="25" id="ihR-pS-osS"/>
+                                                <constraint firstItem="GdW-Mx-6QC" firstAttribute="leading" secondItem="x24-aR-vjv" secondAttribute="trailing" constant="30" id="xMp-pO-2O8"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="390" height="128"/>
                                         <connections>
-                                            <outlet property="allDayLable" destination="A9w-jw-UK4" id="nOi-YJ-G5r"/>
                                             <outlet property="dateLable" destination="GdW-Mx-6QC" id="E6c-iD-K7p"/>
                                             <outlet property="imgView" destination="x24-aR-vjv" id="HgG-3Q-bMs"/>
                                             <outlet property="titleLable" destination="7rD-fI-Q58" id="UrL-Iw-YCv"/>
