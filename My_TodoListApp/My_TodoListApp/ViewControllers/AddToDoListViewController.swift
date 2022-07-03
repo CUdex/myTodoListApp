@@ -33,6 +33,7 @@ class AddToDoListViewController: UIViewController {
     var startDate = Date().timeIntervalSince1970
     var endDate = Date().timeIntervalSince1970
     var isAllDay = false
+    let oneDay: Double = 86400
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,7 +90,7 @@ class AddToDoListViewController: UIViewController {
             startDateText.text = self.changeDateToString(datePicker.date, isAllDay)
         } else {
             if isAllDay {
-                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970
+                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970 + oneDay
             } else {
                 endDate = datePicker.date.timeIntervalSince1970
             }

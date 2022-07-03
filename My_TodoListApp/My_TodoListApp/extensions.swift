@@ -18,9 +18,9 @@ extension UIViewController {
         let dateFormatter = DateFormatter()
         
         if isAllDay {
-            dateFormatter.dateFormat = "yyyy. MM. dd(E) 종일"
+            dateFormatter.dateFormat = "MM. dd HH시 mm분(E)"
         } else {
-            dateFormatter.dateFormat = "yyyy. MM. dd HH시 mm분(E)"
+            dateFormatter.dateFormat = "MM. dd HH시 mm분(E)"
         }
         return dateFormatter.string(from: dateDate)
     }

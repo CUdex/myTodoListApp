@@ -13,6 +13,7 @@ class MainTableViewCell: UITableViewCell {
     @IBOutlet weak var listCellDate: UILabel!
     @IBOutlet weak var listCellImageView: UIImageView!
     
+    var taskData: ToDoCellDataModel?
     
     override func awakeFromNib() {
         super.awakeFromNib()

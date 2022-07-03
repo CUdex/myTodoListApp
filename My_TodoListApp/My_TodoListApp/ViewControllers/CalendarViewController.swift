@@ -28,6 +28,8 @@ class CalendarViewController: UIViewController {
     
     var countPriority = Set<Int>()
     
+    var getTaskDayData = [ToDoCellDataModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,12 +40,19 @@ class CalendarViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        getTaskData()
+    }
+    
     //MARK: - calendar setting
     func settingCalendar()  {
         calnedarView.dataSource = self
         calnedarView.delegate = self
+        self.calnedarView.appearance.titleWeekendColor = UIColor.red //주말 컬러
         self.calnedarView.appearance.headerMinimumDissolvedAlpha = 0 // 양옆 년월 삭제
         self.calnedarView.appearance.headerDateFormat = "YYYY년 MM월"
+        calnedarView.appearance.subtitleTodayColor = .brown
+        calnedarView.appearance.titleTodayColor = .brown
     }
     
     func settingCollectionView() {
@@ -82,8 +91,13 @@ extension CalendarViewController {
                                              isAllDay: dicData["isAllDay"] as! Bool,
                                              isFinish: dicData["isFinish"] as! Bool)
                 }
-                self.calendarData = self.changeTimeAndPriorityToCalendarData()
-                self.calnedarView.reloadData()
+                self.calendarData = self.changeTimeAndPriorityToCalendarData() // 전체 데이터 저장 후 calendar 표현을 위한 date, priority 저장
+                
+                self.calnedarView.reloadData() // 달력 dot 표시
+                
+                // 선택된 날짜의 데이터 표현
+                guard let selectDate = self.calnedarView.selectedDate else { return }
+                self.setDateData(date: selectDate)
             }
         }
     }
@@ -94,6 +108,8 @@ extension CalendarViewController {
         dayTaskData = UICollectionViewDiffableDataSource<Int, ToDoCellDataModel>(collectionView: collectionVIew, cellProvider: { collectionView, indexPath, itemIdentifier in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCollectionViewCell", for: indexPath) as! CalendarCollectionViewCell
+            
+            cell.taskDataInCell = itemIdentifier
             
             //priority에 따른 cell color 변경
             switch itemIdentifier.priority {
@@ -120,17 +136,23 @@ extension CalendarViewController {
                 cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish)
             }
             
+            //구분선 추가
+            cell.layer.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
+            cell.layer.borderWidth = 1
+            
             return cell
         })
     }
     
-    func applyData(_ getDayTaskData: [ToDoCellDataModel]) {
+    
+    
+    func applyData() {
         
         snapshot = NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>()
         //섹션 추가
         snapshot.appendSections([0])
         // 아이템 추가
-        snapshot.appendItems(getDayTaskData, toSection: 0)
+        snapshot.appendItems(getTaskDayData, toSection: 0)
         // 현재 스냅샷 구현
         dayTaskData.apply(snapshot, animatingDifferences: true, completion: nil)
     }
@@ -139,13 +161,14 @@ extension CalendarViewController {
     func setDateData(date dateData: Date) {
         
         let start = dateData.timeIntervalSince1970
-        let end = start + oneDay
-        let getDayTaskData = taskData.filter { $0.startDate >= start && $0.endDate < end }
         
+        getTaskDayData = taskData.filter { inTaskData in
+            let startDate = Date(timeIntervalSince1970: inTaskData.startDate).zeroOfDay.timeIntervalSince1970
+            
+            return startDate <= start && inTaskData.endDate > start
+        }
         
-        print(getDayTaskData)
-        
-        applyData(getDayTaskData)
+        applyData()
         
     }
 }
@@ -172,7 +195,7 @@ extension CalendarViewController: FSCalendarDataSource {
         
         resultDate.append(["Date": currentDate, "priority": priority])
         
-        while time <= endDate {
+        while time < endDate {
             currentDate = Date(timeIntervalSince1970: time).zeroOfDay
             resultDate.append(["Date": currentDate, "priority": priority])
             time += oneDay
@@ -199,11 +222,8 @@ extension CalendarViewController: FSCalendarDataSource {
                 setPriority.append(priorityData)
             }
         }
-
-        print("sadasdasdasdasdasddsdsadsasdas")
-        print(setPriority)
-        countPriority = Set(setPriority)
-        return countPriority.count
+        
+        return Set(setPriority).count
     }
     
 }
@@ -239,6 +259,14 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
         
         return [UIColor.green, UIColor.black, UIColor.red]
     }
+    
+    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+        
+        if date == Date().zeroOfDay {
+            return "Today"
+        }
+        return nil
+    }
 }
 extension CalendarViewController: FSCalendarDelegate {
     
@@ -251,4 +279,58 @@ extension CalendarViewController: FSCalendarDelegate {
 
 extension CalendarViewController: UICollectionViewDelegate {
     
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("selectCell!!!!!!")
+        
+        guard let user = Auth.auth().currentUser else { return }
+        
+        let userUid = user.uid
+        let db = Firestore.firestore()
+        let cellData = getTaskDayData[indexPath.row]
+        
+        
+        //update 진행
+        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: cellData.title ).whereField("description", isEqualTo: cellData.description).whereField("startDate", isEqualTo: cellData.startDate).getDocuments { (querySnapshot, err) in
+            
+            if let err = err {
+                print("firestore update get document err \(err)")
+            } else {
+                
+                guard let document = querySnapshot?.documents.first else { return }
+                let changeIsFinish = document.data()
+                let nowBool = !(changeIsFinish["isFinish"] as! Bool)
+                
+                document.reference.updateData([
+                    "isFinish": nowBool
+                ]) { err in
+                    if let err = err {
+                        print("firestore update err \(err)")
+                    } else {
+                        self.getTaskData()
+                    }
+                }
+            }
+        }
+    }
+    
+    //cell 간 간격
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
+    
+
+}
+
+extension CalendarViewController: UICollectionViewDelegateFlowLayout {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = self.view.bounds.width
+        
+        return CGSize(width: width, height: 80)
+    }
 }

@@ -58,6 +58,7 @@ class ToDoMainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         print("ToDoMain - willappear")
+        getTaskData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,6 +77,8 @@ class ToDoMainViewController: UIViewController {
         dataSource = UITableViewDiffableDataSource<Int, ToDoCellDataModel>(tableView: toDoListTable, cellProvider: { tableView, indexPath, itemIdentifier in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
+            
+            cell.taskData = itemIdentifier
             
             //priority에 따른 cell color 변경
             switch itemIdentifier.priority {
