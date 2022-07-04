@@ -337,7 +337,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="TdP-5x-Mxs"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dwR-oQ-npw" firstAttribute="leading" secondItem="TdP-5x-Mxs" secondAttribute="leading" constant="20" id="6XH-CL-9vv"/>
                             <constraint firstItem="TdP-5x-Mxs" firstAttribute="trailing" secondItem="dwR-oQ-npw" secondAttribute="trailing" constant="20" id="8jY-yX-RVf"/>
