@@ -159,7 +159,16 @@ class ToDoMainViewController: UIViewController {
     
     @IBAction func scopeButtonAction(_ sender: Any) {
         print("ToDoMain - scopeButtonAction")
-        getTaskData()
+        
+        let bundle = Bundle(for: detailViewController.self)
+        let detailVC = detailViewController(nibName: "detailViewController", bundle: bundle)
+        detailVC.modalTransitionStyle = .crossDissolve
+        detailVC.modalPresentationStyle = .overCurrentContext
+        
+        detailVC.data = ToDoCellDataModel(priority: 1, title: "test", startDate: 123123213, endDate: 123123123, description: "testdes", isAllDay: true, isFinish: true)
+        
+        self.present(detailVC, animated: true)
+        
     }
     
     //MARK: - refresh 시 사용되는 액션
