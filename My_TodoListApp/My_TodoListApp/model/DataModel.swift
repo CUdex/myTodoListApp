@@ -67,3 +67,7 @@ public struct UserDataModel {
     var userName: String?
     var userPhoneNumber: String?
 }
+
+protocol TaskDataDeleteDelegate {
+    func deleteTaskData(_ data: ToDoCellDataModel) -> Void
+}

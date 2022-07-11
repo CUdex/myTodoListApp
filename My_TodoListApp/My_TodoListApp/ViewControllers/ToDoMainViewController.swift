@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Toast
 
-class ToDoMainViewController: UIViewController {
+class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var toDoListTable: UITableView!
     
@@ -54,6 +54,8 @@ class ToDoMainViewController: UIViewController {
         setDataSource()
         
         getTaskData()
+        
+        addLongGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,6 +115,37 @@ class ToDoMainViewController: UIViewController {
         })
     }
     
+    //tableview에 long gesture 추가
+    func addLongGesture() {
+        
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureToDetail))
+        longGesture.minimumPressDuration = 1.0
+        
+        toDoListTable.addGestureRecognizer(longGesture)
+    }
+    
+    
+    //long gesture 시 detail view로 이동
+    @objc func longGestureToDetail(longPressGesture: UILongPressGestureRecognizer) {
+  
+        // 선택된 cell 위치 구하기
+        let p = longPressGesture.location(in: self.toDoListTable)
+        guard let indexPath = self.toDoListTable.indexPathForRow(at: p) else { return }
+        let row = indexPath.row
+        
+        // detail view 생성
+        let bundle = Bundle(for: detailViewController.self)
+        let detailVC = detailViewController(nibName: "detailViewController", bundle: bundle)
+        detailVC.modalTransitionStyle = .crossDissolve
+        detailVC.modalPresentationStyle = .overCurrentContext
+        
+        detailVC.delegate = self
+        
+        detailVC.data = taskData[row]
+        
+        self.present(detailVC, animated: true)
+    }
+    
     //MARK: - diffable apply
     func applySnapshot() {
         print("ToDoMain - applySnapshot")
@@ -159,16 +192,6 @@ class ToDoMainViewController: UIViewController {
     
     @IBAction func scopeButtonAction(_ sender: Any) {
         print("ToDoMain - scopeButtonAction")
-        
-        let bundle = Bundle(for: detailViewController.self)
-        let detailVC = detailViewController(nibName: "detailViewController", bundle: bundle)
-        detailVC.modalTransitionStyle = .crossDissolve
-        detailVC.modalPresentationStyle = .overCurrentContext
-        
-        detailVC.data = ToDoCellDataModel(priority: 1, title: "test", startDate: 123123213, endDate: 123123123, description: "testdes", isAllDay: true, isFinish: true)
-        
-        self.present(detailVC, animated: true)
-        
     }
     
     //MARK: - refresh 시 사용되는 액션
@@ -276,5 +299,26 @@ extension ToDoMainViewController {
         print("ToDoMain - notiClear")
         self.taskData.removeAll()
         getTaskData()
+    }
+}
+
+
+extension ToDoMainViewController: TaskDataDeleteDelegate {
+    
+    
+    func deleteTaskData(_ data: ToDoCellDataModel) {
+        
+//        guard let user = Auth.auth().currentUser else { return }
+//
+//        let userUid = user.uid
+//        let db = Firestore.firestore()
+//
+//
+//        //update 진행
+//        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: data.title ).whereField("description", isEqualTo: data.description).whereField("startDate", isEqualTo: data.startDate).getDocuments { QuerySnapshot, err in
+//            let docu = QuerySnapshot.
+//        }
+        
+        print(data)
     }
 }

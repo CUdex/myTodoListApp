@@ -18,6 +18,10 @@ class detailViewController: UIViewController {
     @IBOutlet weak var finishedText: UITextField!
     @IBOutlet weak var descriptionText: UITextView!
     
+    @IBOutlet weak var deleteBtn: UIButton!
+    
+    var delegate: TaskDataDeleteDelegate?
+    
     var data: ToDoCellDataModel?
     
     override func viewDidLoad() {
@@ -26,7 +30,7 @@ class detailViewController: UIViewController {
         initBackView()
         setBlur()
         appearData()
-        descriptionText.text = data!.description
+        print("sadasdasdasdsasd \(delegate)")
     }
     
     // radius 설정
@@ -49,6 +53,15 @@ class detailViewController: UIViewController {
     
     //view 터치 시 view 종료
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.dismiss(animated: true)
+    }
+    
+    // delete to task
+    @IBAction func deleteToTask(_ sender: Any) {
+        
+        guard let taskData = data else { return }
+        delegate?.deleteTaskData(taskData)
+        
         self.dismiss(animated: true)
     }
     
