@@ -40,6 +40,7 @@
 		FD885464286C873100C45B37 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */; };
 		FD8854672873292900C45B37 /* detailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8854652873292900C45B37 /* detailViewController.swift */; };
 		FD8854682873292900C45B37 /* detailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD8854662873292900C45B37 /* detailViewController.xib */; };
+		FD88546A287DAC5700C45B37 /* FireDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD885469287DAC5700C45B37 /* FireDataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		FD8854652873292900C45B37 /* detailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detailViewController.swift; sourceTree = "<group>"; };
 		FD8854662873292900C45B37 /* detailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = detailViewController.xib; sourceTree = "<group>"; };
+		FD885469287DAC5700C45B37 /* FireDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireDataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				FD6423C4282C9A4300789836 /* ViewControllers */,
 				FD6423C3282659C500789836 /* model */,
 				FD6423AC2826595300789836 /* AppDelegate.swift */,
+				FD885469287DAC5700C45B37 /* FireDataController.swift */,
 				FD6423AE2826595300789836 /* SceneDelegate.swift */,
 				FD6423C5282C9D5700789836 /* MainTableViewCell.swift */,
 				FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */,
@@ -260,6 +263,7 @@
 				FD6B6E8E28353A3F00DD7081 /* MyCustomCircleButton.swift in Sources */,
 				FD6B6E90283A77DB00DD7081 /* AddToDoListViewController.swift in Sources */,
 				FD47F4C9284DB0D6002B1AAE /* SignUpViewController.swift in Sources */,
+				FD88546A287DAC5700C45B37 /* FireDataController.swift in Sources */,
 				FD6B6EB3284B8D9100DD7081 /* AppSettingViewController.swift in Sources */,
 				FD8854672873292900C45B37 /* detailViewController.swift in Sources */,
 				FD885464286C873100C45B37 /* CalendarCollectionViewCell.swift in Sources */,

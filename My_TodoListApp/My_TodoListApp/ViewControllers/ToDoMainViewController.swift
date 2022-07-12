@@ -28,6 +28,8 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     var dataSource: UITableViewDiffableDataSource<Int, ToDoCellDataModel>!
     var snapshot: NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>!
     
+    var test = [ToDoCellDataModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -192,6 +194,14 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func scopeButtonAction(_ sender: Any) {
         print("ToDoMain - scopeButtonAction")
+        
+        let asd = FireDataController()
+        print("sssssssssssssss")
+        print(asd.getData(completion: { data in
+            self.test = data
+            print(self.test)
+            print("zzzzzzzzzzzzzzzz")
+        }))
     }
     
     //MARK: - refresh 시 사용되는 액션
