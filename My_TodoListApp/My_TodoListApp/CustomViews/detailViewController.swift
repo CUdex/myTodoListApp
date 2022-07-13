@@ -30,7 +30,6 @@ class detailViewController: UIViewController {
         initBackView()
         setBlur()
         appearData()
-        print("sadasdasdasdsasd \(delegate)")
     }
     
     // radius 설정
@@ -72,8 +71,6 @@ extension detailViewController {
     func appearData() {
         
         guard let detailData = data else { return }
-        
-        print(detailData)
         
         titleText.text = detailData.title
         dateText.text = detailData.startDate.description

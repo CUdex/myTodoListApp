@@ -18,11 +18,23 @@ extension UIViewController {
         let dateFormatter = DateFormatter()
         
         if isAllDay {
-            dateFormatter.dateFormat = "MM. dd HH시 mm분(E)"
+            dateFormatter.dateFormat = "MM. dd (E)"
         } else {
-            dateFormatter.dateFormat = "MM. dd HH시 mm분(E)"
+            dateFormatter.dateFormat = "MM. dd HH:mm (E)"
         }
         return dateFormatter.string(from: dateDate)
+    }
+    
+    func taskChangeDateToString(_ dateDate: Date, _ endDate: Date, _ isAllDay: Bool) -> String {
+        print("AddToDoListViewController - changeDateToString")
+        let dateFormatter = DateFormatter()
+        
+        if isAllDay {
+            dateFormatter.dateFormat = "MM. dd (E)"
+        } else {
+            dateFormatter.dateFormat = "MM. dd HH:mm (E)"
+        }
+        return "\(dateFormatter.string(from: dateDate)) ~ \(dateFormatter.string(from: endDate))"
     }
     
     

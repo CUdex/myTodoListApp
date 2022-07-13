@@ -7,8 +7,6 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import Toast
 
 class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -29,6 +27,8 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     var snapshot: NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>!
     
     var test = [ToDoCellDataModel]()
+    
+    let dataController = FireDataController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +100,9 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
             cell.selectionStyle = .none
             cell.listCellTitleLable.text = itemIdentifier.title
             let startDate = Date(timeIntervalSince1970: itemIdentifier.startDate)
-            cell.listCellDate.text = self.changeDateToString(startDate, itemIdentifier.isAllDay)
+            let endDate = Date(timeIntervalSince1970: itemIdentifier.isAllDay ? itemIdentifier.endDate - 1: itemIdentifier.endDate)
+            
+            cell.listCellDate.text = self.taskChangeDateToString(startDate, endDate, itemIdentifier.isAllDay)
             
             // 완료 여부에 따른 image 및 attribute 변경
             if itemIdentifier.isFinish {
@@ -163,45 +165,24 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - get data
     func getTaskData() {
+        
         print("ToDoMain - getTaskData")
+        
         guard let user = Auth.auth().currentUser else {
             applySnapshot()
             return
         }
         
-        let userUid = user.uid
-        let db = Firestore.firestore()
-        
-        db.collection("ToDoList").document(userUid).collection("Task").order(by: "startDate").getDocuments { (QuerySnapshot, Error) in
-            if let err = Error {
-                print("Error getting document: \(err)")
-            } else {
-                guard let queryData = QuerySnapshot?.documents else { return }
-                let dicData = queryData.compactMap({ $0.data() })
-                self.taskData = dicData.compactMap { (dicData) -> ToDoCellDataModel in
-                    return ToDoCellDataModel(priority: dicData["priority"] as! Int,
-                                             title: dicData["title"] as! String,
-                                             startDate: dicData["startDate"] as! TimeInterval,
-                                             endDate: dicData["endDate"] as! TimeInterval,
-                                             description: dicData["description"] as! String,
-                                             isAllDay: dicData["isAllDay"] as! Bool,
-                                             isFinish: dicData["isFinish"] as! Bool)
-                }
-                self.applySnapshot()
-            }
+        dataController.getData(user) { data in
+            self.taskData = data
+            self.applySnapshot()
         }
+        
     }
     
     @IBAction func scopeButtonAction(_ sender: Any) {
         print("ToDoMain - scopeButtonAction")
         
-        let asd = FireDataController()
-        print("sssssssssssssss")
-        print(asd.getData(completion: { data in
-            self.test = data
-            print(self.test)
-            print("zzzzzzzzzzzzzzzz")
-        }))
     }
     
     //MARK: - refresh 시 사용되는 액션
@@ -229,32 +210,9 @@ extension ToDoMainViewController: UITableViewDelegate {
         
         guard let user = Auth.auth().currentUser else { return }
         
-        let userUid = user.uid
-        let db = Firestore.firestore()
-        let cellData = taskData[indexPath.row]
-        
-        
         //update 진행
-        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: cellData.title ).whereField("description", isEqualTo: cellData.description).whereField("startDate", isEqualTo: cellData.startDate).getDocuments { (querySnapshot, err) in
-            
-            if let err = err {
-                print("firestore update get document err \(err)")
-            } else {
-                
-                guard let document = querySnapshot?.documents.first else { return }
-                let changeIsFinish = document.data()
-                let nowBool = !(changeIsFinish["isFinish"] as! Bool)
-                
-                document.reference.updateData([
-                    "isFinish": nowBool
-                ]) { err in
-                    if let err = err {
-                        print("firestore update err \(err)")
-                    } else {
-                        self.getTaskData()
-                    }
-                }
-            }
+        dataController.updateData(taskData[indexPath.row], user) {
+            self.getTaskData()
         }
     }
 }
@@ -318,17 +276,11 @@ extension ToDoMainViewController: TaskDataDeleteDelegate {
     
     func deleteTaskData(_ data: ToDoCellDataModel) {
         
-//        guard let user = Auth.auth().currentUser else { return }
-//
-//        let userUid = user.uid
-//        let db = Firestore.firestore()
-//
-//
-//        //update 진행
-//        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: data.title ).whereField("description", isEqualTo: data.description).whereField("startDate", isEqualTo: data.startDate).getDocuments { QuerySnapshot, err in
-//            let docu = QuerySnapshot.
-//        }
+        print("ToDoMainViewController - deleteTaskData")
+        guard let user = Auth.auth().currentUser else { return }
         
-        print(data)
+        dataController.deleteData(data, user) {
+            self.getTaskData()
+        }
     }
 }

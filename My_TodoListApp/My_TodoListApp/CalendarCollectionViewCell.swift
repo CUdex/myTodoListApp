@@ -21,6 +21,10 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         print("CalendarCollectionViewCell - awakeFromNib")
     }
     
+    //cell 재사용 초기화
+    override func prepareForReuse() {
+    }
+    
     
     //MARK: - selected animation
     override var isHighlighted: Bool {

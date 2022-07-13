@@ -8,8 +8,6 @@
 import UIKit
 import FSCalendar
 import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class CalendarViewController: UIViewController {
 
@@ -29,6 +27,8 @@ class CalendarViewController: UIViewController {
     var countPriority = Set<Int>()
     
     var getTaskDayData = [ToDoCellDataModel]()
+    
+    let dataController = FireDataController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,35 +70,25 @@ extension CalendarViewController {
     
     //MARK: - get data
     func getTaskData()  {
+        
         print("ToDoMain - getTaskData")
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else {
+            self.calnedarView.reloadData()
+            self.applyData()
+            return
+        }
         
-        let userUid = user.uid
-        let db = Firestore.firestore()
-        
-        db.collection("ToDoList").document(userUid).collection("Task").order(by: "startDate").getDocuments { (QuerySnapshot, Error) in
-            if let err = Error {
-                print("Error getting document: \(err)")
-            } else {
-                guard let queryData = QuerySnapshot?.documents else { return }
-                let dicData = queryData.compactMap({ $0.data() })
-                self.taskData = dicData.compactMap { (dicData) -> ToDoCellDataModel in
-                    return ToDoCellDataModel(priority: dicData["priority"] as! Int,
-                                             title: dicData["title"] as! String,
-                                             startDate: dicData["startDate"] as! TimeInterval,
-                                             endDate: dicData["endDate"] as! TimeInterval,
-                                             description: dicData["description"] as! String,
-                                             isAllDay: dicData["isAllDay"] as! Bool,
-                                             isFinish: dicData["isFinish"] as! Bool)
-                }
-                self.calendarData = self.changeTimeAndPriorityToCalendarData() // 전체 데이터 저장 후 calendar 표현을 위한 date, priority 저장
-                
-                self.calnedarView.reloadData() // 달력 dot 표시
-                
-                // 선택된 날짜의 데이터 표현
-                guard let selectDate = self.calnedarView.selectedDate else { return }
-                self.setDateData(date: selectDate)
-            }
+        dataController.getData(user) { data in
+            
+            self.taskData = data
+            
+            self.calendarData = self.changeTimeAndPriorityToCalendarData() // 전체 데이터 저장 후 calendar 표현을 위한 date, priority 저장
+            
+            self.calnedarView.reloadData() // 달력 dot 표시
+            
+            // 선택된 날짜의 데이터 표현
+            guard let selectDate = self.calnedarView.selectedDate else { return }
+            self.setDateData(date: selectDate)
         }
     }
     
@@ -123,7 +113,8 @@ extension CalendarViewController {
             
             cell.titleLable.text = itemIdentifier.title
             let startDate = Date(timeIntervalSince1970: itemIdentifier.startDate)
-            cell.dateLable.text = self.changeDateToString(startDate, itemIdentifier.isAllDay)
+            let endDate = Date(timeIntervalSince1970: itemIdentifier.isAllDay ? itemIdentifier.endDate - 1: itemIdentifier.endDate)
+            cell.dateLable.text = self.taskChangeDateToString(startDate, endDate, itemIdentifier.isAllDay)
             
             // 완료 여부에 따른 image 및 attribute 변경
             if itemIdentifier.isFinish {
@@ -143,8 +134,6 @@ extension CalendarViewController {
             return cell
         })
     }
-    
-    
     
     func applyData() {
         
@@ -286,32 +275,9 @@ extension CalendarViewController: UICollectionViewDelegate {
         
         guard let user = Auth.auth().currentUser else { return }
         
-        let userUid = user.uid
-        let db = Firestore.firestore()
-        let cellData = getTaskDayData[indexPath.row]
-        
-        
         //update 진행
-        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: cellData.title ).whereField("description", isEqualTo: cellData.description).whereField("startDate", isEqualTo: cellData.startDate).getDocuments { (querySnapshot, err) in
-            
-            if let err = err {
-                print("firestore update get document err \(err)")
-            } else {
-                
-                guard let document = querySnapshot?.documents.first else { return }
-                let changeIsFinish = document.data()
-                let nowBool = !(changeIsFinish["isFinish"] as! Bool)
-                
-                document.reference.updateData([
-                    "isFinish": nowBool
-                ]) { err in
-                    if let err = err {
-                        print("firestore update err \(err)")
-                    } else {
-                        self.getTaskData()
-                    }
-                }
-            }
+        dataController.updateData(getTaskDayData[indexPath.row], user) {
+            self.getTaskData()
         }
     }
     

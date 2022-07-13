@@ -27,7 +27,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWE-hR-elW">
                         <rect key="frame" x="102" y="43" width="41.333333333333343" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -43,7 +43,7 @@
                     <constraint firstItem="wXm-1Y-h5F" firstAttribute="leading" secondItem="jYr-YY-Sda" secondAttribute="trailing" constant="20" id="ITV-cr-qOj"/>
                     <constraint firstAttribute="trailingMargin" secondItem="IWE-hR-elW" secondAttribute="trailing" constant="25" id="MSz-go-OtY"/>
                     <constraint firstItem="jYr-YY-Sda" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="POU-YP-wtg"/>
-                    <constraint firstItem="wXm-1Y-h5F" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="eO8-tT-m5f"/>
+                    <constraint firstItem="wXm-1Y-h5F" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="eO8-tT-m5f"/>
                     <constraint firstItem="jYr-YY-Sda" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="laW-RU-EYq"/>
                     <constraint firstItem="IWE-hR-elW" firstAttribute="top" secondItem="wXm-1Y-h5F" secondAttribute="bottom" constant="10" id="w0f-vJ-3IX"/>
                     <constraint firstItem="IWE-hR-elW" firstAttribute="leading" secondItem="jYr-YY-Sda" secondAttribute="trailing" constant="20" id="yHB-0G-dkK"/>

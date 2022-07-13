@@ -13,10 +13,8 @@ import FirebaseFirestoreSwift
 class FireDataController {
     
     
-    func getData(completion: @escaping ([ToDoCellDataModel]) -> ()) -> Void {
-        guard let user = Auth.auth().currentUser else {
-            return 
-        }
+    func getData(_ user: User, completion: @escaping ([ToDoCellDataModel]) -> ()) -> Void {
+        
         var getData = [ToDoCellDataModel]()
         let userUid = user.uid
         let db = Firestore.firestore()
@@ -41,4 +39,55 @@ class FireDataController {
             }
         }
     }
+    
+    func updateData(_ data: ToDoCellDataModel, _ user: User, completion: @escaping () -> ()) -> Void {
+        
+        let userUid = user.uid
+        let db = Firestore.firestore()
+        let cellData = data
+        
+        //update 진행
+        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: cellData.title ).whereField("description", isEqualTo: cellData.description).whereField("startDate", isEqualTo: cellData.startDate).getDocuments { (querySnapshot, err) in
+            
+            if let err = err {
+                print("firestore update get document err \(err)")
+            } else {
+                
+                guard let document = querySnapshot?.documents.first else { return }
+                let changeIsFinish = document.data()
+                let nowBool = !(changeIsFinish["isFinish"] as! Bool)
+                
+                document.reference.updateData([
+                    "isFinish": nowBool
+                ]) { err in
+                    if let err = err {
+                        print("firestore update err \(err)")
+                    } else {
+                        completion()
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteData(_ data: ToDoCellDataModel, _ user: User, completion: @escaping () -> ()) -> Void {
+        
+        let userUid = user.uid
+        let db = Firestore.firestore()
+        let cellData = data
+        
+        //delete 진행
+        db.collection("ToDoList").document(userUid).collection("Task").whereField("title", isEqualTo: cellData.title ).whereField("description", isEqualTo: cellData.description).whereField("startDate", isEqualTo: cellData.startDate).getDocuments { (querySnapshot, err) in
+            
+            if let err = err {
+                print("firestore delete document err \(err)")
+            } else {
+                guard let document = querySnapshot?.documents.first else { return }
+                //삭제
+                document.reference.delete()
+                completion()
+            }
+        }
+    }
+  
 }
