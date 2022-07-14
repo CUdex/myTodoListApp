@@ -69,7 +69,7 @@ public struct UserDataModel {
 }
 
 protocol TaskDataDeleteDelegate {
+    
     func deleteTaskData(_ data: ToDoCellDataModel) -> Void
-    //func modifyTaskData(_ data: ToDoCellDataModel) -> Void
-    //func addTaskData(_ data: ToDoCellDataModel) -> Void
+    func modifyTaskData(_ data: ToDoCellDataModel) -> Void
 }

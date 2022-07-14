@@ -128,9 +128,8 @@ extension CalendarViewController {
             }
             
             //구분선 추가
-            cell.layer.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
-            cell.layer.borderWidth = 1
-            
+            cell.addBottomBorder(with: .black, andWidth: 1)
+           
             return cell
         })
     }
@@ -283,7 +282,7 @@ extension CalendarViewController: UICollectionViewDelegate {
     
     //cell 간 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        return 0
     }
     
     

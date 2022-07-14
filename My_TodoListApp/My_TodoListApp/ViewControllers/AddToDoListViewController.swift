@@ -7,9 +7,6 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import Combine
 
 class AddToDoListViewController: UIViewController {
     
@@ -34,6 +31,10 @@ class AddToDoListViewController: UIViewController {
     var endDate = Date().timeIntervalSince1970
     var isAllDay = false
     let oneDay: Double = 86400
+    
+    let dataController = FireDataController()
+    
+    var delegate: TaskDataDeleteDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,32 +174,16 @@ class AddToDoListViewController: UIViewController {
     //MARK: - Task 추가
     @IBAction func addTask(_ sender: Any) {
         
-        guard let userUid = Auth.auth().currentUser?.uid else { return }
+        guard let user = Auth.auth().currentUser else { return }
         
         
         if taskText.text == "" || endDateText.text == "" || startDateText.text == "" {
             self.view.makeToast("please write title or date")
         } else {
             
-            let db = Firestore.firestore()
-            
             let addTaskData = ToDoCellDataModel(priority: self.priority.selectedSegmentIndex, title: self.taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text!, isAllDay: isAllDay, isFinish: false)
             
-            
-            //MARK: - 데이터 추가
-            do {
-                try _ = db.collection("ToDoList").document(userUid).collection("Task").addDocument(from: addTaskData) { err in
-                    if err == nil {
-                        print("add document -- who \(userUid)")
-                        
-                        NotificationCenter.default.post(name: NSNotification.Name("reloadTask") , object: nil)
-                        self.dismiss(animated: true)
-                    }
-                }
-            } catch let error {
-                self.view.makeToast("error")
-                print("Error writing city to Firestore: \(error)")
-            }
+            dataController.addData(addTaskData, user) { self.dismiss(animated: true) }
         }
         
     }

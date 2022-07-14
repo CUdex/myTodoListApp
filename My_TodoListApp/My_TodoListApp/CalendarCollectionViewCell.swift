@@ -59,6 +59,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     //MARK: - 위치에 따른 Border 추가
     func addBottomBorder(with color: UIColor?, andWidth borderWidth: CGFloat) {
         let border = UIView()
+        border.tag = 100
         border.backgroundColor = color
         border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         border.frame = CGRect(x: 0, y: frame.size.height - borderWidth, width: frame.size.width, height: borderWidth)
@@ -67,6 +68,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     func addTopBorder(with color: UIColor?, andWidth borderWidth: CGFloat) {
         let border = UIView()
+        border.tag = 101
         border.backgroundColor = color
         border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
         border.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: borderWidth)
@@ -75,6 +77,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
 
     func addLeftBorder(with color: UIColor?, andWidth borderWidth: CGFloat) {
         let border = UIView()
+        border.tag = 102
         border.backgroundColor = color
         border.frame = CGRect(x: 0, y: 0, width: borderWidth, height: frame.size.height)
         border.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
@@ -83,6 +86,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
 
     func addRightBorder(with color: UIColor?, andWidth borderWidth: CGFloat) {
         let border = UIView()
+        border.tag = 103
         border.backgroundColor = color
         border.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
         border.frame = CGRect(x: frame.size.width - borderWidth, y: 0, width: borderWidth, height: frame.size.height)

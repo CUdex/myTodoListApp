@@ -134,9 +134,3 @@ extension Date {
         return Calendar.current.startOfDay(for: self)
     }
 }
-
-
-protocol ReviseTaskDataProtocol {
-    func deleteTaskData(data: ToDoCellDataModel)
-    func modifyTaskData(data: ToDoCellDataModel)
-}

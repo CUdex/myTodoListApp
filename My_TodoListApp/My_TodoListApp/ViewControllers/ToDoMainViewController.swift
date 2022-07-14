@@ -273,6 +273,9 @@ extension ToDoMainViewController {
 
 extension ToDoMainViewController: TaskDataDeleteDelegate {
     
+    func modifyTaskData(_ data: ToDoCellDataModel) {
+        
+    }
     
     func deleteTaskData(_ data: ToDoCellDataModel) {
         
