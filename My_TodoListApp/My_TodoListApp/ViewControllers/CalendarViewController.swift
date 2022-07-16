@@ -37,11 +37,11 @@ class CalendarViewController: UIViewController {
         settingCalendar()
         settingCollectionView()
         getTaskData()
-        
+        addSignInSuccessNotifications()
+        addLongGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getTaskData()
     }
     
     //MARK: - calendar setting
@@ -158,6 +158,79 @@ extension CalendarViewController {
         
         applyData()
         
+    }
+    
+    //notification 추가
+    func addSignInSuccessNotifications(){
+        // 로그인 성공 시 설정 화면의 멘트 수정을 위한 노티 추가
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload), name: Notification.Name("reloadTask") , object: nil)
+        // 로그아웃 시 데이터 초기화
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notiClear), name: Notification.Name("logoutTask"), object: nil)
+    }
+    
+    @objc func notiReload(_ noti: NSNotification) {
+        print("ToDoMain - notiReload")
+        getTaskData()
+    }
+    
+    @objc func notiClear(_ noti: NSNotification) {
+        print("ToDoMain - notiClear")
+        self.taskData.removeAll()
+        getTaskData()
+    }
+    
+    //MARK: - detail view
+    //tableview에 long gesture 추가
+    func addLongGesture() {
+        
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureToDetail))
+        longGesture.minimumPressDuration = 1.0
+        
+        collectionVIew.addGestureRecognizer(longGesture)
+    }
+    
+    
+    //long gesture 시 detail view로 이동
+    @objc func longGestureToDetail(longPressGesture: UILongPressGestureRecognizer) {
+  
+        // 선택된 cell 위치 구하기
+        let p = longPressGesture.location(in: self.collectionVIew)
+        guard let indexPath = self.collectionVIew.indexPathForItem(at: p) else { return }
+        let row = indexPath.row
+        
+        // detail view 생성
+        let bundle = Bundle(for: detailViewController.self)
+        let detailVC = detailViewController(nibName: "detailViewController", bundle: bundle)
+        detailVC.modalTransitionStyle = .crossDissolve
+        detailVC.modalPresentationStyle = .overCurrentContext
+        
+        detailVC.delegate = self
+        
+        detailVC.data = getTaskDayData[row]
+        
+        self.present(detailVC, animated: true)
+    }
+}
+
+extension CalendarViewController: TaskDataDeleteDelegate {
+    
+    func deleteTaskData(_ data: ToDoCellDataModel) {
+        
+        guard let user = Auth.auth().currentUser else { return }
+        
+        dataController.deleteData(data, user) {
+            self.getTaskData()
+        }
+    }
+    
+    func modifyTaskData(_ data: ToDoCellDataModel) {
+        
+        guard let modifyDataView = storyboard?.instantiateViewController(withIdentifier: "AddToDoListViewController") as? AddToDoListViewController else {
+            return
+        }
+        
+        modifyDataView.originTaskData = data
+        self.present(modifyDataView, animated: true)
     }
 }
 

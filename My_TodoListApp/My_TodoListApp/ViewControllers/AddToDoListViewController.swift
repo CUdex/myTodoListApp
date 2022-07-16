@@ -31,10 +31,11 @@ class AddToDoListViewController: UIViewController {
     var endDate = Date().timeIntervalSince1970
     var isAllDay = false
     let oneDay: Double = 86400
+    @IBOutlet weak var dataActionBtn: UIButton!
     
     let dataController = FireDataController()
     
-    var delegate: TaskDataDeleteDelegate?
+    var originTaskData: ToDoCellDataModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +66,8 @@ class AddToDoListViewController: UIViewController {
         endDateText.inputAccessoryView = pickerTool
         
         priority.selectedSegmentTintColor = .green
+        
+        modifyDataSetting()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,9 +186,34 @@ class AddToDoListViewController: UIViewController {
             
             let addTaskData = ToDoCellDataModel(priority: self.priority.selectedSegmentIndex, title: self.taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text!, isAllDay: isAllDay, isFinish: false)
             
-            dataController.addData(addTaskData, user) { self.dismiss(animated: true) }
+            if let data = originTaskData {
+                dataController.modifyData(data, addTaskData, user) {
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadTask"), object: nil)
+                    self.dismiss(animated: true) }
+            } else {
+                dataController.addData(addTaskData, user) {
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadTask"), object: nil)
+                    self.dismiss(animated: true)
+                }
+            }
         }
+    }
+    
+    func modifyDataSetting() {
         
+        if let data = originTaskData {
+            
+            dataActionBtn.configuration?.attributedTitle = "modify"
+            taskText.text = data.title
+            discriptionText.text = data.description
+            startDate = data.startDate
+            endDate = data.endDate
+            startDateText.text = changeDateToString(Date(timeIntervalSince1970: data.startDate), data.isAllDay)
+            endDateText.text = changeDateToString(Date(timeIntervalSince1970: data.endDate), data.isAllDay)
+            priority.selectedSegmentIndex = data.priority
+            isAllDay = data.isAllDay
+            changeButtonFont()
+        }
     }
 }
 
@@ -254,5 +282,4 @@ extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
             textView.textColor = UIColor.lightGray
         }
     }
-
 }

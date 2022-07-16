@@ -753,6 +753,7 @@
                     </view>
                     <connections>
                         <outlet property="allDayBtn" destination="rRx-2W-MMj" id="D7K-lP-SKN"/>
+                        <outlet property="dataActionBtn" destination="Fbz-0F-kN9" id="FdI-Dq-Hvs"/>
                         <outlet property="discriptionText" destination="fCm-QJ-5oB" id="E8T-bv-Vrl"/>
                         <outlet property="endDateText" destination="RIq-U5-0mZ" id="TZD-Da-Iok"/>
                         <outlet property="priority" destination="UJC-xe-6N1" id="Ypu-eB-khg"/>

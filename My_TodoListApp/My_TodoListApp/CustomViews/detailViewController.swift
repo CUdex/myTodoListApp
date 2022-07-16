@@ -64,6 +64,17 @@ class detailViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    @IBAction func modifyTask(_ sender: Any) {
+        
+        guard let taskData = data else { return }
+        
+        
+        self.dismiss(animated: true) {
+            self.delegate?.modifyTaskData(taskData)
+        }
+    }
+    
+    
 }
 
 extension detailViewController {

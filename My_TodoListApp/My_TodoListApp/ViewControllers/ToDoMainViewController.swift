@@ -62,7 +62,6 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         print("ToDoMain - willappear")
-        getTaskData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -183,6 +182,12 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBAction func scopeButtonAction(_ sender: Any) {
         print("ToDoMain - scopeButtonAction")
         
+        let filterVC = FilterViewController()
+        
+        filterVC.sheetPresentationController?.detents = [.medium()]
+        
+        present(filterVC, animated: true)
+        
     }
     
     //MARK: - refresh 시 사용되는 액션
@@ -268,13 +273,22 @@ extension ToDoMainViewController {
         self.taskData.removeAll()
         getTaskData()
     }
+    
+    
 }
 
 
 extension ToDoMainViewController: TaskDataDeleteDelegate {
     
+    //MARK: - detail view에서 modify view로 넘김
     func modifyTaskData(_ data: ToDoCellDataModel) {
         
+        guard let modifyDataView = storyboard?.instantiateViewController(withIdentifier: "AddToDoListViewController") as? AddToDoListViewController else {
+            return
+        }
+        
+        modifyDataView.originTaskData = data
+        self.present(modifyDataView, animated: true)
     }
     
     func deleteTaskData(_ data: ToDoCellDataModel) {

@@ -62,10 +62,34 @@ public struct ToDoCellDataModel: Codable, Hashable {
 }
 
 public struct UserDataModel {
+    
     var userEmail: String
     var password: String
     var userName: String?
     var userPhoneNumber: String?
+}
+
+public struct FilterSettingData {
+    
+    var startDay: Date = Date()
+    var endDay: Date = Date()
+    var isFinished: IsFinishedCase = .all
+    var priority: PriorityCase = .all
+}
+
+enum PriorityCase {
+    
+    case low
+    case middle
+    case high
+    case all
+}
+
+enum IsFinishedCase {
+    
+    case notFinished
+    case finished
+    case all
 }
 
 protocol TaskDataDeleteDelegate {

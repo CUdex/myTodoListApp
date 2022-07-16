@@ -33,7 +33,7 @@ class FireDataController {
         }
     }
     
-    func modifyData(_ data: ToDoCellDataModel, _ user: User, completion: @escaping () -> ()) -> Void {
+    func modifyData(_ data: ToDoCellDataModel, _ modifyData: ToDoCellDataModel, _ user: User, completion: @escaping () -> ()) -> Void {
         
         let userUid = user.uid
         let cellData = data
@@ -46,11 +46,14 @@ class FireDataController {
             } else {
                 
                 guard let document = querySnapshot?.documents.first else { return }
-                let changeIsFinish = document.data()
-                let nowBool = !(changeIsFinish["isFinish"] as! Bool)
                 
                 document.reference.updateData([
-                    "isFinish": nowBool
+                    "description": modifyData.description,
+                    "endDate": modifyData.endDate,
+                    "isAllDay": modifyData.isAllDay,
+                    "priority": modifyData.priority,
+                    "startDate": modifyData.startDate,
+                    "title": modifyData.title
                 ]) { err in
                     if let err = err {
                         print("firestore update err \(err)")
