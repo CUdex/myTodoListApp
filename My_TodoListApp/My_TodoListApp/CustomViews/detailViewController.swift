@@ -20,7 +20,7 @@ class detailViewController: UIViewController {
     
     @IBOutlet weak var deleteBtn: UIButton!
     
-    var delegate: TaskDataDeleteDelegate?
+    weak var delegate: TaskDataDeleteDelegate?
     
     var data: ToDoCellDataModel?
     

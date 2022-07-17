@@ -72,10 +72,10 @@ class FilterViewController: UIViewController {
     
     let prioritySegmentControll: UISegmentedControl = {
        
-        let addSeg = UISegmentedControl(items: ["All", "Low", "Middle", "High"])
+        let addSeg = UISegmentedControl(items: ["Low", "Middle", "High", "All"])
         
         addSeg.translatesAutoresizingMaskIntoConstraints = false
-        addSeg.selectedSegmentIndex = 0
+        addSeg.selectedSegmentIndex = 3
         return addSeg
     }()
     
@@ -91,10 +91,10 @@ class FilterViewController: UIViewController {
     
     let isFinishedSegmentControll: UISegmentedControl = {
        
-        let addSeg = UISegmentedControl(items: ["All", "not Finished", "Finished"])
+        let addSeg = UISegmentedControl(items: ["not Finished", "Finished", "All"])
         
         addSeg.translatesAutoresizingMaskIntoConstraints = false
-        addSeg.selectedSegmentIndex = 0
+        addSeg.selectedSegmentIndex = 2
         return addSeg
     }()
     
@@ -107,6 +107,9 @@ class FilterViewController: UIViewController {
         addBtn.backgroundColor = .systemBlue
         return addBtn
     }()
+    
+    weak var delegate: FilterSettingDelegate?
+    var filterData: FilterSettingData = FilterSettingData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,6 +151,7 @@ class FilterViewController: UIViewController {
         
         view.addSubview(clickButton)
         
+        clickButton.addTarget(self, action: #selector(tryFiltering), for: .touchUpInside)
         clickButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         clickButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20).isActive = true
         clickButton.topAnchor.constraint(equalTo: isFinishedSegmentControll.bottomAnchor, constant: 40) .isActive = true
@@ -182,6 +186,7 @@ class FilterViewController: UIViewController {
         
         self.view.addSubview(prioritySegmentControll)
         
+        prioritySegmentControll.addTarget(self, action: #selector(changePrioritySelectedColor), for: .valueChanged)
         prioritySegmentControll.topAnchor.constraint(equalTo: priorityTitleLable.bottomAnchor, constant: 10).isActive = true
         prioritySegmentControll.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20).isActive = true
         prioritySegmentControll.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20).isActive = true
@@ -208,10 +213,49 @@ class FilterViewController: UIViewController {
     }
 }
 
+
+//MARK: - func 기능 정리
 extension FilterViewController {
     
+    //view dismiss
     @objc func dismissFunc() {
         self.dismiss(animated: true)
+    }
+    
+    //change priority segment selected color
+    @objc func changePrioritySelectedColor() {
+        
+        switch prioritySegmentControll.selectedSegmentIndex {
+        case 0:
+            prioritySegmentControll.selectedSegmentTintColor = .green
+        case 1:
+            prioritySegmentControll.selectedSegmentTintColor = .yellow
+        case 2:
+            prioritySegmentControll.selectedSegmentTintColor = .red
+        default:
+            prioritySegmentControll.selectedSegmentTintColor = .white
+        }
+    }
+    
+    //filtering
+    @objc func tryFiltering() {
+        
+        filterData.isFinished = IsFinishedCase(rawValue: isFinishedSegmentControll.selectedSegmentIndex) ?? .all
+        filterData.priority = PriorityCase(rawValue: prioritySegmentControll.selectedSegmentIndex) ?? .all
+        
+        self.delegate?.changeFilterSet(filterData)
+        self.dismiss(animated: true)
+    }
+    
+    func ViewDataSetting(_ data: FilterSettingData) {
+        
+        filterData = data
+        
+        startDateLable.text = changeDateToString(Date(timeIntervalSince1970: filterData.startDay), true)
+        endDateLable.text = changeDateToString(Date(timeIntervalSince1970: filterData.endDay), true)
+        prioritySegmentControll.selectedSegmentIndex = filterData.priority.rawValue
+        changePrioritySelectedColor()
+        isFinishedSegmentControll.selectedSegmentIndex = filterData.isFinished.rawValue
     }
 }
 

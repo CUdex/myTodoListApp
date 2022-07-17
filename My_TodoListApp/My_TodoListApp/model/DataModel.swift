@@ -71,13 +71,13 @@ public struct UserDataModel {
 
 public struct FilterSettingData {
     
-    var startDay: Date = Date()
-    var endDay: Date = Date()
+    var startDay: TimeInterval = Date().timeIntervalSince1970
+    var endDay: TimeInterval = Date().timeIntervalSince1970 + 86400 - 1
     var isFinished: IsFinishedCase = .all
     var priority: PriorityCase = .all
 }
 
-enum PriorityCase {
+enum PriorityCase: Int {
     
     case low
     case middle
@@ -85,15 +85,21 @@ enum PriorityCase {
     case all
 }
 
-enum IsFinishedCase {
+enum IsFinishedCase: Int {
     
     case notFinished
     case finished
     case all
 }
 
-protocol TaskDataDeleteDelegate {
+//weak 선언을 위해 AnyObject 상속
+protocol TaskDataDeleteDelegate: AnyObject {
     
     func deleteTaskData(_ data: ToDoCellDataModel) -> Void
     func modifyTaskData(_ data: ToDoCellDataModel) -> Void
+}
+
+protocol FilterSettingDelegate: AnyObject {
+    
+    func changeFilterSet(_ data: FilterSettingData) -> Void
 }

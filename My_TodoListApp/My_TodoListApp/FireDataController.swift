@@ -14,6 +14,10 @@ class FireDataController {
     
     let db = Firestore.firestore()
     
+    deinit {
+        print("FireDataController - deinit")
+    }
+    
     func addData(_ data: ToDoCellDataModel, _ user: User, completion: @escaping () -> ()) -> Void {
         
         let userUid = user.uid

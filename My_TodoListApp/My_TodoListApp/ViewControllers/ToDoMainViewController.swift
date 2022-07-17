@@ -26,9 +26,11 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     var dataSource: UITableViewDiffableDataSource<Int, ToDoCellDataModel>!
     var snapshot: NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>!
     
-    var test = [ToDoCellDataModel]()
-    
     let dataController = FireDataController()
+    
+    var filterSet = FilterSettingData() // filter 조건
+    var filteredTaskData = [ToDoCellDataModel]() // filter된 data
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,7 +159,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         //섹션 추가
         snapshot.appendSections([0])
         // 아이템 추가
-        snapshot.appendItems(taskData, toSection: 0)
+        snapshot.appendItems(filteredTaskData, toSection: 0)
         // 현재 스냅샷 구현
         dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
     }
@@ -174,20 +176,21 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         
         dataController.getData(user) { data in
             self.taskData = data
-            self.applySnapshot()
+            self.changeFilterSet(self.filterSet)
         }
-        
     }
     
     @IBAction func scopeButtonAction(_ sender: Any) {
+        
         print("ToDoMain - scopeButtonAction")
         
         let filterVC = FilterViewController()
         
+        filterVC.delegate = self
+        filterVC.ViewDataSetting(filterSet)
         filterVC.sheetPresentationController?.detents = [.medium()]
         
         present(filterVC, animated: true)
-        
     }
     
     //MARK: - refresh 시 사용되는 액션
@@ -199,6 +202,37 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+}
+
+extension ToDoMainViewController: FilterSettingDelegate {
+    
+    //data filtering
+    func changeFilterSet(_ data: FilterSettingData) {
+        
+        print("changeFilterSet")
+        filterSet = data
+        
+        print(filterSet)
+        filteredTaskData = taskData.filter { inTaskData in
+            
+            let firstCondition = inTaskData.endDate <= filterSet.endDay && inTaskData.endDate >= filterSet.startDay
+            let secondCondition = inTaskData.startDate >= filterSet.startDay && inTaskData.endDate <= filterSet.endDay
+            let thirdCondition = inTaskData.startDate >= filterSet.startDay && inTaskData.startDate <= filterSet.endDay
+            var checkPriority = true
+            var checkFinished = true
+            
+            if filterSet.priority != .all {
+                checkPriority = (inTaskData.priority == filterSet.priority.rawValue)
+            }
+            if filterSet.isFinished != .all {
+                
+                let finish = (filterSet.isFinished == .finished ? true : false)
+                checkFinished = (finish == inTaskData.isFinish)
+            }
+            return (firstCondition || secondCondition || thirdCondition) && checkPriority && checkFinished
+        }
+        applySnapshot()
+    }
 }
 
 extension ToDoMainViewController: UITableViewDelegate {
@@ -216,7 +250,7 @@ extension ToDoMainViewController: UITableViewDelegate {
         guard let user = Auth.auth().currentUser else { return }
         
         //update 진행
-        dataController.updateData(taskData[indexPath.row], user) {
+        dataController.updateData(filteredTaskData[indexPath.row], user) {
             self.getTaskData()
         }
     }
