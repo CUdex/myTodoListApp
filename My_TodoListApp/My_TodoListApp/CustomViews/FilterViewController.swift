@@ -31,14 +31,14 @@ class FilterViewController: UIViewController {
         return addLable
     }()
     
-    let startDateLable: UILabel = {
+    let startDateLable: UITextField = {
         
-        let addLable = UILabel()
+        let addTextField = UITextField()
         
-        addLable.font = UIFont.systemFont(ofSize: 20)
+        addTextField.font = UIFont.systemFont(ofSize: 20)
         
-        addLable.translatesAutoresizingMaskIntoConstraints = false
-        return addLable
+        addTextField.translatesAutoresizingMaskIntoConstraints = false
+        return addTextField
     }()
     
     let middleLable: UILabel = {
@@ -51,13 +51,13 @@ class FilterViewController: UIViewController {
         return addLable
     }()
     
-    let endDateLable: UILabel = {
+    let endDateLable: UITextField = {
         
-        let addLable = UILabel()
+        let addTextField = UITextField()
         
-        addLable.font = UIFont.systemFont(ofSize: 20)
-        addLable.translatesAutoresizingMaskIntoConstraints = false
-        return addLable
+        addTextField.font = UIFont.systemFont(ofSize: 20)
+        addTextField.translatesAutoresizingMaskIntoConstraints = false
+        return addTextField
     }()
     
     let priorityTitleLable: UILabel = {
@@ -108,6 +108,15 @@ class FilterViewController: UIViewController {
         return addBtn
     }()
     
+    let setDatePicker: UIDatePicker = {
+        
+        let setDatePicker = UIDatePicker()
+        
+        setDatePicker.datePickerMode = .date
+        setDatePicker.preferredDatePickerStyle = .inline
+        return setDatePicker
+    }()
+    
     weak var delegate: FilterSettingDelegate?
     var filterData: FilterSettingData = FilterSettingData()
     
@@ -127,6 +136,8 @@ class FilterViewController: UIViewController {
     
     func stringPeriodDate() {
         
+        
+        // 날짜 표시 Lable
         self.view.addSubview(middleLable)
         
         middleLable.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor, constant: 0).isActive = true
@@ -145,6 +156,9 @@ class FilterViewController: UIViewController {
         endDateLable.leadingAnchor.constraint(equalTo: middleLable.trailingAnchor, constant: 20).isActive = true
         endDateLable.topAnchor.constraint(equalTo: periodTitleLable.bottomAnchor, constant: 10).isActive = true
         endDateLable.trailingAnchor.constraint(greaterThanOrEqualTo: safeArea.trailingAnchor, constant: -20).isActive = true
+        
+        //날짜 선택 data picker view 추가
+        setDatePicker.addTarget(self, action: #selector(self.dismissFunc), for: .valueChanged)
     }
     
     func addButton() {
