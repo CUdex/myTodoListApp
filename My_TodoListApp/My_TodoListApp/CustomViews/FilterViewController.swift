@@ -236,6 +236,10 @@ extension FilterViewController {
             
             self.filterData.startDay = date.zeroOfDay.timeIntervalSince1970
             self.startDateLable.text = self.changeDateToString(date, true)
+            if self.filterData.startDay > self.filterData.endDay {
+                self.filterData.endDay = self.filterData.startDay + self.oneDay - 1
+                self.endDateLable.text = self.changeDateToString(Date(timeIntervalSince1970: self.filterData.endDay), true)
+            }
         }
         present(pickerVC, animated: true)
     }
@@ -251,6 +255,14 @@ extension FilterViewController {
             
             self.filterData.endDay = date.zeroOfDay.timeIntervalSince1970 + self.oneDay - 1
             self.endDateLable.text = self.changeDateToString(date, true)
+            
+            if self.filterData.endDay < self.filterData.startDay {
+                
+                self.filterData.startDay = date.zeroOfDay.timeIntervalSince1970
+                self.startDateLable.text = self.changeDateToString(date, true)
+            }
+            
+            print(self.filterData.startDay, self.filterData.endDay)
         }
         present(pickerVC, animated: true)
     }

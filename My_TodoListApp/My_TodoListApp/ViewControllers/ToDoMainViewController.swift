@@ -209,7 +209,6 @@ extension ToDoMainViewController: FilterSettingDelegate {
     //data filtering
     func changeFilterSet(_ data: FilterSettingData) {
         
-        print("changeFilterSet")
         filterSet = data
         
         print(filterSet)
@@ -218,6 +217,7 @@ extension ToDoMainViewController: FilterSettingDelegate {
             let firstCondition = inTaskData.endDate <= filterSet.endDay && inTaskData.endDate >= filterSet.startDay
             let secondCondition = inTaskData.startDate >= filterSet.startDay && inTaskData.endDate <= filterSet.endDay
             let thirdCondition = inTaskData.startDate >= filterSet.startDay && inTaskData.startDate <= filterSet.endDay
+            let fourthCondition = inTaskData.startDate <= filterSet.startDay && inTaskData.endDate >= filterSet.endDay
             var checkPriority = true
             var checkFinished = true
             
@@ -229,7 +229,7 @@ extension ToDoMainViewController: FilterSettingDelegate {
                 let finish = (filterSet.isFinished == .finished ? true : false)
                 checkFinished = (finish == inTaskData.isFinish)
             }
-            return (firstCondition || secondCondition || thirdCondition) && checkPriority && checkFinished
+            return (firstCondition || secondCondition || thirdCondition || fourthCondition) && checkPriority && checkFinished
         }
         applySnapshot()
     }
