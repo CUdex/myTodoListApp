@@ -42,6 +42,7 @@
 		FD8854682873292900C45B37 /* detailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD8854662873292900C45B37 /* detailViewController.xib */; };
 		FD88546A287DAC5700C45B37 /* FireDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD885469287DAC5700C45B37 /* FireDataController.swift */; };
 		FD88546C28817C1100C45B37 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546B28817C1100C45B37 /* FilterViewController.swift */; };
+		FD88546E2886DA4700C45B37 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		FD8854662873292900C45B37 /* detailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = detailViewController.xib; sourceTree = "<group>"; };
 		FD885469287DAC5700C45B37 /* FireDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireDataController.swift; sourceTree = "<group>"; };
 		FD88546B28817C1100C45B37 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				FD8854652873292900C45B37 /* detailViewController.swift */,
 				FD8854662873292900C45B37 /* detailViewController.xib */,
 				FD88546B28817C1100C45B37 /* FilterViewController.swift */,
+				FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 			files = (
 				FD6B6EDD284CFE5C00DD7081 /* SignInViewController.swift in Sources */,
 				FD6423B12826595300789836 /* ToDoMainViewController.swift in Sources */,
+				FD88546E2886DA4700C45B37 /* DatePickerViewController.swift in Sources */,
 				FD6423AD2826595300789836 /* AppDelegate.swift in Sources */,
 				FD88546C28817C1100C45B37 /* FilterViewController.swift in Sources */,
 				FD6423AF2826595300789836 /* SceneDelegate.swift in Sources */,

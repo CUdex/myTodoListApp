@@ -63,7 +63,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("ToDoMain - willappear")
+        getTaskData()
     }
     
     override func viewDidAppear(_ animated: Bool) {

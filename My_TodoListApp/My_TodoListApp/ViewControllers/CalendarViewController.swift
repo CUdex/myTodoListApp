@@ -42,6 +42,7 @@ class CalendarViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        getTaskData()
     }
     
     //MARK: - calendar setting

@@ -31,14 +31,13 @@ class FilterViewController: UIViewController {
         return addLable
     }()
     
-    let startDateLable: UITextField = {
+    let startDateLable: UILabel = {
         
-        let addTextField = UITextField()
+        let addLable = UILabel()
         
-        addTextField.font = UIFont.systemFont(ofSize: 20)
-        
-        addTextField.translatesAutoresizingMaskIntoConstraints = false
-        return addTextField
+        addLable.font = UIFont.systemFont(ofSize: 20)
+        addLable.translatesAutoresizingMaskIntoConstraints = false
+        return addLable
     }()
     
     let middleLable: UILabel = {
@@ -51,13 +50,13 @@ class FilterViewController: UIViewController {
         return addLable
     }()
     
-    let endDateLable: UITextField = {
+    let endDateLable: UILabel = {
         
-        let addTextField = UITextField()
+        let addLable = UILabel()
         
-        addTextField.font = UIFont.systemFont(ofSize: 20)
-        addTextField.translatesAutoresizingMaskIntoConstraints = false
-        return addTextField
+        addLable.font = UIFont.systemFont(ofSize: 20)
+        addLable.translatesAutoresizingMaskIntoConstraints = false
+        return addLable
     }()
     
     let priorityTitleLable: UILabel = {
@@ -108,17 +107,9 @@ class FilterViewController: UIViewController {
         return addBtn
     }()
     
-    let setDatePicker: UIDatePicker = {
-        
-        let setDatePicker = UIDatePicker()
-        
-        setDatePicker.datePickerMode = .date
-        setDatePicker.preferredDatePickerStyle = .inline
-        return setDatePicker
-    }()
-    
     weak var delegate: FilterSettingDelegate?
     var filterData: FilterSettingData = FilterSettingData()
+    let oneDay: Double = 86400
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,7 +127,6 @@ class FilterViewController: UIViewController {
     
     func stringPeriodDate() {
         
-        
         // 날짜 표시 Lable
         self.view.addSubview(middleLable)
         
@@ -145,20 +135,23 @@ class FilterViewController: UIViewController {
 
         self.view.addSubview(startDateLable)
         
-        startDateLable.text = changeDateToString(Date(), true)
         startDateLable.leadingAnchor.constraint(greaterThanOrEqualTo: safeArea.leadingAnchor, constant: 20).isActive = true
         startDateLable.topAnchor.constraint(equalTo: periodTitleLable.bottomAnchor, constant: 10).isActive = true
         startDateLable.trailingAnchor.constraint(equalTo: middleLable.leadingAnchor, constant: -20).isActive = true
         
         self.view.addSubview(endDateLable)
         
-        endDateLable.text = changeDateToString(Date(), true)
         endDateLable.leadingAnchor.constraint(equalTo: middleLable.trailingAnchor, constant: 20).isActive = true
         endDateLable.topAnchor.constraint(equalTo: periodTitleLable.bottomAnchor, constant: 10).isActive = true
         endDateLable.trailingAnchor.constraint(greaterThanOrEqualTo: safeArea.trailingAnchor, constant: -20).isActive = true
         
-        //날짜 선택 data picker view 추가
-        setDatePicker.addTarget(self, action: #selector(self.dismissFunc), for: .valueChanged)
+        //gesture 추가
+        let tapStartLableGesture = UITapGestureRecognizer(target: self, action: #selector(startDatePicker))
+        let tapEndLableGesture = UITapGestureRecognizer(target: self, action: #selector(endDatePicker))
+        startDateLable.isUserInteractionEnabled = true
+        startDateLable.addGestureRecognizer(tapStartLableGesture)
+        endDateLable.isUserInteractionEnabled = true
+        endDateLable.addGestureRecognizer(tapEndLableGesture)
     }
     
     func addButton() {
@@ -230,6 +223,37 @@ class FilterViewController: UIViewController {
 
 //MARK: - func 기능 정리
 extension FilterViewController {
+    
+    
+    @objc func startDatePicker() {
+        
+        let pickerVC = DatePickerViewController()
+        
+        pickerVC.modalPresentationStyle = .overFullScreen
+        pickerVC.modalTransitionStyle = .crossDissolve
+        pickerVC.textHandler = {
+            date in
+            
+            self.filterData.startDay = date.zeroOfDay.timeIntervalSince1970
+            self.startDateLable.text = self.changeDateToString(date, true)
+        }
+        present(pickerVC, animated: true)
+    }
+    
+    @objc func endDatePicker() {
+        
+        let pickerVC = DatePickerViewController()
+        
+        pickerVC.modalPresentationStyle = .overFullScreen
+        pickerVC.modalTransitionStyle = .crossDissolve
+        pickerVC.textHandler = {
+            date in
+            
+            self.filterData.endDay = date.zeroOfDay.timeIntervalSince1970 + self.oneDay - 1
+            self.endDateLable.text = self.changeDateToString(date, true)
+        }
+        present(pickerVC, animated: true)
+    }
     
     //view dismiss
     @objc func dismissFunc() {

@@ -94,7 +94,7 @@ class AddToDoListViewController: UIViewController {
             startDateText.text = self.changeDateToString(datePicker.date, isAllDay)
         } else {
             if isAllDay {
-                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970 + oneDay
+                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970 + oneDay - 1
             } else {
                 endDate = datePicker.date.timeIntervalSince1970
             }

@@ -71,8 +71,8 @@ public struct UserDataModel {
 
 public struct FilterSettingData {
     
-    var startDay: TimeInterval = Date().timeIntervalSince1970
-    var endDay: TimeInterval = Date().timeIntervalSince1970 + 86400 - 1
+    var startDay: TimeInterval = Date().zeroOfDay.timeIntervalSince1970
+    var endDay: TimeInterval = Date().zeroOfDay.timeIntervalSince1970 + 86400 - 1
     var isFinished: IsFinishedCase = .all
     var priority: PriorityCase = .all
 }
