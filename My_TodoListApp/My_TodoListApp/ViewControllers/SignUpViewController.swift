@@ -54,12 +54,12 @@ class SignUpViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("SignUpViewController - viewWillAppear")
+        
         self.addKeyboardNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("SignUpViewController - viewWillDisappear")
+        
         self.removeKeyboardNotifications()
     }
     
@@ -112,15 +112,6 @@ class SignUpViewController: UIViewController {
             Auth.auth().createUser(withEmail: signUpUser.userEmail, password: signUpUser.password) { (result : AuthDataResult?, error : Error?) in
                 
                 if let user = result?.user {
-                    
-//                    guard let pvc = self.presentingViewController else { return }
-//                    guard let mainVC = pvc.presentingViewController else { return }
-//
-//                    self.dismiss(animated: true) {
-//                        pvc.dismiss(animated: true) {
-//                            mainVC.view.makeToast("\(user.email ?? "test" ) sign Up!!!")
-//                        }
-//                    }
                     
                     //firestore user collection에 유저 데이터도 함께 저장
                     self.db.collection("User").document(signUpUser.userEmail).setData([

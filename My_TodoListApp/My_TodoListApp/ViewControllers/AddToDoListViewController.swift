@@ -7,9 +7,6 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import Combine
 
 class AddToDoListViewController: UIViewController {
     
@@ -33,10 +30,16 @@ class AddToDoListViewController: UIViewController {
     var startDate = Date().timeIntervalSince1970
     var endDate = Date().timeIntervalSince1970
     var isAllDay = false
+    let oneDay: Double = 86400
+    @IBOutlet weak var dataActionBtn: UIButton!
+    
+    let dataController = FireDataController()
+    
+    var originTaskData: ToDoCellDataModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("AddToDoListViewController - viewDidLoad")
+        
         self.downKeyboardWhenTappedBackground() // 화면 터치시 키보드 내려감
         taskText.delegate = self // 글자 수 제한을 위한 delegate 설정
         discriptionText.delegate = self // ''
@@ -45,42 +48,40 @@ class AddToDoListViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .wheels // wheel 설정
         datePicker.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 150) //datepicker 위치 설정
         datePicker.setValue(UIColor.clear, forKey: "backgroundColor")
-        //datePicker.addTarget(self, action: #selector(changeDateInPicker(_:)), for: .valueChanged) // 날짜 선택 시 해당 날짜를 저장하는 함수 사용
         
         //pickerview 툴바 추가
         let pickerTool = UIToolbar()
         pickerTool.barStyle = .default
-        pickerTool.isTranslucent = true // 툴바 반투명 여부
-        pickerTool.sizeToFit() // 서브뷰만큼 툴바 크기를 맞춤
-        pickerTool.barTintColor = .gray
+        pickerTool.sizeToFit() //서브뷰만큼 툴바 크기를 맞춤
         //pickerview 툴바에 버튼 추가
         let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDone))
         let spaceInBar = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         let cancelBtn = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(onClickCancel))
         pickerTool.setItems([cancelBtn, spaceInBar, doneBtn], animated: true)
         pickerTool.isUserInteractionEnabled = true
-        
         //툴바 추가
         startDateText.inputView = datePicker // pickerview 추가
         startDateText.inputAccessoryView = pickerTool // toolbar 추가
         endDateText.inputView = datePicker
         endDateText.inputAccessoryView = pickerTool
+        
         priority.selectedSegmentTintColor = .green
+        
+        modifyDataSetting()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("AddToDoListViewController - viewWillAppear")
+        
         self.addKeyboardNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("AddToDoListViewController - viewWillDisappear")
+        
         self.removeKeyboardNotifications()
     }
     
     //MARK: - 텍스트 필드 클릭 시 datepicker 출력 및 텍스트 필드에 세팅
     @objc private func onClickDone() {
-        print("AddToDoListViewController - onClickDone")
         
         if startDateText.resignFirstResponder() {
             if isAllDay {
@@ -89,38 +90,24 @@ class AddToDoListViewController: UIViewController {
                 startDate = datePicker.date.timeIntervalSince1970
             }
 
-            startDateText.text = changeDateToString(datePicker.date)
+            startDateText.text = self.changeDateToString(datePicker.date, isAllDay)
         } else {
             if isAllDay {
-                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970
+                endDate = datePicker.date.zeroOfDay.timeIntervalSince1970 + oneDay - 1
             } else {
                 endDate = datePicker.date.timeIntervalSince1970
             }
-            endDateText.text = changeDateToString(datePicker.date)
+            endDateText.text = self.changeDateToString(datePicker.date, isAllDay)
         }
         self.view.endEditing(true)
     }
     @objc private func onClickCancel() {
-        print("AddToDoListViewController - onClickCancel")
-        self.view.endEditing(true)
-    }
-    
-    //MARK: - 날짜 선택 시 변수에 날짜 저장하도록 구현
-    private func changeDateToString(_ dateDate: Date) -> String {
-        print("AddToDoListViewController - changeDateToString")
-        let dateFormatter = DateFormatter()
         
-        if isAllDay {
-            dateFormatter.dateFormat = "yyyy. MM. dd(E)"
-        } else {
-            dateFormatter.dateFormat = "yyyy. MM. dd HH시 mm분(E)"
-        }
-        return dateFormatter.string(from: dateDate)
+        self.view.endEditing(true)
     }
     
     //MARK: - all day 설정에 따른 버튼 변화
     @IBAction func changeSettingAllDay(_ sender: Any) {
-        print("AddToDoListViewController - changeSettingAllDay")
         
         isAllDay = isAllDay ? false : true
         
@@ -188,32 +175,43 @@ class AddToDoListViewController: UIViewController {
     //MARK: - Task 추가
     @IBAction func addTask(_ sender: Any) {
         
-        guard let userUid = Auth.auth().currentUser?.uid else { return }
+        guard let user = Auth.auth().currentUser else { return }
         
         
         if taskText.text == "" || endDateText.text == "" || startDateText.text == "" {
             self.view.makeToast("please write title or date")
         } else {
             
-            let db = Firestore.firestore()
-            
             let addTaskData = ToDoCellDataModel(priority: self.priority.selectedSegmentIndex, title: self.taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text!, isAllDay: isAllDay, isFinish: false)
             
-            
-            //MARK: - 데이터 추가
-            do {
-                try _ = db.collection("ToDoList").document(userUid).collection("Task").addDocument(from: addTaskData) { err in
-                    if err == nil {
-                        print("add document -- who \(userUid)")
-                        self.dismiss(animated: true)
-                    }
+            if let data = originTaskData {
+                dataController.modifyData(data, addTaskData, user) {
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadTask"), object: nil)
+                    self.dismiss(animated: true) }
+            } else {
+                dataController.addData(addTaskData, user) {
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadTask"), object: nil)
+                    self.dismiss(animated: true)
                 }
-            } catch let error {
-                self.view.makeToast("error")
-                print("Error writing city to Firestore: \(error)")
             }
         }
+    }
+    
+    func modifyDataSetting() {
         
+        if let data = originTaskData {
+            
+            dataActionBtn.configuration?.attributedTitle = "modify"
+            taskText.text = data.title
+            discriptionText.text = data.description
+            startDate = data.startDate
+            endDate = data.endDate
+            startDateText.text = changeDateToString(Date(timeIntervalSince1970: data.startDate), data.isAllDay)
+            endDateText.text = changeDateToString(Date(timeIntervalSince1970: data.endDate), data.isAllDay)
+            priority.selectedSegmentIndex = data.priority
+            isAllDay = data.isAllDay
+            changeButtonFont()
+        }
     }
 }
 
@@ -222,7 +220,6 @@ extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
     //MARK: - 글자 수 제한
     //task
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        print("AddToDoListViewController - textField")
 
         let maxLenth = 10
         
@@ -237,7 +234,6 @@ extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
     
     //discription
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        print("AddToDoListViewController - textView")
 
         //done 누르면 키보드 내려감
         if(text == "\n") {
@@ -282,5 +278,4 @@ extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
             textView.textColor = UIColor.lightGray
         }
     }
-
 }

@@ -7,9 +7,7 @@
 
 import Foundation
 
-
-
-public class ToDoCellDataModel: Codable {
+public struct ToDoCellDataModel: Codable, Hashable {
     
     let priority: Int
     let title: String
@@ -18,16 +16,6 @@ public class ToDoCellDataModel: Codable {
     let description: String
     let isAllDay: Bool
     let isFinish: Bool
-    
-    init(priority: Int, title: String, startDate: TimeInterval, endDate: TimeInterval, description: String, isAllDay: Bool, isFinish: Bool) {
-        self.priority = priority
-        self.title = title
-        self.startDate = startDate
-        self.endDate = endDate
-        self.description = description
-        self.isAllDay = isAllDay
-        self.isFinish = isFinish
-    }
     
     enum CodingKeys: String, CodingKey {
         
@@ -40,22 +28,56 @@ public class ToDoCellDataModel: Codable {
         case isFinish
         
     }
-//    var taskData: [String: Any] {
-//        return [
-//            "priority": priority,
-//            "title": title,
-//            "startDate": startDate,
-//            "endDate": endDate,
-//            "description": description,
-//            "isAllDay": isAllDay,
-//            "isFinish": isFinish
-//        ]
-//    }
+}
+
+// 데이터 싱글톤 구현
+public class TaskData {
+    
+    static let share = TaskData()
+    var data = [ToDoCellDataModel]()
+    
+    private init() {}
 }
 
 public struct UserDataModel {
+    
     var userEmail: String
     var password: String
     var userName: String?
     var userPhoneNumber: String?
+}
+
+public struct FilterSettingData {
+    
+    var startDay: TimeInterval = Date().zeroOfDay.timeIntervalSince1970
+    var endDay: TimeInterval = Date().zeroOfDay.timeIntervalSince1970 + 86400 - 1
+    var isFinished: IsFinishedCase = .all
+    var priority: PriorityCase = .all
+}
+
+enum PriorityCase: Int {
+    
+    case low
+    case middle
+    case high
+    case all
+}
+
+enum IsFinishedCase: Int {
+    
+    case notFinished
+    case finished
+    case all
+}
+
+//weak 선언을 위해 AnyObject 상속
+protocol TaskDataDeleteDelegate: AnyObject {
+    
+    func deleteTaskData(_ data: ToDoCellDataModel) -> Void
+    func modifyTaskData(_ data: ToDoCellDataModel) -> Void
+}
+
+protocol FilterSettingDelegate: AnyObject {
+    
+    func changeFilterSet(_ data: FilterSettingData) -> Void
 }

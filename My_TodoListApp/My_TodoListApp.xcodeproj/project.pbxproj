@@ -35,6 +35,14 @@
 		FD6B6ED9284CF1F700DD7081 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FD6B6ED8284CF1F700DD7081 /* FirebaseFirestoreSwift */; };
 		FD6B6EDB284CF2F500DD7081 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD6B6EDA284CF2F500DD7081 /* GoogleService-Info.plist */; };
 		FD6B6EDD284CFE5C00DD7081 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B6EDC284CFE5C00DD7081 /* SignInViewController.swift */; };
+		FD88545F286850F500C45B37 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88545E286850F500C45B37 /* CalendarViewController.swift */; };
+		FD885462286858A100C45B37 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = FD885461286858A100C45B37 /* FSCalendar */; };
+		FD885464286C873100C45B37 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */; };
+		FD8854672873292900C45B37 /* detailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8854652873292900C45B37 /* detailViewController.swift */; };
+		FD8854682873292900C45B37 /* detailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD8854662873292900C45B37 /* detailViewController.xib */; };
+		FD88546A287DAC5700C45B37 /* FireDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD885469287DAC5700C45B37 /* FireDataController.swift */; };
+		FD88546C28817C1100C45B37 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546B28817C1100C45B37 /* FilterViewController.swift */; };
+		FD88546E2886DA4700C45B37 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +65,13 @@
 		FD6B6EB2284B8D9100DD7081 /* AppSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingViewController.swift; sourceTree = "<group>"; };
 		FD6B6EDA284CF2F500DD7081 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FD6B6EDC284CFE5C00DD7081 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		FD88545E286850F500C45B37 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		FD8854652873292900C45B37 /* detailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detailViewController.swift; sourceTree = "<group>"; };
+		FD8854662873292900C45B37 /* detailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = detailViewController.xib; sourceTree = "<group>"; };
+		FD885469287DAC5700C45B37 /* FireDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireDataController.swift; sourceTree = "<group>"; };
+		FD88546B28817C1100C45B37 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD61377E284E2F91000B7AD7 /* Toast in Frameworks */,
+				FD885462286858A100C45B37 /* FSCalendar in Frameworks */,
 				FD6B6ED3284CF1F700DD7081 /* FirebaseDatabaseSwift in Frameworks */,
 				FD6B6ED1284CF1F700DD7081 /* FirebaseDatabase in Frameworks */,
 				FD6B6EC9284CF1F600DD7081 /* FirebaseAppCheck in Frameworks */,
@@ -100,12 +116,14 @@
 		FD6423AB2826595300789836 /* My_TodoListApp */ = {
 			isa = PBXGroup;
 			children = (
-				FD6B6E8C283539C100DD7081 /* CustomButtons */,
+				FD6B6E8C283539C100DD7081 /* CustomViews */,
 				FD6423C4282C9A4300789836 /* ViewControllers */,
 				FD6423C3282659C500789836 /* model */,
 				FD6423AC2826595300789836 /* AppDelegate.swift */,
+				FD885469287DAC5700C45B37 /* FireDataController.swift */,
 				FD6423AE2826595300789836 /* SceneDelegate.swift */,
 				FD6423C5282C9D5700789836 /* MainTableViewCell.swift */,
+				FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */,
 				FD6B6E91283FB55600DD7081 /* extensions.swift */,
 				FD6423B22826595300789836 /* Main.storyboard */,
 				FD6B6EDA284CF2F500DD7081 /* GoogleService-Info.plist */,
@@ -134,16 +152,21 @@
 				FD6B6EB2284B8D9100DD7081 /* AppSettingViewController.swift */,
 				FD6B6EDC284CFE5C00DD7081 /* SignInViewController.swift */,
 				FD47F4C8284DB0D6002B1AAE /* SignUpViewController.swift */,
+				FD88545E286850F500C45B37 /* CalendarViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		FD6B6E8C283539C100DD7081 /* CustomButtons */ = {
+		FD6B6E8C283539C100DD7081 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
 				FD6B6E8D28353A3F00DD7081 /* MyCustomCircleButton.swift */,
+				FD8854652873292900C45B37 /* detailViewController.swift */,
+				FD8854662873292900C45B37 /* detailViewController.xib */,
+				FD88546B28817C1100C45B37 /* FilterViewController.swift */,
+				FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */,
 			);
-			path = CustomButtons;
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +197,7 @@
 				FD6B6ED6284CF1F700DD7081 /* FirebaseFirestoreCombine-Community */,
 				FD6B6ED8284CF1F700DD7081 /* FirebaseFirestoreSwift */,
 				FD61377D284E2F91000B7AD7 /* Toast */,
+				FD885461286858A100C45B37 /* FSCalendar */,
 			);
 			productName = My_TodoListApp;
 			productReference = FD6423A92826595300789836 /* My_TodoListApp.app */;
@@ -206,6 +230,7 @@
 			packageReferences = (
 				FD6B6EC5284CF1F600DD7081 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				FD61377C284E2F91000B7AD7 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				FD885460286858A100C45B37 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = FD6423AA2826595300789836 /* Products */;
 			projectDirPath = "";
@@ -224,6 +249,7 @@
 				FD6423BC2826595400789836 /* LaunchScreen.storyboard in Resources */,
 				FD6423B92826595400789836 /* Assets.xcassets in Resources */,
 				FD6B6EDB284CF2F500DD7081 /* GoogleService-Info.plist in Resources */,
+				FD8854682873292900C45B37 /* detailViewController.xib in Resources */,
 				FD6423C8282C9D5700789836 /* MainTableViewCell.xib in Resources */,
 				FD6423B42826595300789836 /* Main.storyboard in Resources */,
 			);
@@ -238,12 +264,18 @@
 			files = (
 				FD6B6EDD284CFE5C00DD7081 /* SignInViewController.swift in Sources */,
 				FD6423B12826595300789836 /* ToDoMainViewController.swift in Sources */,
+				FD88546E2886DA4700C45B37 /* DatePickerViewController.swift in Sources */,
 				FD6423AD2826595300789836 /* AppDelegate.swift in Sources */,
+				FD88546C28817C1100C45B37 /* FilterViewController.swift in Sources */,
 				FD6423AF2826595300789836 /* SceneDelegate.swift in Sources */,
 				FD6B6E8E28353A3F00DD7081 /* MyCustomCircleButton.swift in Sources */,
 				FD6B6E90283A77DB00DD7081 /* AddToDoListViewController.swift in Sources */,
 				FD47F4C9284DB0D6002B1AAE /* SignUpViewController.swift in Sources */,
+				FD88546A287DAC5700C45B37 /* FireDataController.swift in Sources */,
 				FD6B6EB3284B8D9100DD7081 /* AppSettingViewController.swift in Sources */,
+				FD8854672873292900C45B37 /* detailViewController.swift in Sources */,
+				FD885464286C873100C45B37 /* CalendarCollectionViewCell.swift in Sources */,
+				FD88545F286850F500C45B37 /* CalendarViewController.swift in Sources */,
 				FD6B6E92283FB55600DD7081 /* extensions.swift in Sources */,
 				FD6423B72826595300789836 /* My_TodoListApp.xcdatamodeld in Sources */,
 				FD6423C7282C9D5700789836 /* MainTableViewCell.swift in Sources */,
@@ -483,6 +515,14 @@
 				kind = branch;
 			};
 		};
+		FD885460286858A100C45B37 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -540,6 +580,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FD6B6EC5284CF1F600DD7081 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		FD885461286858A100C45B37 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD885460286858A100C45B37 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 

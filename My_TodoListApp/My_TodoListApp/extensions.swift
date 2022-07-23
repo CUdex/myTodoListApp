@@ -11,6 +11,33 @@ import UIKit
 
 extension UIViewController {
     
+    //MARK: - 날짜 선택 시 변수에 날짜 저장하도록 구현
+    //date -> formatter
+    func changeDateToString(_ dateDate: Date, _ isAllDay: Bool) -> String {
+        print("AddToDoListViewController - changeDateToString")
+        let dateFormatter = DateFormatter()
+        
+        if isAllDay {
+            dateFormatter.dateFormat = "MM. dd (E)"
+        } else {
+            dateFormatter.dateFormat = "MM. dd HH:mm (E)"
+        }
+        return dateFormatter.string(from: dateDate)
+    }
+    
+    func taskChangeDateToString(_ dateDate: Date, _ endDate: Date, _ isAllDay: Bool) -> String {
+        print("AddToDoListViewController - changeDateToString")
+        let dateFormatter = DateFormatter()
+        
+        if isAllDay {
+            dateFormatter.dateFormat = "MM. dd (E)"
+        } else {
+            dateFormatter.dateFormat = "MM. dd HH:mm (E)"
+        }
+        return "\(dateFormatter.string(from: dateDate)) ~ \(dateFormatter.string(from: endDate))"
+    }
+    
+    
     //MARK: - 배경 터치 시 키보드 다운
     func downKeyboardWhenTappedBackground() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(downKeyboard))
@@ -60,6 +87,22 @@ extension UIViewController {
             self.view.frame.origin.y += keyboardHeight
         }
     }
+    
+    //MARK: - 완료에 따른 텍스트 변화
+    func changeStrikeFont(text: String, isFinish: Bool) -> NSMutableAttributedString {
+        
+        let attributeString = NSMutableAttributedString(string: text)
+        
+        if isFinish {
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.black, range: (text as NSString).range(of: text))
+            attributeString.addAttribute(.strikethroughStyle, value: 1, range: (text as NSString).range(of: text))
+        } else {
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.black, range: (text as NSString).range(of: text))
+            attributeString.addAttribute(.strikethroughStyle, value: 0, range: (text as NSString).range(of: text))
+        }
+        
+        return attributeString
+    }
 }
 
 
@@ -86,9 +129,39 @@ extension UITextFieldDelegate {
 }
 
 extension Date {
-    
     // 선택된 날짜의 00시 00분 00초 값
     var zeroOfDay: Date {
         return Calendar.current.startOfDay(for: self)
+    }
+}
+
+extension UIButton {
+    
+    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
+        
+        UIGraphicsBeginImageContext(CGSize(width: 1.0, height: 1.0))
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        context.setFillColor(color.cgColor)
+        context.fill(CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+        
+        let backgroundImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        setBackgroundImage(backgroundImage, for: state)
+    }
+}
+
+public extension UIImage {
+    
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        guard let cgImage = image?.cgImage else { return nil }
+        self.init(cgImage: cgImage)
     }
 }
