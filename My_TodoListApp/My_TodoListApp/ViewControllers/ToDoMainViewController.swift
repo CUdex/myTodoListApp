@@ -13,7 +13,8 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var toDoListTable: UITableView!
     
-    var taskData = [ToDoCellDataModel]()
+    //var taskData = [ToDoCellDataModel]()
+    let singletonTaskData = TaskData.share
 
     fileprivate let buttonWidth: CGFloat = 80
     fileprivate let buttonHeight: CGFloat = 80
@@ -63,7 +64,9 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getTaskData()
+        
+        print("ToDoMain - viewwillappear")
+        changeFilterSet(filterSet)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -146,7 +149,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         
         detailVC.delegate = self
         
-        detailVC.data = taskData[row]
+        detailVC.data = filteredTaskData[row]
         
         self.present(detailVC, animated: true)
     }
@@ -162,6 +165,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         snapshot.appendItems(filteredTaskData, toSection: 0)
         // 현재 스냅샷 구현
         dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
+        print("ToDoMain \(filteredTaskData)")
     }
     
     //MARK: - get data
@@ -175,7 +179,8 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         dataController.getData(user) { data in
-            self.taskData = data
+            //self.taskData = data
+            self.singletonTaskData.data = data
             self.changeFilterSet(self.filterSet)
         }
     }
@@ -212,7 +217,7 @@ extension ToDoMainViewController: FilterSettingDelegate {
         filterSet = data
         
         print(filterSet)
-        filteredTaskData = taskData.filter { inTaskData in
+        filteredTaskData = singletonTaskData.data.filter { inTaskData in
             
             let firstCondition = inTaskData.endDate <= filterSet.endDay && inTaskData.endDate >= filterSet.startDay
             let secondCondition = inTaskData.startDate >= filterSet.startDay && inTaskData.endDate <= filterSet.endDay
@@ -304,7 +309,8 @@ extension ToDoMainViewController {
     
     @objc func notiClear(_ noti: NSNotification) {
         print("ToDoMain - notiClear")
-        self.taskData.removeAll()
+        //self.taskData.removeAll()
+        self.singletonTaskData.data.removeAll()
         getTaskData()
     }
     

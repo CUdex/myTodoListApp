@@ -28,37 +28,15 @@ public struct ToDoCellDataModel: Codable, Hashable {
         case isFinish
         
     }
+}
+
+// 데이터 싱글톤 구현
+public class TaskData {
     
-//    init(priority: Int, title: String, startDate: TimeInterval, endDate: TimeInterval, description: String, isAllDay: Bool, isFinish: Bool) {
-//
-//        self.priority = priority
-//        self.title = title
-//        self.startDate = startDate
-//        self.endDate = endDate
-//        self.description = description
-//        self.isAllDay = isAllDay
-//        self.isFinish = isFinish
-//    }
-//
-//    public static func ==(lhs: ToDoCellDataModel, rhs: ToDoCellDataModel) -> Bool {
-//      return lhs.priority == rhs.priority
-//    }
-//
-//    public func hash(into hasher: inout Hasher) {
-//      hasher.combine(priority)
-//    }
+    static let share = TaskData()
+    var data = [ToDoCellDataModel]()
     
-//    var taskData: [String: Any] {
-//        return [
-//            "priority": priority,
-//            "title": title,
-//            "startDate": startDate,
-//            "endDate": endDate,
-//            "description": description,
-//            "isAllDay": isAllDay,
-//            "isFinish": isFinish
-//        ]
-//    }
+    private init() {}
 }
 
 public struct UserDataModel {

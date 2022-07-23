@@ -15,7 +15,8 @@ class CalendarViewController: UIViewController {
     @IBOutlet weak var calnedarView: FSCalendar!
     @IBOutlet weak var collectionVIew: UICollectionView!
     
-    var taskData = [ToDoCellDataModel]()
+    //var taskData = [ToDoCellDataModel]()
+    let singletonTaskData = TaskData.share
     var calendarData = [[String:Any]]()
     
     //diffable을 위한 설정
@@ -23,12 +24,10 @@ class CalendarViewController: UIViewController {
     var snapshot: NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>!
     
     let oneDay: Double = 86400
-    
     var countPriority = Set<Int>()
-    
     var getTaskDayData = [ToDoCellDataModel]()
-    
     let dataController = FireDataController()
+    var lastSelectedDate = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +41,9 @@ class CalendarViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getTaskData()
+        
+        print("calendar - viewWillAppear")
+        setDateData(date: lastSelectedDate)
     }
     
     //MARK: - calendar setting
@@ -72,7 +73,7 @@ extension CalendarViewController {
     //MARK: - get data
     func getTaskData()  {
         
-        print("ToDoMain - getTaskData")
+        print("calendar - getTaskData")
         guard let user = Auth.auth().currentUser else {
             self.calnedarView.reloadData()
             self.applyData()
@@ -81,15 +82,14 @@ extension CalendarViewController {
         
         dataController.getData(user) { data in
             
-            self.taskData = data
+            self.singletonTaskData.data = data
             
             self.calendarData = self.changeTimeAndPriorityToCalendarData() // 전체 데이터 저장 후 calendar 표현을 위한 date, priority 저장
             
             self.calnedarView.reloadData() // 달력 dot 표시
             
             // 선택된 날짜의 데이터 표현
-            guard let selectDate = self.calnedarView.selectedDate else { return }
-            self.setDateData(date: selectDate)
+            self.setDateData(date: self.lastSelectedDate)
         }
     }
     
@@ -144,6 +144,7 @@ extension CalendarViewController {
         snapshot.appendItems(getTaskDayData, toSection: 0)
         // 현재 스냅샷 구현
         dayTaskData.apply(snapshot, animatingDifferences: true, completion: nil)
+        print("calendar \(getTaskDayData)")
     }
     
     //해당 계정이 가지고 있는 전체 데이터에서 선택된 날짜에 포함된 데이터 객체 filter
@@ -151,7 +152,7 @@ extension CalendarViewController {
         
         let start = dateData.timeIntervalSince1970
         
-        getTaskDayData = taskData.filter { inTaskData in
+        getTaskDayData = singletonTaskData.data.filter { inTaskData in
             let startDate = Date(timeIntervalSince1970: inTaskData.startDate).zeroOfDay.timeIntervalSince1970
             
             return startDate <= start && inTaskData.endDate > start
@@ -176,7 +177,7 @@ extension CalendarViewController {
     
     @objc func notiClear(_ noti: NSNotification) {
         print("ToDoMain - notiClear")
-        self.taskData.removeAll()
+        self.singletonTaskData.data.removeAll()
         getTaskData()
     }
     
@@ -242,7 +243,7 @@ extension CalendarViewController: FSCalendarDataSource {
         print("changeTimeToDate")
         var originDateData = [[String:Any]]()
         
-        for slicingData in taskData {
+        for slicingData in singletonTaskData.data {
             originDateData.append(contentsOf: getArrayDateAndPriority(startDate: slicingData.startDate, endDate: slicingData.endDate, priority: slicingData.priority))
         }
         
@@ -334,8 +335,9 @@ extension CalendarViewController: FSCalendarDelegate {
     
     //해당 날짜 클릭 시 date정보 가져오기
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("\(date)")
-        setDateData(date: date)
+        
+        lastSelectedDate = date
+        setDateData(date: lastSelectedDate)
     }
 }
 
