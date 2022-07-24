@@ -14,7 +14,7 @@ extension UIViewController {
     //MARK: - 날짜 선택 시 변수에 날짜 저장하도록 구현
     //date -> formatter
     func changeDateToString(_ dateDate: Date, _ isAllDay: Bool) -> String {
-        print("AddToDoListViewController - changeDateToString")
+        
         let dateFormatter = DateFormatter()
         
         if isAllDay {
@@ -26,7 +26,7 @@ extension UIViewController {
     }
     
     func taskChangeDateToString(_ dateDate: Date, _ endDate: Date, _ isAllDay: Bool) -> String {
-        print("AddToDoListViewController - changeDateToString")
+        
         let dateFormatter = DateFormatter()
         
         if isAllDay {

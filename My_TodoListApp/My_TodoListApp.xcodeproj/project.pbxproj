@@ -43,6 +43,7 @@
 		FD88546A287DAC5700C45B37 /* FireDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD885469287DAC5700C45B37 /* FireDataController.swift */; };
 		FD88546C28817C1100C45B37 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546B28817C1100C45B37 /* FilterViewController.swift */; };
 		FD88546E2886DA4700C45B37 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */; };
+		FD885470288C3E8200C45B37 /* SqlLiteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD88546F288C3E8200C45B37 /* SqlLiteController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		FD885469287DAC5700C45B37 /* FireDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireDataController.swift; sourceTree = "<group>"; };
 		FD88546B28817C1100C45B37 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		FD88546D2886DA4700C45B37 /* DatePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
+		FD88546F288C3E8200C45B37 /* SqlLiteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqlLiteController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				FD885469287DAC5700C45B37 /* FireDataController.swift */,
 				FD6423AE2826595300789836 /* SceneDelegate.swift */,
 				FD6423C5282C9D5700789836 /* MainTableViewCell.swift */,
+				FD88546F288C3E8200C45B37 /* SqlLiteController.swift */,
 				FD885463286C873100C45B37 /* CalendarCollectionViewCell.swift */,
 				FD6B6E91283FB55600DD7081 /* extensions.swift */,
 				FD6423B22826595300789836 /* Main.storyboard */,
@@ -278,6 +281,7 @@
 				FD88545F286850F500C45B37 /* CalendarViewController.swift in Sources */,
 				FD6B6E92283FB55600DD7081 /* extensions.swift in Sources */,
 				FD6423B72826595300789836 /* My_TodoListApp.xcdatamodeld in Sources */,
+				FD885470288C3E8200C45B37 /* SqlLiteController.swift in Sources */,
 				FD6423C7282C9D5700789836 /* MainTableViewCell.swift in Sources */,
 				FD6423CA282C9D9600789836 /* DataModel.swift in Sources */,
 			);

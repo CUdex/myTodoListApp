@@ -12,14 +12,14 @@ import Toast
 class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var toDoListTable: UITableView!
+    @IBOutlet weak var mainLable: UILabel!
     
-    //var taskData = [ToDoCellDataModel]()
     let singletonTaskData = TaskData.share
+    let sqliteDB = SqlLiteController.share
 
     fileprivate let buttonWidth: CGFloat = 80
     fileprivate let buttonHeight: CGFloat = 80
     var addListButton: MyCustomCircleButton = MyCustomCircleButton()
-    //let spacingSection = 10.0
     
     let refresh = UIRefreshControl()
     
@@ -31,7 +31,6 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var filterSet = FilterSettingData() // filter 조건
     var filteredTaskData = [ToDoCellDataModel]() // filter된 data
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +47,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         //create button
         createButton()
         
-        addSignInSuccessNotifications() //로그인 성공 시 데이터 리로드
+        addNotifications() //notifications observer 등록
         //refresh 기능 추가
         toDoListTable.refreshControl = refresh
         toDoListTable.refreshControl?.addTarget(self, action: #selector(reFreshAction), for: .valueChanged)
@@ -173,6 +172,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         dataController.getData(user) { data in
             //self.taskData = data
             self.singletonTaskData.data = data
+            NotificationCenter.default.post(name: Notification.Name("CalendarReloadTask"), object: nil)
             self.changeFilterSet(self.filterSet)
         }
     }
@@ -281,12 +281,15 @@ extension ToDoMainViewController {
     }
     
     
-    //MARK: - 로그인 성공 시 데이터 리로드
-    func addSignInSuccessNotifications(){
+    //MARK: - 로그인 성공 시 데이터 리로드 및 background 변경에 따른 mode 변경
+    func addNotifications(){
+        
         // 로그인 성공 시 설정 화면의 멘트 수정을 위한 노티 추가
         NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload), name: Notification.Name("reloadTask") , object: nil)
         // 로그아웃 시 데이터 초기화
         NotificationCenter.default.addObserver(self, selector: #selector(self.notiClear), name: Notification.Name("logoutTask"), object: nil)
+        // background mode 변경
+        NotificationCenter.default.addObserver(self, selector: #selector(self.changeBackgroundMode), name: Notification.Name("changeBackgroundMode"), object: nil)
     }
     
     @objc func notiReload(_ noti: NSNotification) {
@@ -299,6 +302,18 @@ extension ToDoMainViewController {
         //self.taskData.removeAll()
         self.singletonTaskData.data.removeAll()
         getTaskData()
+    }
+    
+    // int 값 조회하여 background mode 변경
+    @objc func changeBackgroundMode(_ noti: NSNotification) {
+        
+        if sqliteDB.isDarkMode == 1 {
+            
+            mainLable.textColor = .black
+        } else {
+            
+            mainLable.textColor = .systemBlue
+        }
     }
     
     

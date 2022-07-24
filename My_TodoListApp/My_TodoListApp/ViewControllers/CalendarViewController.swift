@@ -17,6 +17,7 @@ class CalendarViewController: UIViewController {
     
     //var taskData = [ToDoCellDataModel]()
     let singletonTaskData = TaskData.share
+    let sqliteDB = SqlLiteController.share
     var calendarData = [[String:Any]]()
     
     //diffable을 위한 설정
@@ -36,7 +37,7 @@ class CalendarViewController: UIViewController {
         settingCalendar()
         settingCollectionView()
         getTaskData()
-        addSignInSuccessNotifications()
+        addNotifications()
         addLongGesture()
     }
     
@@ -161,22 +162,29 @@ extension CalendarViewController {
     }
     
     //notification 추가
-    func addSignInSuccessNotifications(){
+    func addNotifications(){
         // 로그인 성공 시 설정 화면의 멘트 수정을 위한 노티 추가
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload), name: Notification.Name("reloadTask") , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload), name: Notification.Name("CalendarReloadTask") , object: nil)
         // 로그아웃 시 데이터 초기화
         NotificationCenter.default.addObserver(self, selector: #selector(self.notiClear), name: Notification.Name("logoutTask"), object: nil)
+        // background mode 변경
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notiClear), name: Notification.Name("changeBackgroundMode"), object: nil)
     }
     
     @objc func notiReload(_ noti: NSNotification) {
-        
-        getTaskData()
+
+        self.calendarData = self.changeTimeAndPriorityToCalendarData()
+        calnedarView.reloadData()
+        lastSelectedDate = Date()
+        setDateData(date: lastSelectedDate)
     }
     
     @objc func notiClear(_ noti: NSNotification) {
         
-        self.singletonTaskData.data.removeAll()
-        getTaskData()
+        getTaskDayData.removeAll()
+        applyData()
+        calendarData.removeAll()
+        calnedarView.reloadData()
     }
     
     //MARK: - detail view

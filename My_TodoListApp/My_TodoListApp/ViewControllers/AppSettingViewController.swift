@@ -12,37 +12,94 @@ class AppSettingViewController: UIViewController {
 
     @IBOutlet weak var helloUserLable: UILabel!
     @IBOutlet weak var signOutButton: UIButton!
+    @IBOutlet weak var backgrounLable: UILabel!
+    @IBOutlet weak var blackModeSwitch: UISwitch!
+    
+    var isDarkStatusBarStyle = false
+    let sqliteDB = SqlLiteController.share
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        
+        if isDarkStatusBarStyle {
+            return .lightContent
+        } else {
+            return .darkContent
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.addSignInSuccessNotifications()
+        addSignInSuccessNotifications()
+        settingSwitchUISwitch()
     }
 
     
     override func viewWillAppear(_ animated: Bool) {
-        reloadLableAndButtonTitle()
+    }
+    
+    func settingSwitchUISwitch() {
+        
+        let isDarkMode = sqliteDB.isDarkMode
+        
+        if isDarkMode == 1 {
+            
+            blackModeSwitch.isOn = false
+        } else {
+            
+            blackModeSwitch.isOn = true
+        }
     }
     
     @IBAction func signOutAction(_ sender: Any) {
         
         if Auth.auth().currentUser != nil {
             
-            do {
-                try Auth.auth().signOut()
-                self.view.makeToast("Sign Out")
-                reloadLableAndButtonTitle()
-                NotificationCenter.default.post(name: Notification.Name("logoutTask"), object: nil)
-            } catch let signOutError as NSError {
-                print ("Error signing out: %@", signOutError)
-            }
+            let alert = UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까?", preferredStyle: .alert)
             
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            alert.addAction(UIAlertAction(title: "Ok", style: .destructive) { _ in
+                
+                do {
+                    try Auth.auth().signOut()
+                    self.view.makeToast("Sign Out")
+                    self.reloadLableAndButtonTitle()
+                    NotificationCenter.default.post(name: Notification.Name("logoutTask"), object: nil)
+                } catch let signOutError as NSError {
+                    print ("Error signing out: %@", signOutError)
+                }
+            })
+            self.present(alert, animated: true)
         } else {
             
-            guard let signInVC = storyboard?.instantiateViewController(withIdentifier: "SignInViewController") else { return }
+            guard let signInVC = self.storyboard?.instantiateViewController(withIdentifier: "SignInViewController") else { return }
             signInVC.modalPresentationStyle = .fullScreen
-            present(signInVC, animated: true, completion: nil)
+            self.present(signInVC, animated: true, completion: nil)
         }
+        
+        
+    }
+    @IBAction func changeBackground(_ sender: UISwitch) {
+        
+        if sender.isOn {
+            
+            sqliteDB.updateRow(0)
+            helloUserLable.textColor = .white
+            backgrounLable.textColor = .white
+            self.view.backgroundColor = .black
+            isDarkStatusBarStyle = true
+        } else {
+            
+            sqliteDB.updateRow(1)
+            helloUserLable.textColor = .black
+            backgrounLable.textColor = .black
+            self.view.backgroundColor = .white
+            isDarkStatusBarStyle = false
+        }
+        
+        NotificationCenter.default.post(name: Notification.Name("changeBackgroundMode"), object: nil)
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
 
@@ -61,13 +118,17 @@ extension AppSettingViewController {
     func reloadLableAndButtonTitle() {
         
         if let user = Auth.auth().currentUser {
+            
             print("UID ! : \(user.uid)")
             let name = user.email!
             helloUserLable.text = "Hello \n\(name)"
             signOutButton.setTitle("Sign Out", for: .normal)
         } else {
+            
             helloUserLable.text = "Please Sign In!"
             signOutButton.setTitle("Sign In", for: .normal)
         }
     }
+    
+    
 }

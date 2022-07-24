@@ -157,6 +157,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="list.triangle" catalog="system" id="vE9-QA-oSX"/>
                     <connections>
+                        <outlet property="mainLable" destination="kpA-nd-3HK" id="ldN-5G-Kp0"/>
                         <outlet property="toDoListTable" destination="mF8-IQ-HQk" id="0G7-E5-3S4"/>
                     </connections>
                 </viewController>
@@ -254,7 +255,7 @@
                                                             <constraint firstAttribute="height" constant="40" id="PSx-z5-rMn"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <textInputTraits key="textInputTraits" returnKeyType="done" textContentType="password"/>
+                                                        <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="must be at least 8 characters long, must contain letters  and must contain numbers" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyJ-Ee-SV2">
                                                         <rect key="frame" x="20" y="300" width="310" height="28.666666666666686"/>
@@ -268,7 +269,7 @@
                                                             <constraint firstAttribute="height" constant="40" id="dae-ov-veX"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <textInputTraits key="textInputTraits" returnKeyType="done" textContentType="password"/>
+                                                        <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Same Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8E-pL-EkR">
                                                         <rect key="frame" x="20" y="380" width="310" height="14.333333333333314"/>
@@ -523,7 +524,7 @@
                                     <action selector="signOutAction:" destination="aQX-3H-V7R" eventType="touchUpInside" id="sHJ-Tu-y7k"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bp-fe-UKD">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Black Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bp-fe-UKD">
                                 <rect key="frame" x="20" y="248.33333333333337" width="110" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="110" id="6IL-vr-5z3"/>
@@ -537,6 +538,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="vnO-p8-RUg"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="changeBackground:" destination="aQX-3H-V7R" eventType="valueChanged" id="YdY-5W-cbj"/>
+                                </connections>
                             </switch>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nVc-BI-3pc"/>
@@ -554,6 +558,8 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="seal" catalog="system" id="hv1-R0-Uug"/>
                     <connections>
+                        <outlet property="backgrounLable" destination="4Bp-fe-UKD" id="SFd-49-P2i"/>
+                        <outlet property="blackModeSwitch" destination="Hkf-eB-MUe" id="8Zb-JY-8xb"/>
                         <outlet property="helloUserLable" destination="jgk-DY-sWW" id="cT7-Pa-kmd"/>
                         <outlet property="signOutButton" destination="6UM-jt-qcd" id="grG-og-7Mh"/>
                     </connections>
@@ -773,9 +779,11 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="0vk-Xu-PVQ"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="WGd-4I-dS5">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="83"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" systemColor="systemFillColor"/>
+                        <color key="selectedImageTintColor" systemColor="systemBlueColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="RcU-hh-wEP" kind="relationship" relationship="viewControllers" id="1HR-tL-t6a"/>
@@ -805,6 +813,12 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
