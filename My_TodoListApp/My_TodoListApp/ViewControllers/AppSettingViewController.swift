@@ -27,7 +27,6 @@ class AppSettingViewController: UIViewController {
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,10 +45,19 @@ class AppSettingViewController: UIViewController {
         if isDarkMode == 1 {
             
             blackModeSwitch.isOn = false
+            helloUserLable.textColor = .black
+            backgrounLable.textColor = .black
+            self.view.backgroundColor = .white
+            isDarkStatusBarStyle = false
         } else {
             
             blackModeSwitch.isOn = true
+            helloUserLable.textColor = .white
+            backgrounLable.textColor = .white
+            self.view.backgroundColor = .black
+            isDarkStatusBarStyle = true
         }
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     @IBAction func signOutAction(_ sender: Any) {

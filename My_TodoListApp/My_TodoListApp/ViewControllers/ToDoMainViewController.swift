@@ -32,6 +32,17 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     var filterSet = FilterSettingData() // filter 조건
     var filteredTaskData = [ToDoCellDataModel]() // filter된 data
     
+    var isDarkStatusBarStyle = false
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        
+        if isDarkStatusBarStyle {
+            return .lightContent
+        } else {
+            return .darkContent
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -310,10 +321,18 @@ extension ToDoMainViewController {
         if sqliteDB.isDarkMode == 1 {
             
             mainLable.textColor = .black
+            isDarkStatusBarStyle = false
+            toDoListTable.backgroundColor = .white
+            self.view.backgroundColor = .white
         } else {
             
-            mainLable.textColor = .systemBlue
+            mainLable.textColor = .white
+            isDarkStatusBarStyle = true
+            toDoListTable.backgroundColor = .black
+            self.view.backgroundColor = .black
         }
+        
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     

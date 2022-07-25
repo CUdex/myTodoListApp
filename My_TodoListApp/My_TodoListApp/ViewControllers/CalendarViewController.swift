@@ -15,10 +15,19 @@ class CalendarViewController: UIViewController {
     @IBOutlet weak var calnedarView: FSCalendar!
     @IBOutlet weak var collectionVIew: UICollectionView!
     
-    //var taskData = [ToDoCellDataModel]()
     let singletonTaskData = TaskData.share
     let sqliteDB = SqlLiteController.share
     var calendarData = [[String:Any]]()
+    var isDarkStatusBarStyle = false
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        
+        if isDarkStatusBarStyle {
+            return .lightContent
+        } else {
+            return .darkContent
+        }
+    }
     
     //diffable을 위한 설정
     var dayTaskData: UICollectionViewDiffableDataSource<Int, ToDoCellDataModel>!
