@@ -89,15 +89,23 @@ extension UIViewController {
     }
     
     //MARK: - 완료에 따른 텍스트 변화
-    func changeStrikeFont(text: String, isFinish: Bool) -> NSMutableAttributedString {
+    func changeStrikeFont(text: String, isFinish: Bool, isDarkMode: Bool) -> NSMutableAttributedString {
         
         let attributeString = NSMutableAttributedString(string: text)
         
-        if isFinish {
+        if isDarkMode {
+            
+            attributeString.addAttribute(.strikethroughColor, value: UIColor.white, range: (text as NSString).range(of: text))
+        } else {
+            
             attributeString.addAttribute(.strikethroughColor, value: UIColor.black, range: (text as NSString).range(of: text))
+        }
+        
+        if isFinish {
+            
             attributeString.addAttribute(.strikethroughStyle, value: 1, range: (text as NSString).range(of: text))
         } else {
-            attributeString.addAttribute(.strikethroughColor, value: UIColor.black, range: (text as NSString).range(of: text))
+            
             attributeString.addAttribute(.strikethroughStyle, value: 0, range: (text as NSString).range(of: text))
         }
         

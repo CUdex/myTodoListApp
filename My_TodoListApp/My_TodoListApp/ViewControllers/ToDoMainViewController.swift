@@ -64,9 +64,8 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         toDoListTable.refreshControl?.addTarget(self, action: #selector(reFreshAction), for: .valueChanged)
         
         setDataSource()
-        
+        backgroundSet()
         getTaskData()
-        
         addLongGesture()
     }
     
@@ -90,7 +89,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         dataSource = UITableViewDiffableDataSource<Int, ToDoCellDataModel>(tableView: toDoListTable, cellProvider: { tableView, indexPath, itemIdentifier in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
-            
+            let isDarkMode: Bool = (self.sqliteDB.isDarkMode == 1 ? false : true)
             cell.taskData = itemIdentifier
             
             //priority에 따른 cell color 변경
@@ -113,15 +112,27 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
             
             cell.listCellDate.text = self.taskChangeDateToString(startDate, endDate, itemIdentifier.isAllDay)
             
+            if isDarkMode {
+                
+                cell.listCellDate.textColor = .white
+                cell.listCellTitleLable.textColor = .white
+            } else {
+                
+                cell.listCellDate.textColor = .black
+                cell.listCellTitleLable.textColor = .black
+            }
+            
             // 완료 여부에 따른 image 및 attribute 변경
             if itemIdentifier.isFinish {
+                
                 cell.listCellImageView.image = UIImage(systemName: "circlebadge.fill")
-                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish)
-                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish)
+                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
+                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
             } else {
+                
                 cell.listCellImageView.image = UIImage(systemName: "circlebadge")
-                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish)
-                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish)
+                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
+                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
             }
             
             return cell
@@ -181,7 +192,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         dataController.getData(user) { data in
-            //self.taskData = data
+            
             self.singletonTaskData.data = data
             NotificationCenter.default.post(name: Notification.Name("CalendarReloadTask"), object: nil)
             self.changeFilterSet(self.filterSet)
@@ -303,20 +314,27 @@ extension ToDoMainViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changeBackgroundMode), name: Notification.Name("changeBackgroundMode"), object: nil)
     }
     
-    @objc func notiReload(_ noti: NSNotification) {
+    @objc func notiReload() {
         
         getTaskData()
     }
     
-    @objc func notiClear(_ noti: NSNotification) {
+    @objc func notiClear() {
         
         //self.taskData.removeAll()
         self.singletonTaskData.data.removeAll()
         getTaskData()
     }
     
+    
+    @objc func changeBackgroundMode() {
+        
+        backgroundSet()
+        toDoListTable.reloadData()
+    }
+    
     // int 값 조회하여 background mode 변경
-    @objc func changeBackgroundMode(_ noti: NSNotification) {
+    func backgroundSet() {
         
         if sqliteDB.isDarkMode == 1 {
             
@@ -334,8 +352,6 @@ extension ToDoMainViewController {
         
         setNeedsStatusBarAppearanceUpdate()
     }
-    
-    
 }
 
 
