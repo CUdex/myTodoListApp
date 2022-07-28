@@ -173,3 +173,37 @@ public extension UIImage {
         self.init(cgImage: cgImage)
     }
 }
+
+//MARK: - statusBar 설정을 마지막으로 한 설정으로 가져오기
+extension UINavigationController {
+    
+    open override var childForStatusBarHidden: UIViewController? {
+        return viewControllers.last
+    }
+    
+    open override var childForStatusBarStyle: UIViewController? {
+        return viewControllers.last
+    }
+}
+
+extension UITabBarController {
+    
+    open override var childForStatusBarStyle: UIViewController? {
+        return self.children.first
+    }
+    
+    open override var childForStatusBarHidden: UIViewController? {
+        return self.children.first
+    }
+}
+
+extension UISplitViewController {
+    
+    open override var childForStatusBarStyle: UIViewController? {
+        return self.children.first
+    }
+    
+    open override var childForStatusBarHidden: UIViewController? {
+        return self.children.first
+    }
+}

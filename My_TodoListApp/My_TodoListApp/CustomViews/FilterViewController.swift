@@ -10,6 +10,7 @@ import UIKit
 class FilterViewController: UIViewController {
     
     lazy var safeArea = view.safeAreaLayoutGuide
+    let isDarkMode = SqlLiteController.share.isDarkMode == 0 ? true : false
     
     let mainTitleLable: UILabel = {
         
@@ -75,6 +76,7 @@ class FilterViewController: UIViewController {
         
         addSeg.translatesAutoresizingMaskIntoConstraints = false
         addSeg.selectedSegmentIndex = 3
+        addSeg.backgroundColor = .white
         return addSeg
     }()
     
@@ -94,6 +96,7 @@ class FilterViewController: UIViewController {
         
         addSeg.translatesAutoresizingMaskIntoConstraints = false
         addSeg.selectedSegmentIndex = 2
+        addSeg.backgroundColor = .white
         return addSeg
     }()
     
@@ -122,7 +125,7 @@ class FilterViewController: UIViewController {
         layoutSetFinishedLable() // 완료 타이틀
         addFinishedSegmentControll() // 완료 선택 세그먼트 추가
         addButton() // 필터 적용 액션 버튼
-        self.view.backgroundColor = .white
+        viewModeConfig() // mode에 따른 테마 변경
     }
     
     func stringPeriodDate() {
@@ -217,6 +220,31 @@ class FilterViewController: UIViewController {
         isFinishedSegmentControll.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20).isActive = true
         isFinishedSegmentControll.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20).isActive = true
         isFinishedSegmentControll.heightAnchor.constraint(equalToConstant: isFinishedSegmentControll.frame.width / 7).isActive = true
+    }
+    
+    func viewModeConfig() {
+        
+        if isDarkMode {
+            
+            middleLable.textColor = .white
+            mainTitleLable.textColor = .white
+            endDateLable.textColor = .white
+            startDateLable.textColor = .white
+            finishTitleLable.textColor = .white
+            periodTitleLable.textColor = .white
+            priorityTitleLable.textColor = .white
+            view.backgroundColor = .darkGray
+        } else {
+            
+            middleLable.textColor = .black
+            mainTitleLable.textColor = .black
+            endDateLable.textColor = .black
+            startDateLable.textColor = .black
+            finishTitleLable.textColor = .black
+            periodTitleLable.textColor = .black
+            priorityTitleLable.textColor = .black
+            view.backgroundColor = .white
+        }
     }
 }
 

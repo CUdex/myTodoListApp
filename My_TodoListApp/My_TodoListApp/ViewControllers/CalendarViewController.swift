@@ -16,13 +16,12 @@ class CalendarViewController: UIViewController {
     @IBOutlet weak var collectionVIew: UICollectionView!
     
     let singletonTaskData = TaskData.share
-    let sqliteDB = SqlLiteController.share
     var calendarData = [[String:Any]]()
-    var isDarkStatusBarStyle = false
+    var isDarkMode = SqlLiteController.share.isDarkMode == 0 ? true : false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         
-        if isDarkStatusBarStyle {
+        if isDarkMode {
             return .lightContent
         } else {
             return .darkContent
@@ -93,13 +92,9 @@ extension CalendarViewController {
         dataController.getData(user) { data in
             
             self.singletonTaskData.data = data
-            
             self.calendarData = self.changeTimeAndPriorityToCalendarData() // 전체 데이터 저장 후 calendar 표현을 위한 date, priority 저장
-            
             self.calnedarView.reloadData() // 달력 dot 표시
-            
-            // 선택된 날짜의 데이터 표현
-            self.setDateData(date: self.lastSelectedDate)
+            self.setDateData(date: self.lastSelectedDate)// 선택된 날짜의 데이터 표현
         }
     }
     
@@ -109,7 +104,6 @@ extension CalendarViewController {
         dayTaskData = UICollectionViewDiffableDataSource<Int, ToDoCellDataModel>(collectionView: collectionVIew, cellProvider: { collectionView, indexPath, itemIdentifier in
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCollectionViewCell", for: indexPath) as! CalendarCollectionViewCell
-            let isDarkMode: Bool = (self.sqliteDB.isDarkMode == 1 ? false : true)
             cell.taskDataInCell = itemIdentifier
             
             //priority에 따른 cell color 변경
@@ -127,7 +121,7 @@ extension CalendarViewController {
             let endDate = Date(timeIntervalSince1970: itemIdentifier.isAllDay ? itemIdentifier.endDate - 1: itemIdentifier.endDate)
             cell.dateLable.text = self.taskChangeDateToString(startDate, endDate, itemIdentifier.isAllDay)
             
-            if isDarkMode {
+            if self.isDarkMode {
                 
                 cell.titleLable.textColor = .white
                 cell.dateLable.textColor = .white
@@ -141,13 +135,13 @@ extension CalendarViewController {
             if itemIdentifier.isFinish {
                 
                 cell.imgView.image = UIImage(systemName: "circlebadge.fill")
-                cell.titleLable.attributedText = self.changeStrikeFont(text: cell.titleLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: isDarkMode)
-                cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: isDarkMode)
+                cell.titleLable.attributedText = self.changeStrikeFont(text: cell.titleLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: self.isDarkMode)
+                cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: self.isDarkMode)
             } else {
                 
                 cell.imgView.image = UIImage(systemName: "circlebadge")
-                cell.titleLable.attributedText = self.changeStrikeFont(text: cell.titleLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: isDarkMode)
-                cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: isDarkMode)
+                cell.titleLable.attributedText = self.changeStrikeFont(text: cell.titleLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: self.isDarkMode)
+                cell.dateLable.attributedText = self.changeStrikeFont(text: cell.dateLable.text!, isFinish: itemIdentifier.isFinish,isDarkMode: self.isDarkMode)
             }
             
             //구분선 추가
@@ -160,19 +154,15 @@ extension CalendarViewController {
     func applyData() {
         
         snapshot = NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>()
-        //섹션 추가
-        snapshot.appendSections([0])
-        // 아이템 추가
-        snapshot.appendItems(getTaskDayData, toSection: 0)
-        // 현재 스냅샷 구현
-        dayTaskData.apply(snapshot, animatingDifferences: true, completion: nil)
+        snapshot.appendSections([0])//섹션 추가
+        snapshot.appendItems(getTaskDayData, toSection: 0)// 아이템 추가
+        dayTaskData.apply(snapshot, animatingDifferences: true, completion: nil)// 현재 스냅샷 구현
     }
     
     //해당 계정이 가지고 있는 전체 데이터에서 선택된 날짜에 포함된 데이터 객체 filter
     func setDateData(date dateData: Date) {
         
         let start = dateData.timeIntervalSince1970
-        
         getTaskDayData = singletonTaskData.data.filter { inTaskData in
             let startDate = Date(timeIntervalSince1970: inTaskData.startDate).zeroOfDay.timeIntervalSince1970
             
@@ -180,7 +170,6 @@ extension CalendarViewController {
         }
         
         applyData()
-        
     }
     
     //notification 추가
@@ -211,6 +200,7 @@ extension CalendarViewController {
     
     @objc func changeBackgroundMode() {
         
+        isDarkMode = SqlLiteController.share.isDarkMode == 0 ? true : false
         backgroundSet()
         calnedarView.reloadData()
         collectionVIew.reloadData()
@@ -219,20 +209,18 @@ extension CalendarViewController {
     // int 값 조회하여 background mode 변경
     func backgroundSet() {
         
-        if sqliteDB.isDarkMode == 1 {
-            
-            collectionVIew.backgroundColor = .white
-            calnedarView.backgroundColor = .white
-            isDarkStatusBarStyle = false
-            calnedarView.appearance.titleDefaultColor = .black
-            self.view.backgroundColor = .white
-        } else {
+        if isDarkMode {
             
             collectionVIew.backgroundColor = .black
             calnedarView.backgroundColor = .black
-            isDarkStatusBarStyle = true
             calnedarView.appearance.titleDefaultColor = .white
             self.view.backgroundColor = .black
+        } else {
+            
+            collectionVIew.backgroundColor = .white
+            calnedarView.backgroundColor = .white
+            calnedarView.appearance.titleDefaultColor = .black
+            self.view.backgroundColor = .white
         }
         
         setNeedsStatusBarAppearanceUpdate()
@@ -256,7 +244,6 @@ extension CalendarViewController {
         let p = longPressGesture.location(in: self.collectionVIew)
         guard let indexPath = self.collectionVIew.indexPathForItem(at: p) else { return }
         let row = indexPath.row
-        
         // detail view 생성
         let bundle = Bundle(for: detailViewController.self)
         let detailVC = detailViewController(nibName: "detailViewController", bundle: bundle)
@@ -360,7 +347,7 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
             case [0]:
                 return [UIColor.green]
             case [1]:
-                return sqliteDB.isDarkMode == 1 ? [UIColor.black] : [UIColor.yellow]
+                return isDarkMode ? [UIColor.yellow] : [UIColor.black]
             default:
                 return [UIColor.red]
             }
@@ -369,16 +356,16 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
             
             switch countPriority {
             case [0,1]:
-                return sqliteDB.isDarkMode == 1 ? [UIColor.green, UIColor.black] : [UIColor.green, UIColor.yellow]
+                return isDarkMode ? [UIColor.green, UIColor.yellow] : [UIColor.green, UIColor.black]
             case [1,2]:
-                return sqliteDB.isDarkMode == 1 ? [UIColor.black, UIColor.red] : [UIColor.yellow, UIColor.red]
+                return isDarkMode ? [UIColor.yellow, UIColor.red] : [UIColor.black, UIColor.red]
             default:
                 return [UIColor.green, UIColor.red]
             }
             
         }
         
-        return sqliteDB.isDarkMode == 1 ? [UIColor.green, UIColor.black, UIColor.red] : [UIColor.green, UIColor.yellow, UIColor.red]
+        return isDarkMode ? [UIColor.green, UIColor.yellow, UIColor.red] : [UIColor.green, UIColor.black, UIColor.red]
     }
     
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {

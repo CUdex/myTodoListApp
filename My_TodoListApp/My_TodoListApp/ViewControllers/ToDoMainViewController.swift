@@ -28,15 +28,13 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
     var snapshot: NSDiffableDataSourceSnapshot<Int, ToDoCellDataModel>!
     
     let dataController = FireDataController()
-    
     var filterSet = FilterSettingData() // filter 조건
     var filteredTaskData = [ToDoCellDataModel]() // filter된 data
-    
-    var isDarkStatusBarStyle = false
+    var isDarkMode = SqlLiteController.share.isDarkMode == 0 ? true : false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         
-        if isDarkStatusBarStyle {
+        if isDarkMode {
             return .lightContent
         } else {
             return .darkContent
@@ -89,7 +87,6 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
         dataSource = UITableViewDiffableDataSource<Int, ToDoCellDataModel>(tableView: toDoListTable, cellProvider: { tableView, indexPath, itemIdentifier in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
-            let isDarkMode: Bool = (self.sqliteDB.isDarkMode == 1 ? false : true)
             cell.taskData = itemIdentifier
             
             //priority에 따른 cell color 변경
@@ -112,7 +109,7 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
             
             cell.listCellDate.text = self.taskChangeDateToString(startDate, endDate, itemIdentifier.isAllDay)
             
-            if isDarkMode {
+            if self.isDarkMode {
                 
                 cell.listCellDate.textColor = .white
                 cell.listCellTitleLable.textColor = .white
@@ -126,13 +123,13 @@ class ToDoMainViewController: UIViewController, UIGestureRecognizerDelegate {
             if itemIdentifier.isFinish {
                 
                 cell.listCellImageView.image = UIImage(systemName: "circlebadge.fill")
-                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
-                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
+                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish, isDarkMode: self.isDarkMode)
+                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish, isDarkMode: self.isDarkMode)
             } else {
                 
                 cell.listCellImageView.image = UIImage(systemName: "circlebadge")
-                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
-                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish, isDarkMode: isDarkMode)
+                cell.listCellTitleLable.attributedText = self.changeStrikeFont(text: cell.listCellTitleLable.text!, isFinish: itemIdentifier.isFinish, isDarkMode: self.isDarkMode)
+                cell.listCellDate.attributedText = self.changeStrikeFont(text: cell.listCellDate.text!, isFinish: itemIdentifier.isFinish, isDarkMode: self.isDarkMode)
             }
             
             return cell
@@ -329,6 +326,7 @@ extension ToDoMainViewController {
     
     @objc func changeBackgroundMode() {
         
+        isDarkMode = SqlLiteController.share.isDarkMode == 0 ? true : false
         backgroundSet()
         toDoListTable.reloadData()
     }
@@ -336,18 +334,16 @@ extension ToDoMainViewController {
     // int 값 조회하여 background mode 변경
     func backgroundSet() {
         
-        if sqliteDB.isDarkMode == 1 {
-            
-            mainLable.textColor = .black
-            isDarkStatusBarStyle = false
-            toDoListTable.backgroundColor = .white
-            self.view.backgroundColor = .white
-        } else {
+        if isDarkMode {
             
             mainLable.textColor = .white
-            isDarkStatusBarStyle = true
             toDoListTable.backgroundColor = .black
             self.view.backgroundColor = .black
+        } else {
+            
+            mainLable.textColor = .black
+            toDoListTable.backgroundColor = .white
+            self.view.backgroundColor = .white
         }
         
         setNeedsStatusBarAppearanceUpdate()

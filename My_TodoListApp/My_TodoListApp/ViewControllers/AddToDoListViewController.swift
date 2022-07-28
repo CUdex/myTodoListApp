@@ -15,7 +15,11 @@ class AddToDoListViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var startDateText: UITextField!
     @IBOutlet weak var endDateText: UITextField!
-    @IBOutlet weak var priority: UISegmentedControl! 
+    @IBOutlet weak var priority: UISegmentedControl!
+    @IBOutlet weak var titleLable: UILabel!
+    @IBOutlet weak var dateTimeLable: UILabel!
+    @IBOutlet weak var priorityLable: UILabel!
+    @IBOutlet weak var descriptionLable: UILabel!
     @IBOutlet weak var allDayBtn: UIButton! {
         didSet {
             guard let text = self.allDayBtn.titleLabel!.text else { return }
@@ -32,9 +36,8 @@ class AddToDoListViewController: UIViewController {
     var isAllDay = false
     let oneDay: Double = 86400
     @IBOutlet weak var dataActionBtn: UIButton!
-    
+    let isDarkMode = SqlLiteController.share.isDarkMode == 0 ? true : false
     let dataController = FireDataController()
-    
     var originTaskData: ToDoCellDataModel?
     
     override func viewDidLoad() {
@@ -48,6 +51,9 @@ class AddToDoListViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .wheels // wheel 설정
         datePicker.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 150) //datepicker 위치 설정
         datePicker.setValue(UIColor.clear, forKey: "backgroundColor")
+        startDateText.attributedPlaceholder = NSAttributedString(string: "start", attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
+        endDateText.attributedPlaceholder = NSAttributedString(string: "end", attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
+        taskText.attributedPlaceholder = NSAttributedString(string: "title", attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
         
         //pickerview 툴바 추가
         let pickerTool = UIToolbar()
@@ -64,9 +70,9 @@ class AddToDoListViewController: UIViewController {
         startDateText.inputAccessoryView = pickerTool // toolbar 추가
         endDateText.inputView = datePicker
         endDateText.inputAccessoryView = pickerTool
-        
+        priority.backgroundColor = .white
         priority.selectedSegmentTintColor = .green
-        
+        backgroundSet()
         modifyDataSetting()
     }
     
@@ -78,6 +84,31 @@ class AddToDoListViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         
         self.removeKeyboardNotifications()
+    }
+    
+    func backgroundSet() {
+        
+        if isDarkMode {
+            
+            taskText.textColor = .white
+            startDateText.textColor = .white
+            endDateText.textColor = .white
+            titleLable.textColor = .white
+            priorityLable.textColor = .white
+            dateTimeLable.textColor = .white
+            descriptionLable.textColor = .white
+            view.backgroundColor = .black
+        } else {
+            
+            taskText.textColor = .black
+            startDateText.textColor = .black
+            endDateText.textColor = .black
+            titleLable.textColor = .black
+            priorityLable.textColor = .black
+            dateTimeLable.textColor = .black
+            descriptionLable.textColor = .black
+            view.backgroundColor = .white
+        }
     }
     
     //MARK: - 텍스트 필드 클릭 시 datepicker 출력 및 텍스트 필드에 세팅
@@ -119,7 +150,7 @@ class AddToDoListViewController: UIViewController {
             endDateText.text = ""
         } else {
             datePicker.datePickerMode = .dateAndTime
-            allDayBtn.tintColor = .black
+            allDayBtn.tintColor = .darkGray
             changeButtonFont()
             startDateText.text = ""
             endDateText.text = ""
@@ -182,6 +213,11 @@ class AddToDoListViewController: UIViewController {
             self.view.makeToast("please write title or date")
         } else {
             
+            if discriptionText.text == "describe a task in detail" {
+                
+                discriptionText.text = ""
+            }
+            
             let addTaskData = ToDoCellDataModel(priority: self.priority.selectedSegmentIndex, title: self.taskText.text!, startDate: startDate, endDate: endDate, description: discriptionText.text!, isAllDay: isAllDay, isFinish: false)
             
             if let data = originTaskData {
@@ -209,8 +245,11 @@ class AddToDoListViewController: UIViewController {
             startDateText.text = changeDateToString(Date(timeIntervalSince1970: data.startDate), data.isAllDay)
             endDateText.text = changeDateToString(Date(timeIntervalSince1970: data.endDate), data.isAllDay)
             priority.selectedSegmentIndex = data.priority
+            changeSegmentColor(priority)
             isAllDay = data.isAllDay
+            allDayBtn.tintColor = isAllDay ? .systemBlue : .darkGray
             changeButtonFont()
+            textViewDidEndEditing(discriptionText)
         }
     }
 }
@@ -261,19 +300,24 @@ extension AddToDoListViewController: UITextFieldDelegate, UITextViewDelegate {
     
     //MARK: - textview placeholder 설정
     func placeholderSetting() {
+        
         discriptionText.text = "describe a task in detail"
         discriptionText.textColor = UIColor.lightGray
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        
         if textView.textColor == UIColor.lightGray {
+            
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = isDarkMode ? UIColor.white : UIColor.black
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
+        
+        if textView.text.isEmpty || textView.text == "" {
+            
             textView.text = "describe a task in detail"
             textView.textColor = UIColor.lightGray
         }

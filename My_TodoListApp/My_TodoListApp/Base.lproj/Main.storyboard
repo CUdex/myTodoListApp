@@ -524,7 +524,7 @@
                                     <action selector="signOutAction:" destination="aQX-3H-V7R" eventType="touchUpInside" id="sHJ-Tu-y7k"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Black Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bp-fe-UKD">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bp-fe-UKD">
                                 <rect key="frame" x="20" y="248.33333333333337" width="110" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="110" id="6IL-vr-5z3"/>
@@ -610,13 +610,13 @@
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hourglass.start" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="gX8-Wb-5OI">
                                                 <rect key="frame" x="20" y="233.33333333333337" width="50" height="47.000000000000028"/>
-                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="51y-qF-tu0"/>
                                                     <constraint firstAttribute="height" constant="50" id="Fyr-QL-ONQ"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="start" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PVb-x1-NB9">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="start" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PVb-x1-NB9">
                                                 <rect key="frame" x="90" y="231.66666666666669" width="270" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="mrN-At-QtN"/>
@@ -626,13 +626,13 @@
                                             </textField>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hourglass.end" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WLM-Mn-YiU">
                                                 <rect key="frame" x="20" y="303.33333333333337" width="50" height="47.000000000000028"/>
-                                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="fOe-7F-jfL"/>
                                                     <constraint firstAttribute="height" constant="50" id="vKT-Pz-PaR"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="end" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RIq-U5-0mZ">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="end" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RIq-U5-0mZ">
                                                 <rect key="frame" x="90" y="301.66666666666669" width="270" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="Gx0-b8-8YH"/>
@@ -642,7 +642,7 @@
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rRx-2W-MMj">
                                                 <rect key="frame" x="304.33333333333331" y="172.66666666666666" width="65.666666666666686" height="31"/>
-                                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Button">
                                                     <attributedString key="attributedTitle">
@@ -674,7 +674,7 @@
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="description" translatesAutoresizingMaskIntoConstraints="NO" id="fCm-QJ-5oB">
                                                 <rect key="frame" x="20" y="569.66666666666663" width="350" height="46"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="25"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
@@ -700,7 +700,6 @@
                                                 </connections>
                                             </segmentedControl>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="UJC-xe-6N1" firstAttribute="leading" secondItem="z1I-5s-buo" secondAttribute="leading" constant="20" id="2li-Hq-Zok"/>
                                             <constraint firstAttribute="trailing" secondItem="rRx-2W-MMj" secondAttribute="trailing" constant="20" id="5SA-LG-AHd"/>
@@ -760,12 +759,16 @@
                     <connections>
                         <outlet property="allDayBtn" destination="rRx-2W-MMj" id="D7K-lP-SKN"/>
                         <outlet property="dataActionBtn" destination="Fbz-0F-kN9" id="FdI-Dq-Hvs"/>
+                        <outlet property="dateTimeLable" destination="F8K-Pr-36W" id="hx4-Cw-8R2"/>
+                        <outlet property="descriptionLable" destination="BSx-Xd-pcG" id="t3N-t6-K4m"/>
                         <outlet property="discriptionText" destination="fCm-QJ-5oB" id="E8T-bv-Vrl"/>
                         <outlet property="endDateText" destination="RIq-U5-0mZ" id="TZD-Da-Iok"/>
                         <outlet property="priority" destination="UJC-xe-6N1" id="Ypu-eB-khg"/>
+                        <outlet property="priorityLable" destination="Zqc-7G-Ko8" id="I6J-Ps-mIe"/>
                         <outlet property="scrollView" destination="jYf-JI-NJf" id="27f-t5-9Xq"/>
                         <outlet property="startDateText" destination="PVb-x1-NB9" id="FKY-Ku-4NJ"/>
                         <outlet property="taskText" destination="rtE-ya-crU" id="0iW-px-cRg"/>
+                        <outlet property="titleLable" destination="Ryi-hM-MIe" id="aXA-4z-2pj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xct-xM-cmm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

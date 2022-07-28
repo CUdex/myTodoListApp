@@ -31,6 +31,8 @@ class SignInViewController: UIViewController {
         checkPasswordFormLable.text = "please check your password"
         checkEmailFormLable.textColor = .clear
         checkPasswordFormLable.textColor = .clear
+        
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidAppear(_ animated: Bool) {

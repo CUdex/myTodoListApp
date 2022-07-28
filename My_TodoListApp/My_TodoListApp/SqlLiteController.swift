@@ -15,7 +15,7 @@ class SqlLiteController {
     let databaseName = "mydb.sqlite"
     let TABLE_NAME: String = "BackgroundSet"
     let COL_NAME: String = "IsDarkMode"
-    var isDarkMode: Int32 = 1
+    var isDarkMode: Int32 = 1 //dark mode 설정 0-dark mode, 1-light mode
     
     private init() {
         self.db = createDB()
@@ -128,6 +128,7 @@ class SqlLiteController {
         sqlite3_finalize(statement)
     }
     
+    //업데이트
     func updateRow(_ selectMode: Int32) {
         
         isDarkMode = selectMode
