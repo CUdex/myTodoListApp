@@ -18,6 +18,25 @@ class FireDataController {
         print("FireDataController - deinit")
     }
     
+    func getUserName(_ user: User, completion: @escaping (String) -> ()) -> Void {
+       
+        let userEmail = user.email!
+        
+        db.collection("User").document(userEmail).getDocument { (querySnapshot, err) in
+            
+            if let error = err {
+                
+                print("error while get user name : \(error)")
+            } else {
+                
+                guard let data = querySnapshot?.data() else { return }
+                let userName = data["name"] as! String
+                
+                completion(userName)
+            }
+        }
+    }
+    
     func addData(_ data: ToDoCellDataModel, _ user: User, completion: @escaping () -> ()) -> Void {
         
         let userUid = user.uid

@@ -115,6 +115,7 @@ class AddToDoListViewController: UIViewController {
     @objc private func onClickDone() {
         
         if startDateText.resignFirstResponder() {
+            
             if isAllDay {
                 startDate = datePicker.date.zeroOfDay.timeIntervalSince1970
             } else {
@@ -122,13 +123,27 @@ class AddToDoListViewController: UIViewController {
             }
 
             startDateText.text = self.changeDateToString(datePicker.date, isAllDay)
+            
+            if startDate > endDate && endDateText.text != "" {
+            
+                endDate = startDate + oneDay - 1
+                endDateText.text = self.changeDateToString(datePicker.date, isAllDay)
+            }
         } else {
+            
             if isAllDay {
                 endDate = datePicker.date.zeroOfDay.timeIntervalSince1970 + oneDay - 1
             } else {
                 endDate = datePicker.date.timeIntervalSince1970
             }
+            
             endDateText.text = self.changeDateToString(datePicker.date, isAllDay)
+            
+            if startDate > endDate && startDateText.text != "" {
+            
+                startDate = endDate - oneDay + 1
+                startDateText.text = self.changeDateToString(datePicker.date, isAllDay)
+            }
         }
         self.view.endEditing(true)
     }
@@ -240,6 +255,7 @@ class AddToDoListViewController: UIViewController {
             dataActionBtn.configuration?.attributedTitle = "modify"
             taskText.text = data.title
             discriptionText.text = data.description
+            discriptionText.textColor = isDarkMode ? .white : .black
             startDate = data.startDate
             endDate = data.endDate
             startDateText.text = changeDateToString(Date(timeIntervalSince1970: data.startDate), data.isAllDay)
@@ -248,6 +264,7 @@ class AddToDoListViewController: UIViewController {
             changeSegmentColor(priority)
             isAllDay = data.isAllDay
             allDayBtn.tintColor = isAllDay ? .systemBlue : .darkGray
+            datePicker.datePickerMode = isAllDay ? .date : .dateAndTime
             changeButtonFont()
             textViewDidEndEditing(discriptionText)
         }

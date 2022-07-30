@@ -14,7 +14,7 @@ class AppSettingViewController: UIViewController {
     @IBOutlet weak var signOutButton: UIButton!
     @IBOutlet weak var backgrounLable: UILabel!
     @IBOutlet weak var blackModeSwitch: UISwitch!
-    
+    let fireDataController = FireDataController()
     var isDarkStatusBarStyle = false
     let sqliteDB = SqlLiteController.share
     
@@ -32,6 +32,7 @@ class AppSettingViewController: UIViewController {
 
         addSignInSuccessNotifications()
         settingSwitchUISwitch()
+        reloadLableAndButtonTitle()
     }
 
     
@@ -116,10 +117,11 @@ extension AppSettingViewController {
     
     func addSignInSuccessNotifications(){
         // 로그인 성공 시 설정 화면의 멘트 수정을 위한 노티 추가
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload(_:)), name: Notification.Name("SuccessSignIn") , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notiReload(_:)), name: Notification.Name("reloadTask") , object: nil)
     }
     
     @objc func notiReload(_ noti: NSNotification) {
+        
         reloadLableAndButtonTitle()
     }
     
@@ -127,9 +129,10 @@ extension AppSettingViewController {
         
         if let user = Auth.auth().currentUser {
             
-            print("UID ! : \(user.uid)")
-            let name = user.email!
-            helloUserLable.text = "Hello \n\(name)"
+            fireDataController.getUserName(user) { userName in
+                
+                self.helloUserLable.text = "Hello \(userName)"
+            }
             signOutButton.setTitle("Sign Out", for: .normal)
         } else {
             
