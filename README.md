@@ -1,5 +1,5 @@
 # myTodoListApp
-create my todolist app by swift
+개인 일정 관리용
 
 * using
   * xcode
